@@ -9,9 +9,10 @@ En lille, selvstændig web-app til at følge en delt opsparingskonto mellem **Da
 ## Funktioner
 
 - **Samlet saldo** og **ejerskabs-dashboard** med doughnut-diagram, beløb i DKK og procenter.
-- Tre ejere: **Daniel**, **Cecilie** og **Fælles**. Fælles tæller 50/50 i ejerskabet:
-  - Daniel = egne bidrag + 50 % af Fælles
-  - Cecilie = egne bidrag + 50 % af Fælles
+- Tre adskilte ejere: **Daniel**, **Cecilie** og **Fælles**. Hver ejer vises separat —
+  fælles midler tæller ikke med i Daniels eller Cecilies eget ejerskab.
+- Beløbsfeltet formaterer automatisk med tusindtalsadskiller, mens du skriver
+  (fx `100000` bliver til `100.000`).
 - **Indsæt / hæv** penge med beløb, ejer og dato. Hævninger gemmes som negative poster.
 - **Transaktionshistorik** der kan ses, redigeres og slettes.
 - **Renteprojektion** (3,39 % p.a., simpel rente af nuværende saldo): pr. år / måned / dag,

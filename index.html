@@ -319,20 +319,60 @@
   function fmtPct(n) { return pctFmt.format(n) + " %"; }
   function fmtDate(iso) { return dateFmt.format(new Date(iso)); }
 
-  // Parse a Danish-style (or plain) number string into a Number.
+  // Parse a Danish-style number string into a Number.
+  // Convention: "." = thousands separator, "," = decimal separator.
   function parseAmount(str) {
     if (str == null) return NaN;
     str = String(str).trim().replace(/\s/g, "").replace(/kr\.?/i, "");
     if (str === "") return NaN;
     var neg = str.indexOf("-") !== -1;
-    str = str.replace(/-/g, "");
-    if (str.indexOf(",") !== -1) {
-      // Danish: comma = decimal separator, dot = thousands separator
-      str = str.replace(/\./g, "").replace(",", ".");
-    }
+    str = str.replace(/-/g, "").replace(/\./g, "");   // strip thousands separators
+    if (str.indexOf(",") !== -1) str = str.replace(",", ".");
     var n = parseFloat(str);
     if (isNaN(n)) return NaN;
     return neg ? -n : n;
+  }
+
+  // Live-format an amount input with Danish thousands separators ("100000" -> "100.000")
+  // while keeping the caret in a sensible spot. allowNegative keeps a leading "-".
+  function liveFormatAmount(el, allowNegative) {
+    var raw = el.value;
+    var caret = el.selectionStart || 0;
+
+    // how many significant chars (digits + decimal comma) sit left of the caret
+    var sig = 0;
+    for (var i = 0; i < caret; i++) { if (/[0-9,]/.test(raw[i])) sig++; }
+
+    var neg = allowNegative && /^\s*-/.test(raw);
+    var body = raw.replace(/[^0-9,]/g, "");
+    var firstComma = body.indexOf(",");
+    var intPart, decPart = null;
+    if (firstComma === -1) {
+      intPart = body;
+    } else {
+      intPart = body.slice(0, firstComma);
+      decPart = body.slice(firstComma + 1).replace(/,/g, "").slice(0, 2);
+    }
+    intPart = intPart.replace(/^0+(?=\d)/, "");                 // trim leading zeros
+    var grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // insert separators
+    if (decPart !== null && grouped === "") grouped = "0";
+
+    var out = (neg ? "-" : "") + grouped + (decPart !== null ? "," + decPart : "");
+    el.value = out;
+
+    // restore caret after the sig-th significant character
+    var pos;
+    if (sig <= 0) {
+      pos = neg ? 1 : 0;
+    } else {
+      pos = out.length;
+      var count = 0;
+      for (var j = 0; j < out.length; j++) {
+        if (/[0-9,]/.test(out[j])) count++;
+        if (count === sig) { pos = j + 1; break; }
+      }
+    }
+    try { el.setSelectionRange(pos, pos); } catch (e) {}
   }
 
   // ---------- State / persistence ----------
@@ -367,15 +407,7 @@
   function totals() {
     var t = { daniel: 0, cecilie: 0, common: 0 };
     transactions.forEach(function (tx) { t[tx.owner] += tx.amount; });
-    var total = t.daniel + t.cecilie + t.common;
-    var effDaniel = t.daniel + t.common / 2;
-    var effCecilie = t.cecilie + t.common / 2;
-    return {
-      raw: t,
-      total: total,
-      effDaniel: effDaniel,
-      effCecilie: effCecilie
-    };
+    return { raw: t, total: t.daniel + t.cecilie + t.common };
   }
 
   // ---------- Rendering ----------
@@ -386,39 +418,32 @@
     document.getElementById("donutTotal").textContent = dkkShort.format(c.total) + " kr.";
 
     var base = c.total !== 0 ? c.total : 1;
-    var pDaniel = (c.effDaniel / base) * 100;
-    var pCecilie = (c.effCecilie / base) * 100;
+    var owners = [
+      { label: "Daniel",  color: "var(--daniel)",  amount: c.raw.daniel },
+      { label: "Cecilie", color: "var(--cecilie)", amount: c.raw.cecilie },
+      { label: "Fælles",  color: "var(--common)",  amount: c.raw.common }
+    ];
+    owners.forEach(function (o) { o.pct = (o.amount / base) * 100; });
 
-    // Donut (Daniel vs Cecilie effective ownership)
-    var donut = document.getElementById("donut");
-    donut.style.background = "conic-gradient(" +
-      "var(--daniel) 0% " + pDaniel + "%, " +
-      "var(--cecilie) " + pDaniel + "% 100%)";
+    // Donut: three separate owners
+    var start = 0, stops = [];
+    owners.forEach(function (o) {
+      var seg = Math.max(0, o.pct);
+      stops.push(o.color + " " + start + "% " + (start + seg) + "%");
+      start += seg;
+    });
+    document.getElementById("donut").style.background = "conic-gradient(" + stops.join(", ") + ")";
 
     // Owner rows
-    var rows = [
-      { key: "daniel",  label: "Daniel",  color: "var(--daniel)",  eff: c.effDaniel, pct: pDaniel, own: c.raw.daniel },
-      { key: "cecilie", label: "Cecilie", color: "var(--cecilie)", eff: c.effCecilie, pct: pCecilie, own: c.raw.cecilie }
-    ];
-    var html = rows.map(function (r) {
+    document.getElementById("ownerRows").innerHTML = owners.map(function (o) {
       return '<div class="owner-row">' +
-        '<span class="swatch" style="background:' + r.color + '"></span>' +
+        '<span class="swatch" style="background:' + o.color + '"></span>' +
         '<div class="owner-info">' +
-          '<div class="name"><span>' + r.label + '</span><span class="pct">' + fmtPct(r.pct) + '</span></div>' +
-          '<div class="amt">' + fmt(r.eff) + '</div>' +
-          '<div class="detail">Egne bidrag ' + fmt(r.own) + ' + andel af fælles ' + fmt(c.raw.common / 2) + '</div>' +
-          '<div class="bar"><span style="width:' + Math.max(0, Math.min(100, r.pct)) + '%;background:' + r.color + '"></span></div>' +
+          '<div class="name"><span>' + o.label + '</span><span class="pct">' + fmtPct(o.pct) + '</span></div>' +
+          '<div class="amt">' + fmt(o.amount) + '</div>' +
+          '<div class="bar"><span style="width:' + Math.max(0, Math.min(100, o.pct)) + '%;background:' + o.color + '"></span></div>' +
         '</div></div>';
     }).join("");
-    // Common informational row
-    html += '<div class="owner-row">' +
-      '<span class="swatch" style="background:var(--common)"></span>' +
-      '<div class="owner-info">' +
-        '<div class="name"><span>Fælles pulje</span><span class="pct">deles 50/50</span></div>' +
-        '<div class="amt">' + fmt(c.raw.common) + '</div>' +
-        '<div class="detail">Tæller med i både Daniels og Cecilies ejerskab</div>' +
-      '</div></div>';
-    document.getElementById("ownerRows").innerHTML = html;
 
     renderInterest(c);
     renderHistory();
@@ -432,17 +457,17 @@
 
     var base = c.total !== 0 ? c.total : 1;
     var split = [
-      { label: "Daniel",  color: "var(--daniel)",  eff: c.effDaniel },
-      { label: "Cecilie", color: "var(--cecilie)", eff: c.effCecilie }
+      { label: "Daniel",  color: "var(--daniel)",  amount: c.raw.daniel },
+      { label: "Cecilie", color: "var(--cecilie)", amount: c.raw.cecilie },
+      { label: "Fælles",  color: "var(--common)",  amount: c.raw.common }
     ];
-    var html = split.map(function (s) {
-      var share = s.eff / base;
+    document.getElementById("interestSplit").innerHTML = split.map(function (s) {
+      var share = s.amount / base;
       return '<div class="row">' +
         '<span class="nm"><span class="swatch" style="background:' + s.color + '"></span>' + s.label + ' (' + fmtPct(share * 100) + ')</span>' +
         '<span>' + fmt(perYear * share) + ' / år · ' + fmt((perYear * share) / 12) + ' / md.</span>' +
       '</div>';
     }).join("");
-    document.getElementById("interestSplit").innerHTML = html;
   }
 
   function renderHistory() {
@@ -537,8 +562,16 @@
     render();
   });
 
+  document.getElementById("amountInput").addEventListener("input", function () {
+    liveFormatAmount(this, false);
+  });
+
   document.getElementById("amountInput").addEventListener("keydown", function (e) {
     if (e.key === "Enter") document.getElementById("addBtn").click();
+  });
+
+  document.getElementById("editAmount").addEventListener("input", function () {
+    liveFormatAmount(this, true);
   });
 
   // ---------- History actions (edit / delete) ----------
