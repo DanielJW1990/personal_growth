@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fælles Opsparing</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #273449;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --daniel: #3b82f6;
+    --cecilie: #ec4899;
+    --common: #10b981;
+    --accent: #38bdf8;
+    --danger: #ef4444;
+    --green: #22c55e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 24px 16px 64px;
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 { font-size: 1.6rem; font-weight: 700; }
+  header p { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .card h2 { font-size: 1.05rem; margin-bottom: 16px; font-weight: 600; }
+
+  /* Total balance */
+  .total { text-align: center; }
+  .total .label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .total .value { font-size: 2.6rem; font-weight: 800; margin-top: 6px; }
+
+  /* Dashboard layout */
+  .dash { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: center; }
+  @media (max-width: 620px) { .dash { grid-template-columns: 1fr; } }
+
+  .donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .donut {
+    width: 180px; height: 180px; border-radius: 50%;
+    position: relative; flex-shrink: 0;
+  }
+  .donut::after {
+    content: ""; position: absolute; inset: 30px;
+    background: var(--panel); border-radius: 50%;
+  }
+  .donut .center {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 1; text-align: center;
+  }
+  .donut .center small { color: var(--muted); font-size: 0.7rem; }
+  .donut .center strong { font-size: 1.1rem; }
+
+  .owner-rows { display: flex; flex-direction: column; gap: 14px; }
+  .owner-row { display: flex; align-items: center; gap: 12px; }
+  .swatch { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+  .owner-info { flex: 1; }
+  .owner-info .name { font-weight: 600; display: flex; justify-content: space-between; }
+  .owner-info .name .pct { color: var(--muted); font-weight: 500; }
+  .owner-info .amt { font-size: 1.25rem; font-weight: 700; }
+  .owner-info .detail { font-size: 0.78rem; color: var(--muted); }
+  .bar { height: 6px; border-radius: 3px; background: var(--panel-2); margin-top: 6px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 3px; }
+
+  /* Add form */
+  .input-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch; }
+  .amount-field { flex: 1; min-width: 160px; position: relative; }
+  input[type="text"], input[type="date"] {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); padding: 12px 14px; font-size: 1rem;
+  }
+  input:focus { outline: none; border-color: var(--accent); }
+  .seg { display: inline-flex; background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .seg button {
+    background: transparent; border: none; color: var(--muted); padding: 12px 16px;
+    cursor: pointer; font-size: 0.95rem; font-weight: 600;
+  }
+  .seg button.active.daniel { background: var(--daniel); color: #fff; }
+  .seg button.active.cecilie { background: var(--cecilie); color: #fff; }
+  .seg button.active.common { background: var(--common); color: #052e22; }
+  .seg button.active.ind { background: var(--green); color: #052e16; }
+  .seg button.active.hav { background: var(--danger); color: #fff; }
+
+  .owner-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+  .owner-picker button {
+    flex: 1; min-width: 90px; background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); padding: 12px; cursor: pointer; font-weight: 600;
+    transition: all .12s;
+  }
+  .owner-picker button.sel-daniel { background: var(--daniel); border-color: var(--daniel); color:#fff; }
+  .owner-picker button.sel-cecilie { background: var(--cecilie); border-color: var(--cecilie); color:#fff; }
+  .owner-picker button.sel-common { background: var(--common); border-color: var(--common); color:#052e22; }
+
+  .btn-primary {
+    background: var(--accent); color: #04263a; border: none; border-radius: 10px;
+    padding: 12px 22px; font-size: 1rem; font-weight: 700; cursor: pointer;
+  }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .form-grid { display: flex; flex-direction: column; gap: 14px; }
+  .form-line { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .form-line .lbl { font-size: 0.82rem; color: var(--muted); width: 100%; margin-bottom: -4px; }
+
+  /* Interest */
+  .interest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 520px) { .interest-grid { grid-template-columns: 1fr; } }
+  .interest-cell { background: var(--panel-2); border-radius: 12px; padding: 16px; text-align: center; }
+  .interest-cell .label { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: .04em; }
+  .interest-cell .value { font-size: 1.5rem; font-weight: 700; margin-top: 4px; color: var(--green); }
+  .interest-split { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .interest-split .row { display: flex; justify-content: space-between; align-items: center; font-size: 0.92rem; padding: 8px 0; border-top: 1px solid var(--border); }
+  .interest-split .row span.nm { display: flex; align-items: center; gap: 8px; }
+  .interest-note { color: var(--muted); font-size: 0.78rem; margin-top: 14px; }
+
+  /* History */
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 11px 8px; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: .03em; }
+  td.amt { font-weight: 600; text-align: right; white-space: nowrap; }
+  td.amt.pos { color: var(--green); }
+  td.amt.neg { color: var(--danger); }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+  .tag.daniel { background: rgba(59,130,246,.18); color: #93c5fd; }
+  .tag.cecilie { background: rgba(236,72,153,.18); color: #f9a8d4; }
+  .tag.common { background: rgba(16,185,129,.18); color: #6ee7b7; }
+  td.actions { text-align: right; white-space: nowrap; }
+  .icon-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 0.85rem; padding: 4px 6px; }
+  .icon-btn:hover { color: var(--text); }
+  .icon-btn.del:hover { color: var(--danger); }
+  .empty { text-align: center; color: var(--muted); padding: 28px 0; }
+
+  .footer-actions { text-align: center; margin-top: 8px; }
+  .link-btn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 0.82rem; }
+  .link-btn:hover { color: var(--danger); }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none;
+    align-items: center; justify-content: center; padding: 16px; z-index: 50;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; }
+  .modal h3 { margin-bottom: 18px; }
+  .modal .form-grid { gap: 16px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+  .btn-ghost { background: var(--panel-2); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 10px 18px; cursor: pointer; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💰 Fælles Opsparing</h1>
+    <p>Delt konto · Daniel &amp; Cecilie</p>
+  </header>
+
+  <!-- Total balance -->
+  <div class="card total">
+    <div class="label">Samlet saldo</div>
+    <div class="value" id="totalBalance">0,00 kr.</div>
+  </div>
+
+  <!-- Ownership dashboard -->
+  <div class="card">
+    <h2>Ejerskab</h2>
+    <div class="dash">
+      <div class="donut-wrap">
+        <div class="donut" id="donut">
+          <div class="center">
+            <small>Samlet</small>
+            <strong id="donutTotal">0 kr.</strong>
+          </div>
+        </div>
+      </div>
+      <div class="owner-rows" id="ownerRows"></div>
+    </div>
+  </div>
+
+  <!-- Add / remove money -->
+  <div class="card">
+    <h2>Tilføj eller hæv penge</h2>
+    <div class="form-grid">
+      <div class="form-line">
+        <span class="lbl">Type</span>
+        <div class="seg" id="typeSeg">
+          <button data-type="in" class="ind active">Indsæt</button>
+          <button data-type="out" class="hav">Hæv</button>
+        </div>
+      </div>
+      <div class="form-line">
+        <span class="lbl">Beløb (kr.)</span>
+        <div class="amount-field">
+          <input type="text" id="amountInput" placeholder="f.eks. 1.500,00" autocomplete="off">
+        </div>
+      </div>
+      <div class="form-line">
+        <span class="lbl">Hvem bidrager?</span>
+        <div class="owner-picker" id="ownerPicker">
+          <button data-owner="daniel">Daniel</button>
+          <button data-owner="cecilie">Cecilie</button>
+          <button data-owner="common">Fælles</button>
+        </div>
+      </div>
+      <div class="form-line">
+        <span class="lbl">Dato</span>
+        <input type="date" id="dateInput" style="max-width:200px">
+      </div>
+      <div class="form-line">
+        <button class="btn-primary" id="addBtn">Registrér</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interest -->
+  <div class="card">
+    <h2>Renter <span style="color:var(--muted);font-weight:500;font-size:0.85rem">· 3,39 % p.a. (simpel rente)</span></h2>
+    <div class="interest-grid">
+      <div class="interest-cell">
+        <div class="label">Pr. år</div>
+        <div class="value" id="intYear">0,00 kr.</div>
+      </div>
+      <div class="interest-cell">
+        <div class="label">Pr. måned</div>
+        <div class="value" id="intMonth">0,00 kr.</div>
+      </div>
+      <div class="interest-cell">
+        <div class="label">Pr. dag</div>
+        <div class="value" id="intDay">0,00 kr.</div>
+      </div>
+    </div>
+    <div class="interest-split" id="interestSplit"></div>
+    <p class="interest-note">Projektion beregnet som simpel rente af den nuværende saldo. Beløbene tilskrives ikke automatisk — de opdateres live, når saldoen ændrer sig. Rentens fordeling følger hver persons andel af ejerskabet.</p>
+  </div>
+
+  <!-- History -->
+  <div class="card">
+    <h2>Transaktionshistorik</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr><th>Dato</th><th>Ejer</th><th>Note</th><th style="text-align:right">Beløb</th><th></th></tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+    <div class="footer-actions">
+      <button class="link-btn" id="resetBtn">Nulstil alle data</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal-backdrop" id="editModal">
+  <div class="modal">
+    <h3>Rediger transaktion</h3>
+    <div class="form-grid">
+      <div class="form-line">
+        <span class="lbl">Beløb (kr.) — brug minus for hævning</span>
+        <div class="amount-field"><input type="text" id="editAmount" autocomplete="off"></div>
+      </div>
+      <div class="form-line">
+        <span class="lbl">Ejer</span>
+        <div class="owner-picker" id="editOwnerPicker">
+          <button data-owner="daniel">Daniel</button>
+          <button data-owner="cecilie">Cecilie</button>
+          <button data-owner="common">Fælles</button>
+        </div>
+      </div>
+      <div class="form-line">
+        <span class="lbl">Note (valgfri)</span>
+        <div class="amount-field"><input type="text" id="editNote" autocomplete="off"></div>
+      </div>
+      <div class="form-line">
+        <span class="lbl">Dato</span>
+        <input type="date" id="editDate" style="max-width:200px">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="editCancel">Annullér</button>
+        <button class="btn-primary" id="editSave">Gem</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Constants ----------
+  var STORAGE_KEY = "opsparing.transactions.v1";
+  var STARTING_BALANCE = 57510.18;          // DKK, attributed to Common
+  var ANNUAL_RATE = 0.0339;                  // 3,39 % p.a.
+  var OWNERS = {
+    daniel:  { label: "Daniel",  color: "var(--daniel)" },
+    cecilie: { label: "Cecilie", color: "var(--cecilie)" },
+    common:  { label: "Fælles",  color: "var(--common)" }
+  };
+
+  // ---------- Formatting ----------
+  var dkk = new Intl.NumberFormat("da-DK", { style: "currency", currency: "DKK", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var dkkShort = new Intl.NumberFormat("da-DK", { maximumFractionDigits: 0 });
+  var pctFmt = new Intl.NumberFormat("da-DK", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  var dateFmt = new Intl.DateTimeFormat("da-DK", { day: "2-digit", month: "short", year: "numeric" });
+
+  function fmt(n) { return dkk.format(n); }
+  function fmtPct(n) { return pctFmt.format(n) + " %"; }
+  function fmtDate(iso) { return dateFmt.format(new Date(iso)); }
+
+  // Parse a Danish-style (or plain) number string into a Number.
+  function parseAmount(str) {
+    if (str == null) return NaN;
+    str = String(str).trim().replace(/\s/g, "").replace(/kr\.?/i, "");
+    if (str === "") return NaN;
+    var neg = str.indexOf("-") !== -1;
+    str = str.replace(/-/g, "");
+    if (str.indexOf(",") !== -1) {
+      // Danish: comma = decimal separator, dot = thousands separator
+      str = str.replace(/\./g, "").replace(",", ".");
+    }
+    var n = parseFloat(str);
+    if (isNaN(n)) return NaN;
+    return neg ? -n : n;
+  }
+
+  // ---------- State / persistence ----------
+  var transactions = load();
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) { /* ignore */ }
+    // Seed with starting balance (all Common)
+    var seed = [{
+      id: uid(),
+      amount: STARTING_BALANCE,
+      owner: "common",
+      note: "Startsaldo",
+      date: "2026-01-01T00:00:00.000Z",
+      seed: true
+    }];
+    save(seed);
+    return seed;
+  }
+
+  function save(list) {
+    transactions = list || transactions;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions)); } catch (e) {}
+  }
+
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+  // ---------- Calculations ----------
+  function totals() {
+    var t = { daniel: 0, cecilie: 0, common: 0 };
+    transactions.forEach(function (tx) { t[tx.owner] += tx.amount; });
+    var total = t.daniel + t.cecilie + t.common;
+    var effDaniel = t.daniel + t.common / 2;
+    var effCecilie = t.cecilie + t.common / 2;
+    return {
+      raw: t,
+      total: total,
+      effDaniel: effDaniel,
+      effCecilie: effCecilie
+    };
+  }
+
+  // ---------- Rendering ----------
+  function render() {
+    var c = totals();
+
+    document.getElementById("totalBalance").textContent = fmt(c.total);
+    document.getElementById("donutTotal").textContent = dkkShort.format(c.total) + " kr.";
+
+    var base = c.total !== 0 ? c.total : 1;
+    var pDaniel = (c.effDaniel / base) * 100;
+    var pCecilie = (c.effCecilie / base) * 100;
+
+    // Donut (Daniel vs Cecilie effective ownership)
+    var donut = document.getElementById("donut");
+    donut.style.background = "conic-gradient(" +
+      "var(--daniel) 0% " + pDaniel + "%, " +
+      "var(--cecilie) " + pDaniel + "% 100%)";
+
+    // Owner rows
+    var rows = [
+      { key: "daniel",  label: "Daniel",  color: "var(--daniel)",  eff: c.effDaniel, pct: pDaniel, own: c.raw.daniel },
+      { key: "cecilie", label: "Cecilie", color: "var(--cecilie)", eff: c.effCecilie, pct: pCecilie, own: c.raw.cecilie }
+    ];
+    var html = rows.map(function (r) {
+      return '<div class="owner-row">' +
+        '<span class="swatch" style="background:' + r.color + '"></span>' +
+        '<div class="owner-info">' +
+          '<div class="name"><span>' + r.label + '</span><span class="pct">' + fmtPct(r.pct) + '</span></div>' +
+          '<div class="amt">' + fmt(r.eff) + '</div>' +
+          '<div class="detail">Egne bidrag ' + fmt(r.own) + ' + andel af fælles ' + fmt(c.raw.common / 2) + '</div>' +
+          '<div class="bar"><span style="width:' + Math.max(0, Math.min(100, r.pct)) + '%;background:' + r.color + '"></span></div>' +
+        '</div></div>';
+    }).join("");
+    // Common informational row
+    html += '<div class="owner-row">' +
+      '<span class="swatch" style="background:var(--common)"></span>' +
+      '<div class="owner-info">' +
+        '<div class="name"><span>Fælles pulje</span><span class="pct">deles 50/50</span></div>' +
+        '<div class="amt">' + fmt(c.raw.common) + '</div>' +
+        '<div class="detail">Tæller med i både Daniels og Cecilies ejerskab</div>' +
+      '</div></div>';
+    document.getElementById("ownerRows").innerHTML = html;
+
+    renderInterest(c);
+    renderHistory();
+  }
+
+  function renderInterest(c) {
+    var perYear = c.total * ANNUAL_RATE;
+    document.getElementById("intYear").textContent = fmt(perYear);
+    document.getElementById("intMonth").textContent = fmt(perYear / 12);
+    document.getElementById("intDay").textContent = fmt(perYear / 365);
+
+    var base = c.total !== 0 ? c.total : 1;
+    var split = [
+      { label: "Daniel",  color: "var(--daniel)",  eff: c.effDaniel },
+      { label: "Cecilie", color: "var(--cecilie)", eff: c.effCecilie }
+    ];
+    var html = split.map(function (s) {
+      var share = s.eff / base;
+      return '<div class="row">' +
+        '<span class="nm"><span class="swatch" style="background:' + s.color + '"></span>' + s.label + ' (' + fmtPct(share * 100) + ')</span>' +
+        '<span>' + fmt(perYear * share) + ' / år · ' + fmt((perYear * share) / 12) + ' / md.</span>' +
+      '</div>';
+    }).join("");
+    document.getElementById("interestSplit").innerHTML = html;
+  }
+
+  function renderHistory() {
+    var body = document.getElementById("historyBody");
+    if (transactions.length === 0) {
+      body.innerHTML = '<tr><td colspan="5" class="empty">Ingen transaktioner endnu.</td></tr>';
+      return;
+    }
+    var sorted = transactions.slice().sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    });
+    body.innerHTML = sorted.map(function (tx) {
+      var cls = tx.amount >= 0 ? "pos" : "neg";
+      var sign = tx.amount >= 0 ? "+" : "−";
+      return '<tr>' +
+        '<td>' + fmtDate(tx.date) + '</td>' +
+        '<td><span class="tag ' + tx.owner + '">' + OWNERS[tx.owner].label + '</span></td>' +
+        '<td>' + (tx.note ? escapeHtml(tx.note) : '<span style="color:var(--muted)">—</span>') + '</td>' +
+        '<td class="amt ' + cls + '">' + sign + " " + fmt(Math.abs(tx.amount)) + '</td>' +
+        '<td class="actions">' +
+          '<button class="icon-btn" data-edit="' + tx.id + '">✎ Rediger</button>' +
+          '<button class="icon-btn del" data-del="' + tx.id + '">🗑 Slet</button>' +
+        '</td>' +
+      '</tr>';
+    }).join("");
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (ch) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
+    });
+  }
+
+  // ---------- Add form interaction ----------
+  var addType = "in";          // "in" or "out"
+  var addOwner = null;         // selected owner
+
+  document.getElementById("typeSeg").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    addType = btn.getAttribute("data-type");
+    Array.prototype.forEach.call(this.querySelectorAll("button"), function (b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+  });
+
+  document.getElementById("ownerPicker").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    selectOwner(this, btn.getAttribute("data-owner"));
+  });
+
+  function selectOwner(container, owner) {
+    addOwner = owner;
+    Array.prototype.forEach.call(container.querySelectorAll("button"), function (b) {
+      b.className = "";
+    });
+    var sel = container.querySelector('[data-owner="' + owner + '"]');
+    if (sel) sel.className = "sel-" + owner;
+  }
+
+  // default date = today
+  function todayLocalISO() {
+    var d = new Date();
+    var off = d.getTimezoneOffset();
+    var local = new Date(d.getTime() - off * 60000);
+    return local.toISOString().slice(0, 10);
+  }
+  document.getElementById("dateInput").value = todayLocalISO();
+
+  document.getElementById("addBtn").addEventListener("click", function () {
+    var raw = document.getElementById("amountInput").value;
+    var amount = parseAmount(raw);
+    if (isNaN(amount) || amount <= 0) {
+      alert("Indtast et gyldigt beløb større end 0.");
+      return;
+    }
+    if (!addOwner) {
+      alert("Vælg hvem der bidrager (Daniel, Cecilie eller Fælles).");
+      return;
+    }
+    var signed = addType === "out" ? -amount : amount;
+    var dateVal = document.getElementById("dateInput").value || todayLocalISO();
+    transactions.push({
+      id: uid(),
+      amount: signed,
+      owner: addOwner,
+      note: "",
+      date: new Date(dateVal + "T12:00:00").toISOString()
+    });
+    save();
+    document.getElementById("amountInput").value = "";
+    render();
+  });
+
+  document.getElementById("amountInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") document.getElementById("addBtn").click();
+  });
+
+  // ---------- History actions (edit / delete) ----------
+  document.getElementById("historyBody").addEventListener("click", function (e) {
+    var editBtn = e.target.closest("[data-edit]");
+    var delBtn = e.target.closest("[data-del]");
+    if (editBtn) openEdit(editBtn.getAttribute("data-edit"));
+    if (delBtn) {
+      var id = delBtn.getAttribute("data-del");
+      if (confirm("Slet denne transaktion?")) {
+        transactions = transactions.filter(function (t) { return t.id !== id; });
+        save();
+        render();
+      }
+    }
+  });
+
+  // ---------- Edit modal ----------
+  var editingId = null;
+  var editOwner = null;
+  var modal = document.getElementById("editModal");
+
+  document.getElementById("editOwnerPicker").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    editOwner = btn.getAttribute("data-owner");
+    selectOwner(this, editOwner);
+  });
+
+  function openEdit(id) {
+    var tx = transactions.find(function (t) { return t.id === id; });
+    if (!tx) return;
+    editingId = id;
+    editOwner = tx.owner;
+    // show signed value Danish-formatted
+    document.getElementById("editAmount").value = new Intl.NumberFormat("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(tx.amount);
+    document.getElementById("editNote").value = tx.note || "";
+    document.getElementById("editDate").value = new Date(tx.date).toISOString().slice(0, 10);
+    selectOwner(document.getElementById("editOwnerPicker"), tx.owner);
+    modal.classList.add("open");
+  }
+
+  function closeEdit() { modal.classList.remove("open"); editingId = null; }
+
+  document.getElementById("editCancel").addEventListener("click", closeEdit);
+  modal.addEventListener("click", function (e) { if (e.target === modal) closeEdit(); });
+
+  document.getElementById("editSave").addEventListener("click", function () {
+    if (!editingId) return;
+    var amount = parseAmount(document.getElementById("editAmount").value);
+    if (isNaN(amount)) { alert("Ugyldigt beløb."); return; }
+    if (!editOwner) { alert("Vælg en ejer."); return; }
+    var dateVal = document.getElementById("editDate").value || todayLocalISO();
+    var tx = transactions.find(function (t) { return t.id === editingId; });
+    if (tx) {
+      tx.amount = amount;
+      tx.owner = editOwner;
+      tx.note = document.getElementById("editNote").value.trim();
+      tx.date = new Date(dateVal + "T12:00:00").toISOString();
+      delete tx.seed;
+      save();
+      render();
+    }
+    closeEdit();
+  });
+
+  // ---------- Reset ----------
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    if (confirm("Dette sletter ALLE transaktioner og nulstiller til startsaldoen. Fortsæt?")) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      transactions = load();
+      render();
+    }
+  });
+
+  // ---------- Init ----------
+  render();
+})();
+</script>
+</body>
+</html>
