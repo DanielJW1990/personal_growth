@@ -6,6 +6,7 @@
 <title>Fælles Opsparing</title>
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=gambetta@400,500,600,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     /* Pastel palette · Pantone Cloud Dancer / Peach Dust / Lemon Icing */
@@ -233,6 +234,7 @@
   <header>
     <h1>💰 Fælles Opsparing</h1>
     <p>Delt konto · Daniel &amp; Cecilie</p>
+    <p id="syncStatus" style="font-size:0.78rem;color:var(--muted);margin-top:2px;min-height:1em"></p>
   </header>
 
   <!-- Total balance -->
@@ -367,6 +369,13 @@
 (function () {
   "use strict";
 
+  // ---------- Cloud sync (Supabase) ----------
+  // Paste your project values below to sync across devices. Leave the two
+  // strings blank to keep data only on this device (localStorage).
+  var SUPABASE_URL = "";        // f.eks. "https://abcd1234.supabase.co"
+  var SUPABASE_ANON_KEY = "";   // den offentlige "anon"-nøgle
+  var SUPABASE_TABLE = "transactions";
+
   // ---------- Constants ----------
   var STORAGE_KEY = "opsparing.transactions.v1";
   var STARTING_BALANCE = 57510.18;          // DKK, attributed to Common
@@ -444,32 +453,153 @@
   }
 
   // ---------- State / persistence ----------
-  var transactions = load();
+  // Two backends: Supabase (shared across devices) when configured, otherwise
+  // localStorage (this device only). The in-memory `transactions` array is the
+  // source of truth for rendering.
+  var transactions = [];
+  var cloud = null;            // Supabase client when configured
+  var usingCloud = false;
 
-  function load() {
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+  function seedTx() {
+    return { id: "startsaldo", amount: STARTING_BALANCE, owner: "common",
+             note: "Startsaldo", date: "2026-01-01T00:00:00.000Z", seed: true };
+  }
+
+  function loadLocal() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       if (raw) return JSON.parse(raw);
     } catch (e) { /* ignore */ }
-    // Seed with starting balance (all Common)
-    var seed = [{
-      id: uid(),
-      amount: STARTING_BALANCE,
-      owner: "common",
-      note: "Startsaldo",
-      date: "2026-01-01T00:00:00.000Z",
-      seed: true
-    }];
-    save(seed);
+    var seed = [seedTx()];
+    saveLocal(seed);
     return seed;
   }
 
-  function save(list) {
-    transactions = list || transactions;
+  function saveLocal(list) {
+    if (list) transactions = list;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions)); } catch (e) {}
   }
 
-  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function rowToTx(r) {
+    return { id: r.id, amount: Number(r.amount), owner: r.owner,
+             note: r.note || "", date: r.date, seed: !!r.seed };
+  }
+  function txToRow(tx) {
+    return { id: tx.id, amount: tx.amount, owner: tx.owner,
+             note: tx.note || "", date: tx.date, seed: !!tx.seed };
+  }
+
+  function setSyncStatus(text) {
+    var el = document.getElementById("syncStatus");
+    if (el) el.textContent = text || "";
+  }
+
+  // Choose backend and load initial data.
+  function boot() {
+    if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+      try {
+        cloud = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        usingCloud = true;
+        setSyncStatus("☁︎ Synkroniserer …");
+        cloudInit();
+        return;
+      } catch (e) { usingCloud = false; cloud = null; }
+    }
+    transactions = loadLocal();
+    setSyncStatus("");
+    render();
+  }
+
+  function cloudInit() {
+    cloud.from(SUPABASE_TABLE).select("*").then(function (res) {
+      if (res.error) throw res.error;
+      var data = res.data || [];
+      if (data.length === 0) {
+        var seed = seedTx();
+        cloud.from(SUPABASE_TABLE).upsert(txToRow(seed)).then(function () {
+          transactions = [seed]; saveLocal(); render();
+        });
+      } else {
+        transactions = data.map(rowToTx); saveLocal(); render();
+      }
+      setSyncStatus("☁︎ Synkroniseret");
+      subscribeRealtime();
+    }).catch(function (err) {
+      usingCloud = false;
+      transactions = loadLocal();
+      setSyncStatus("⚠︎ Offline – lokale data");
+      render();
+      if (window.console) console.error("Supabase fejl:", err);
+    });
+  }
+
+  function refresh() {
+    if (!usingCloud) { render(); return; }
+    cloud.from(SUPABASE_TABLE).select("*").then(function (res) {
+      if (!res.error && res.data) { transactions = res.data.map(rowToTx); saveLocal(); }
+      render();
+    });
+  }
+
+  function subscribeRealtime() {
+    try {
+      cloud.channel("tx-changes")
+        .on("postgres_changes", { event: "*", schema: "public", table: SUPABASE_TABLE }, refresh)
+        .subscribe();
+    } catch (e) { /* realtime optional */ }
+  }
+
+  // ---- Mutations (work in both cloud and local mode) ----
+  function addTx(tx) {
+    if (usingCloud) {
+      cloud.from(SUPABASE_TABLE).insert(txToRow(tx)).then(function (res) {
+        if (res.error) { alert("Kunne ikke gemme i skyen: " + res.error.message); return; }
+        refresh();
+      });
+    } else {
+      transactions.push(tx); saveLocal(); render();
+    }
+  }
+
+  function updateTx(id, changes) {
+    var tx = transactions.find(function (t) { return t.id === id; });
+    if (!tx) return;
+    Object.keys(changes).forEach(function (k) { tx[k] = changes[k]; });
+    tx.seed = false;
+    if (usingCloud) {
+      cloud.from(SUPABASE_TABLE).update(txToRow(tx)).eq("id", id).then(function (res) {
+        if (res.error) { alert("Kunne ikke gemme ændringen: " + res.error.message); return; }
+        refresh();
+      });
+    } else {
+      saveLocal(); render();
+    }
+  }
+
+  function deleteTx(id) {
+    if (usingCloud) {
+      cloud.from(SUPABASE_TABLE).delete().eq("id", id).then(function (res) {
+        if (res.error) { alert("Kunne ikke slette: " + res.error.message); return; }
+        refresh();
+      });
+    } else {
+      transactions = transactions.filter(function (t) { return t.id !== id; });
+      saveLocal(); render();
+    }
+  }
+
+  function resetData() {
+    if (usingCloud) {
+      cloud.from(SUPABASE_TABLE).delete().neq("id", "___none___").then(function () {
+        cloud.from(SUPABASE_TABLE).upsert(txToRow(seedTx())).then(refresh);
+      });
+    } else {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      transactions = loadLocal(); render();
+    }
+  }
 
   // ---------- Calculations ----------
   function totals() {
@@ -618,16 +748,14 @@
     }
     var signed = addType === "out" ? -amount : amount;
     var dateVal = document.getElementById("dateInput").value || todayLocalISO();
-    transactions.push({
+    addTx({
       id: uid(),
       amount: signed,
       owner: addOwner,
       note: "",
       date: new Date(dateVal + "T12:00:00").toISOString()
     });
-    save();
     document.getElementById("amountInput").value = "";
-    render();
   });
 
   document.getElementById("amountInput").addEventListener("input", function () {
@@ -650,9 +778,7 @@
     if (delBtn) {
       var id = delBtn.getAttribute("data-del");
       if (confirm("Slet denne transaktion?")) {
-        transactions = transactions.filter(function (t) { return t.id !== id; });
-        save();
-        render();
+        deleteTx(id);
       }
     }
   });
@@ -693,25 +819,19 @@
     if (isNaN(amount)) { alert("Ugyldigt beløb."); return; }
     if (!editOwner) { alert("Vælg en ejer."); return; }
     var dateVal = document.getElementById("editDate").value || todayLocalISO();
-    var tx = transactions.find(function (t) { return t.id === editingId; });
-    if (tx) {
-      tx.amount = amount;
-      tx.owner = editOwner;
-      tx.note = document.getElementById("editNote").value.trim();
-      tx.date = new Date(dateVal + "T12:00:00").toISOString();
-      delete tx.seed;
-      save();
-      render();
-    }
+    updateTx(editingId, {
+      amount: amount,
+      owner: editOwner,
+      note: document.getElementById("editNote").value.trim(),
+      date: new Date(dateVal + "T12:00:00").toISOString()
+    });
     closeEdit();
   });
 
   // ---------- Reset ----------
   document.getElementById("resetBtn").addEventListener("click", function () {
     if (confirm("Dette sletter ALLE transaktioner og nulstiller til startsaldoen. Fortsæt?")) {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-      transactions = load();
-      render();
+      resetData();
     }
   });
 
@@ -778,7 +898,7 @@
   refreshDots();
 
   // ---------- Init ----------
-  render();
+  boot();
 })();
 </script>
 </body>

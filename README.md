@@ -32,27 +32,55 @@ backend (se nedenfor).
 | Emne | Valg |
 |------|------|
 | Teknologi | Ren HTML/CSS/JS i én fil |
-| Datalagring | `localStorage` (på denne enhed/browser) |
+| Datalagring | `localStorage`, eller **Supabase** når konfigureret (synk på tværs af enheder) |
 | Startsaldo | 57.510,18 kr., placeret som **Fælles** |
 | Rente | Simpel rente af nuværende saldo, 3,39 % p.a. (tilskrives ikke automatisk — vises live) |
 
-## Data og enheder
+## Datalagring og synkronisering
 
-Data gemmes i browserens `localStorage`. Det betyder:
+Appen har to tilstande, valgt automatisk:
 
-- Data ligger **kun på denne enhed og i denne browser**. Det deles ikke automatisk.
-- Tøm browserdata / brug inkognito = data forsvinder. Brug "Nulstil alle data" for bevidst at starte forfra.
+- **Uden konfiguration:** data gemmes kun i browserens `localStorage` — altså kun på den
+  enhed og browser, du sidder ved. Det deles ikke mellem enheder.
+- **Med Supabase konfigureret:** data gemmes centralt i skyen og deles live mellem alle
+  enheder (Daniel og Cecilie ser de samme tal). `localStorage` bruges så som lokal cache.
 
-### Hvis Cecilie skal bruge appen på sin egen enhed med synkroniserede data
+### Slå synkronisering til (Supabase — gratis)
 
-Så er `localStorage` ikke nok — der skal en backend til, der gemmer data centralt. De enkleste muligheder:
+1. Opret en gratis konto på **https://supabase.com** og lav et nyt projekt
+   (vælg en europæisk region, fx *Frankfurt*; gem databasekoden et sikkert sted).
+2. Når projektet er klar: åbn **SQL Editor** og kør:
 
-1. **Backend-as-a-service (anbefales — mindst arbejde):** fx **Firebase Firestore** eller **Supabase**.
-   Gratis niveau er rigeligt til to brugere. Giver realtids-synk og login uden at man selv drifter en server.
-2. **Lille egen API + database:** fx en Node/Express- eller serverless-funktion med SQLite/Postgres,
-   hostet på fx Vercel, Fly.io eller Railway. Mere kontrol, men man skal selv vedligeholde det.
-3. **Delt fil-synk (letteste hack):** gem JSON i en delt mappe (iCloud/Dropbox/Google Drive).
-   Virker, men håndterer ikke samtidige ændringer godt.
+   ```sql
+   create table if not exists public.transactions (
+     id     text primary key,
+     amount numeric not null,
+     owner  text not null,
+     note   text default '',
+     date   timestamptz not null,
+     seed   boolean default false
+   );
 
-Til to personer der deler én konto er **Firebase eller Supabase** klart det bedste forhold mellem indsats og resultat:
-man tilføjer et SDK, erstatter `load()`/`save()` med kald til databasen og får synk + simpelt login med det samme.
+   alter table public.transactions enable row level security;
+
+   -- Åben læse/skrive-adgang for den offentlige anon-nøgle.
+   create policy "anon all" on public.transactions
+     for all to anon using (true) with check (true);
+
+   -- Live-opdatering på tværs af enheder
+   alter publication supabase_realtime add table public.transactions;
+   ```
+
+3. Gå til **Project Settings → API** og kopiér **Project URL** og **anon public**-nøglen.
+4. Indsæt de to værdier øverst i `index.html` i `SUPABASE_URL` og `SUPABASE_ANON_KEY`
+   (eller send dem til udvikleren, som indsætter dem). Push, og begge enheder synkroniserer.
+
+En lille statuslinje under titlen viser “☁︎ Synkroniseret”, når skyen er forbundet.
+
+### Sikkerhed — vigtigt
+
+Med opsætningen ovenfor er `anon`-nøglen indlejret i den offentlige side, og adgangs­politikken
+tillader læsning/skrivning for alle med nøglen. PIN-koden i appen er kun en simpel spærre.
+Det er en praktisk afvejning for et lille privat værktøj til to personer — men det er **ikke**
+ægte, individuel adgangskontrol. Vil I have rigtig beskyttelse (kun jer to, med login), kræver
+det **Supabase Auth** (e-mail-login) plus strammere row-level-security-politikker.
