@@ -4,29 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fælles Opsparing</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=gambetta@400,500,600,700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f172a;
-    --panel: #1e293b;
-    --panel-2: #273449;
-    --border: #334155;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --daniel: #3b82f6;
-    --cecilie: #ec4899;
-    --common: #10b981;
-    --accent: #38bdf8;
-    --danger: #ef4444;
-    --green: #22c55e;
+    /* Pastel palette · Pantone Cloud Dancer / Peach Dust / Lemon Icing */
+    --bg: #F0EEE4;        /* Cloud Dancer 13-4306 (warm white) */
+    --panel: #FBFAF4;     /* lifted card surface */
+    --panel-2: #F5EEE2;   /* soft warm tint */
+    --border: #E6DECE;
+    --text: #50493F;      /* warm dark grey for contrast */
+    --muted: #A39A8B;
+    --daniel: #A7C2D6;    /* dusty pastel blue */
+    --cecilie: #EFC2AC;   /* Peach Dust 12-1107 */
+    --common: #ECDD92;    /* Lemon Icing 11-0515 */
+    --accent: #EBB394;    /* warm peach accent */
+    --danger: #D38E7C;    /* muted terracotta */
+    --green: #9CC0A2;     /* sage */
+    --on-accent: #4A3B30; /* dark text for use on pastel fills */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Gambetta", Georgia, "Times New Roman", serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.5;
     padding: 24px 16px 64px;
   }
+  input, button, select, textarea { font-family: inherit; }
   .container { max-width: 920px; margin: 0 auto; }
   header { text-align: center; margin-bottom: 28px; }
   header h1 { font-size: 1.6rem; font-weight: 700; }
@@ -38,6 +43,7 @@
     border-radius: 16px;
     padding: 22px;
     margin-bottom: 20px;
+    box-shadow: 0 4px 18px rgba(120, 100, 70, 0.06);
   }
   .card h2 { font-size: 1.05rem; margin-bottom: 16px; font-weight: 600; }
 
@@ -90,10 +96,10 @@
     background: transparent; border: none; color: var(--muted); padding: 12px 16px;
     cursor: pointer; font-size: 0.95rem; font-weight: 600;
   }
-  .seg button.active.daniel { background: var(--daniel); color: #fff; }
-  .seg button.active.cecilie { background: var(--cecilie); color: #fff; }
-  .seg button.active.common { background: var(--common); color: #052e22; }
-  .seg button.active.ind { background: var(--green); color: #052e16; }
+  .seg button.active.daniel { background: var(--daniel); color: var(--on-accent); }
+  .seg button.active.cecilie { background: var(--cecilie); color: var(--on-accent); }
+  .seg button.active.common { background: var(--common); color: var(--on-accent); }
+  .seg button.active.ind { background: var(--green); color: var(--on-accent); }
   .seg button.active.hav { background: var(--danger); color: #fff; }
 
   .owner-picker { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -102,12 +108,12 @@
     border-radius: 10px; color: var(--text); padding: 12px; cursor: pointer; font-weight: 600;
     transition: all .12s;
   }
-  .owner-picker button.sel-daniel { background: var(--daniel); border-color: var(--daniel); color:#fff; }
-  .owner-picker button.sel-cecilie { background: var(--cecilie); border-color: var(--cecilie); color:#fff; }
-  .owner-picker button.sel-common { background: var(--common); border-color: var(--common); color:#052e22; }
+  .owner-picker button.sel-daniel { background: var(--daniel); border-color: var(--daniel); color: var(--on-accent); }
+  .owner-picker button.sel-cecilie { background: var(--cecilie); border-color: var(--cecilie); color: var(--on-accent); }
+  .owner-picker button.sel-common { background: var(--common); border-color: var(--common); color: var(--on-accent); }
 
   .btn-primary {
-    background: var(--accent); color: #04263a; border: none; border-radius: 10px;
+    background: var(--accent); color: var(--on-accent); border: none; border-radius: 10px;
     padding: 12px 22px; font-size: 1rem; font-weight: 700; cursor: pointer;
   }
   .btn-primary:hover { filter: brightness(1.08); }
@@ -134,9 +140,9 @@
   td.amt.pos { color: var(--green); }
   td.amt.neg { color: var(--danger); }
   .tag { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-  .tag.daniel { background: rgba(59,130,246,.18); color: #93c5fd; }
-  .tag.cecilie { background: rgba(236,72,153,.18); color: #f9a8d4; }
-  .tag.common { background: rgba(16,185,129,.18); color: #6ee7b7; }
+  .tag.daniel { background: rgba(167,194,214,.40); color: #3f5a6e; }
+  .tag.cecilie { background: rgba(239,194,172,.45); color: #8a5238; }
+  .tag.common { background: rgba(236,221,146,.45); color: #7a6a1f; }
   td.actions { text-align: right; white-space: nowrap; }
   .icon-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 0.85rem; padding: 4px 6px; }
   .icon-btn:hover { color: var(--text); }
@@ -183,7 +189,7 @@
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     transition: background .1s, transform .05s; -webkit-tap-highlight-color: transparent;
   }
-  .keypad button:hover { background: #324054; }
+  .keypad button:hover { background: #EDE2CF; }
   .keypad button:active { transform: scale(0.94); }
   .keypad button.action { background: transparent; border-color: transparent; font-size: 1rem; color: var(--muted); }
   .keypad button.action:hover { color: var(--text); background: transparent; }
