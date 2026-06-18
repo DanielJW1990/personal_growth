@@ -6,6 +6,14 @@ En lille, selvstændig web-app til at følge en delt opsparingskonto mellem **Da
 
 Åbn `index.html` direkte i en browser (dobbeltklik). Ingen installation, ingen build, ingen server.
 
+## Adgangskode
+
+Appen er låst med en talkode (PIN), der indtastes på et numerisk tastatur: **241021**.
+Koden huskes for den aktuelle browser-session. Bemærk: en kode i en ren statisk side er
+kun en simpel spærre, ikke rigtig sikkerhed — den kan omgås af nogen, der kender
+browserens udviklerværktøjer. Vil du have ægte beskyttelse og delt login, kræver det en
+backend (se nedenfor).
+
 ## Funktioner
 
 - **Samlet saldo** og **ejerskabs-dashboard** med doughnut-diagram, beløb i DKK og procenter.
