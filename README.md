@@ -17,8 +17,8 @@ backend (se nedenfor).
 ## Funktioner
 
 - **Samlet saldo** og **ejerskabs-dashboard** med doughnut-diagram, beløb i DKK og procenter.
-- Tre adskilte ejere: **Daniel**, **Cecilie** og **Fælles**. Hver ejer vises separat —
-  fælles midler tæller ikke med i Daniels eller Cecilies eget ejerskab.
+- Fire adskilte ejere: **Daniel**, **Cecilie**, **Fælles** og **Renovering**. Hver ejer vises
+  separat — den enkelte ejers midler tæller ikke med i de andres ejerskab.
 - Beløbsfeltet formaterer automatisk med tusindtalsadskiller, mens du skriver
   (fx `100000` bliver til `100.000`).
 - **Indsæt / hæv** penge med beløb, ejer og dato. Hævninger gemmes som negative poster.
