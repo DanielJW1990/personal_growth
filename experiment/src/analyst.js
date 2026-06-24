@@ -3,7 +3,6 @@
 // executes and it never originates a performance number. The bookkeeper's
 // numbers are passed in as read-only context for the analyst to reason over.
 
-import Anthropic from '@anthropic-ai/sdk';
 import { config, STRATEGY, primaryBenchmark } from './config.js';
 
 const SYSTEM_PROMPT = `You are a disciplined equity analyst running a long-horizon experiment for a high-risk-tolerance investor. You PROPOSE trades; a human approves and executes every one. You never execute. You have no edge in short-term price prediction and you say so when relevant — your job is selection discipline, not forecasting.
@@ -116,6 +115,7 @@ function buildUserMessage(portfolio, report, candidateIdeas) {
  */
 export async function runAnalyst({ portfolio, report, candidateIdeas = [] }) {
   if (!config.anthropicApiKey) throw new Error('ANTHROPIC_API_KEY is not set');
+  const { default: Anthropic } = await import('@anthropic-ai/sdk');
   const client = new Anthropic({ apiKey: config.anthropicApiKey });
 
   const response = await client.messages.create({
@@ -128,13 +128,34 @@ export async function runAnalyst({ portfolio, report, candidateIdeas = [] }) {
   });
 
   const text = response.content.find((b) => b.type === 'text')?.text ?? '{}';
-  /** @type {any} */
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    throw new Error(`Analyst returned non-JSON output: ${text.slice(0, 200)}`);
-  }
+  const parsed = parseAnalystJson(text);
   parsed.proposals ??= [];
   return parsed;
+}
+
+/**
+ * Parse the analyst's reply. With output_config the text block is pure JSON, but
+ * be tolerant of a stray code fence or surrounding prose as a safety net so a
+ * minor format slip never drops a cycle.
+ */
+export function parseAnalystJson(text) {
+  const tryParse = (s) => {
+    try {
+      return JSON.parse(s);
+    } catch {
+      return null;
+    }
+  };
+  let out = tryParse(text);
+  if (!out) {
+    const fenced = text.replace(/```(?:json)?/gi, '').trim();
+    out = tryParse(fenced);
+  }
+  if (!out) {
+    const first = text.indexOf('{');
+    const last = text.lastIndexOf('}');
+    if (first !== -1 && last > first) out = tryParse(text.slice(first, last + 1));
+  }
+  if (!out) throw new Error(`Analyst returned non-JSON output: ${text.slice(0, 200)}`);
+  return out;
 }
