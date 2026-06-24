@@ -1,0 +1,51 @@
+name: Experiment — weekly propose cycle
+
+# Sun 17:00 UTC ≈ 18:00 CET (winter) / 19:00 CEST (summer). Adjust if you want a
+# fixed local time year-round. Also runnable on demand from the Actions tab.
+on:
+  schedule:
+    - cron: '0 17 * * 0'
+  workflow_dispatch:
+
+# Serialize with the other experiment jobs so two runs never commit the ledger
+# at the same time.
+concurrency:
+  group: experiment-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: experiment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Run the propose cycle
+        run: node src/cycle.js
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TAX_WRAPPER: ${{ vars.TAX_WRAPPER }}
+          PRIMARY_BENCHMARK: ${{ vars.PRIMARY_BENCHMARK }}
+          KILL_SWITCH: ${{ vars.KILL_SWITCH }}
+          ALLOW_SPECULATIVE: ${{ vars.ALLOW_SPECULATIVE }}
+          ALLOW_EXOTIC: ${{ vars.ALLOW_EXOTIC }}
+      - name: Commit ledger if changed
+        working-directory: .
+        run: |
+          if ! git diff --quiet -- experiment/data/ledger.json; then
+            git config user.name "experiment-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add experiment/data/ledger.json
+            git commit -m "chore(experiment): record cycle pending proposals [skip ci]"
+            git push
+          fi

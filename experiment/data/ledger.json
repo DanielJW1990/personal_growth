@@ -1,0 +1,16 @@
+{
+  "inception": {
+    "date": null,
+    "deposit_dkk": 20000,
+    "benchmark_levels": {
+      "msci_world": null,
+      "sp500": null
+    }
+  },
+  "fills": [],
+  "snapshots": [],
+  "telegram_state": {
+    "last_update_id": 0,
+    "pending": {}
+  }
+}

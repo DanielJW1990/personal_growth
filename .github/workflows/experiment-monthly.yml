@@ -1,0 +1,45 @@
+name: Experiment — monthly full report
+
+# 1st of the month, 16:00 UTC.
+on:
+  schedule:
+    - cron: '0 16 1 * *'
+  workflow_dispatch:
+
+concurrency:
+  group: experiment-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  monthly:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: experiment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Send the monthly report
+        run: node src/monthly.js
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TAX_WRAPPER: ${{ vars.TAX_WRAPPER }}
+          PRIMARY_BENCHMARK: ${{ vars.PRIMARY_BENCHMARK }}
+          KILL_SWITCH: ${{ vars.KILL_SWITCH }}
+      - name: Commit ledger if changed
+        working-directory: .
+        run: |
+          if ! git diff --quiet -- experiment/data/ledger.json; then
+            git config user.name "experiment-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add experiment/data/ledger.json
+            git commit -m "chore(experiment): record monthly snapshot [skip ci]"
+            git push
+          fi

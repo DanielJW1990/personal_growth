@@ -1,0 +1,21 @@
+{
+  "name": "index-beating-experiment",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The 20,000 DKK Index-Beating Experiment — propose → approve → you-execute → confirm-fill, with Telegram and benchmark reporting.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "cycle": "node src/cycle.js",
+    "pulse": "node src/pulse.js",
+    "monthly": "node src/monthly.js",
+    "handle-updates": "node src/handle-updates.js",
+    "report": "node src/print-report.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.105.0"
+  }
+}

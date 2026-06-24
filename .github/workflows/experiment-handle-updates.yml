@@ -1,0 +1,45 @@
+name: Experiment — process Telegram replies
+
+# Polls Telegram for your button taps and fill replies, and books confirmed
+# fills into the ledger. Every 15 minutes (GitHub's minimum scheduled interval
+# is 5 min; 15 keeps Actions-minute usage modest). Bump to '*/5' if you want
+# snappier fill confirmation.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: experiment-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  handle-updates:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: experiment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Process inbound updates
+        run: node src/handle-updates.js
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Commit ledger if changed
+        working-directory: .
+        run: |
+          if ! git diff --quiet -- experiment/data/ledger.json; then
+            git config user.name "experiment-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add experiment/data/ledger.json
+            git commit -m "chore(experiment): book fills / advance update offset [skip ci]"
+            git push
+          fi
