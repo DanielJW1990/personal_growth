@@ -214,6 +214,56 @@
         "message_id": 14,
         "original_text": "💡 Proposal: BUY ASML Holding (ASML.AS)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The monopoly supplier of EUV lithography equipment essential to advanced chips — a near-irreplaceable moat with a long order backlog. Very high share price, so size it small.\nQuality: Near-monopoly moat, High ROIC, Long order backlog\nValuation: Premium multiple justified by the moat; cyclical entry point\nWrong if: A deep semiconductor capex downturn or export-control escalation hits orders\nTax: Buy — no realization. Dutch stock at ~11,615 DKK/share: ONLY via fractional (~0.2 share). If you can't, REJECT — do not buy a whole share.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:59.720Z"
+      },
+      "mqtp9qj950f": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Alphabet Inc. Class C",
+          "ticker": "GOOG",
+          "target_weight_pct": 12.5,
+          "approx_dkk": 2500,
+          "thesis": "Alphabet is a dominant, cash-generative platform (Search, YouTube, Cloud) with structurally high returns on capital and a fortress balance sheet holding net cash. At a market-multiple P/E it is not priced like a hype name despite double-digit revenue growth and an emerging AI/Cloud margin story.",
+          "quality_criteria_met": [
+            "consistently profitable",
+            "high return on invested capital",
+            "net cash balance sheet",
+            "durable competitive moat in search/advertising",
+            "reasonable valuation relative to growth"
+          ],
+          "valuation_note": "Roughly ~20x forward earnings — sensible for mid-teens earnings growth; not divorced from fundamentals.",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "AI-driven search disruption permanently erodes ad query monetization, or sustained antitrust remedies force a breakup/behavioral changes that structurally lower margins.",
+          "tax_note": "Buy only — no realization event."
+        },
+        "status": "proposed",
+        "message_id": 16,
+        "original_text": "💡 Proposal: BUY Alphabet Inc. Class C (GOOG)\nTarget weight: 12.5%\nApprox size: ~2500 DKK\nThesis: Alphabet is a dominant, cash-generative platform (Search, YouTube, Cloud) with structurally high returns on capital and a fortress balance sheet holding net cash. At a market-multiple P/E it is not priced like a hype name despite double-digit revenue growth and an emerging AI/Cloud margin story.\nQuality: consistently profitable, high return on invested capital, net cash balance sheet, durable competitive moat in search/advertising, reasonable valuation relative to growth\nValuation: Roughly ~20x forward earnings — sensible for mid-teens earnings growth; not divorced from fundamentals.\nWrong if: AI-driven search disruption permanently erodes ad query monetization, or sustained antitrust remedies force a breakup/behavioral changes that structurally lower margins.\nTax: Buy only — no realization event.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T16:11:55.053Z"
+      },
+      "mqtp9qul4kc": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Novo Nordisk A/S",
+          "ticker": "NOVO-B",
+          "target_weight_pct": 12.5,
+          "approx_dkk": 2500,
+          "thesis": "Novo Nordisk is the global leader in diabetes/obesity care with exceptional return on invested capital and strong free cash flow, and the shares have de-rated sharply from peak hype, making the valuation far more reasonable than a year ago. The diabetes franchise remains durable while obesity demand provides a long runway, now without paying a euphoric multiple.",
+          "quality_criteria_met": [
+            "consistently profitable",
+            "very high return on invested capital",
+            "healthy balance sheet",
+            "durable franchise in GLP-1/diabetes",
+            "valuation materially re-rated to a more sensible level"
+          ],
+          "valuation_note": "P/E has compressed from extreme levels to a more defensible range after the drawdown; no longer a hype multiple, though still a premium to the market — justified by ROIC.",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Competing GLP-1 entrants (notably Eli Lilly) take durable share with superior efficacy/oral options, or pricing pressure and pipeline trial disappointments compress the long-term growth outlook.",
+          "tax_note": "Buy only — no realization event. Note for future: as a Danish name in a regular depot, any later trim will be a taxable realization."
+        },
+        "status": "proposed",
+        "message_id": 17,
+        "original_text": "💡 Proposal: BUY Novo Nordisk A/S (NOVO-B)\nTarget weight: 12.5%\nApprox size: ~2500 DKK\nThesis: Novo Nordisk is the global leader in diabetes/obesity care with exceptional return on invested capital and strong free cash flow, and the shares have de-rated sharply from peak hype, making the valuation far more reasonable than a year ago. The diabetes franchise remains durable while obesity demand provides a long runway, now without paying a euphoric multiple.\nQuality: consistently profitable, very high return on invested capital, healthy balance sheet, durable franchise in GLP-1/diabetes, valuation materially re-rated to a more sensible level\nValuation: P/E has compressed from extreme levels to a more defensible range after the drawdown; no longer a hype multiple, though still a premium to the market — justified by ROIC.\nWrong if: Competing GLP-1 entrants (notably Eli Lilly) take durable share with superior efficacy/oral options, or pricing pressure and pipeline trial disappointments compress the long-term growth outlook.\nTax: Buy only — no realization event. Note for future: as a Danish name in a regular depot, any later trim will be a taxable realization.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T16:11:55.201Z"
       }
     },
     "seeded": true
