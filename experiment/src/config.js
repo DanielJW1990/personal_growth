@@ -5,7 +5,10 @@
 /** @returns {string|undefined} */
 function env(name) {
   const v = process.env[name];
-  return v === undefined || v === '' ? undefined : v;
+  if (v === undefined) return undefined;
+  // Trim stray whitespace/newlines that sneak in when pasting secrets.
+  const trimmed = v.trim();
+  return trimmed === '' ? undefined : trimmed;
 }
 
 function bool(name, fallback = false) {
