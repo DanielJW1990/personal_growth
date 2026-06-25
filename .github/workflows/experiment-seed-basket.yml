@@ -1,0 +1,43 @@
+name: Experiment — seed initial basket (one-time)
+
+# Manually-triggered, one-time: sends the curated initial basket
+# (experiment/data/seed-basket.json) to Telegram as Approve/Reject proposals.
+# Safe to click once; it refuses to re-send after the first run.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: experiment-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: experiment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Send the initial basket
+        run: node src/seed-basket.js
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Commit ledger if changed
+        working-directory: .
+        run: |
+          if ! git diff --quiet -- experiment/data/ledger.json; then
+            git config user.name "experiment-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add experiment/data/ledger.json
+            git commit -m "chore(experiment): record initial basket proposals [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
