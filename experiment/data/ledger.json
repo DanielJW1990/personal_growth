@@ -30,6 +30,192 @@
   ],
   "telegram_state": {
     "last_update_id": 0,
-    "pending": {}
+    "pending": {
+      "mqtf4l92xf5": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Novo Nordisk B",
+          "ticker": "NOVO-B.CO",
+          "target_weight_pct": 12,
+          "approx_dkk": 2460,
+          "thesis": "Best-in-class returns on capital in a structurally growing obesity/diabetes market, now well below its highs as the GLP-1 hype cooled. The valuation has reset to a sensible multiple for a durable compounder.",
+          "quality_criteria_met": [
+            "High/consistent ROIC",
+            "Strong balance sheet",
+            "Durable GLP-1/diabetes franchise"
+          ],
+          "valuation_note": "~24x earnings with high-teens growth and ~4% yield, off peak multiples",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Clinical/pipeline setbacks or Lilly competition erode the franchise faster than expected",
+          "tax_note": "Buy — no realization. On a regular depot a later sale is a taxable event. Approx 8 whole shares."
+        },
+        "status": "proposed",
+        "message_id": 7,
+        "original_text": "💡 Proposal: BUY Novo Nordisk B (NOVO-B.CO)\nTarget weight: 12%\nApprox size: ~2460 DKK\nThesis: Best-in-class returns on capital in a structurally growing obesity/diabetes market, now well below its highs as the GLP-1 hype cooled. The valuation has reset to a sensible multiple for a durable compounder.\nQuality: High/consistent ROIC, Strong balance sheet, Durable GLP-1/diabetes franchise\nValuation: ~24x earnings with high-teens growth and ~4% yield, off peak multiples\nWrong if: Clinical/pipeline setbacks or Lilly competition erode the franchise faster than expected\nTax: Buy — no realization. On a regular depot a later sale is a taxable event. Approx 8 whole shares.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:58.684Z"
+      },
+      "mqtf4li4x68": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Microsoft",
+          "ticker": "MSFT",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "Wide-moat franchise across cloud (Azure), productivity software and AI, with durable double-digit growth and exceptional returns on capital. Trades around 22x earnings after a pullback from its 2025 high.",
+          "quality_criteria_met": [
+            "Wide moat",
+            "High ROIC",
+            "Net-cash balance sheet"
+          ],
+          "valuation_note": "P/E ~22 vs steady double-digit growth",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Azure growth decelerates sharply, or AI capex fails to convert into returns",
+          "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.0 share)."
+        },
+        "status": "proposed",
+        "message_id": 8,
+        "original_text": "💡 Proposal: BUY Microsoft (MSFT)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: Wide-moat franchise across cloud (Azure), productivity software and AI, with durable double-digit growth and exceptional returns on capital. Trades around 22x earnings after a pullback from its 2025 high.\nQuality: Wide moat, High ROIC, Net-cash balance sheet\nValuation: P/E ~22 vs steady double-digit growth\nWrong if: Azure growth decelerates sharply, or AI capex fails to convert into returns\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.0 share).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:58.827Z"
+      },
+      "mqtf4lm3ss9": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Alphabet",
+          "ticker": "GOOGL",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "Dominant Search and YouTube advertising plus a fast-growing cloud business throwing off enormous free cash flow. The cheapest of the mega-cap compounders on earnings, recently weaker on AI-talent-departure headlines.",
+          "quality_criteria_met": [
+            "Dominant franchise",
+            "High ROIC",
+            "Fortress balance sheet"
+          ],
+          "valuation_note": "Low-20s P/E, below mega-cap peers",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "AI disrupts search economics, or ad spend structurally weakens",
+          "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.06 shares)."
+        },
+        "status": "proposed",
+        "message_id": 9,
+        "original_text": "💡 Proposal: BUY Alphabet (GOOGL)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: Dominant Search and YouTube advertising plus a fast-growing cloud business throwing off enormous free cash flow. The cheapest of the mega-cap compounders on earnings, recently weaker on AI-talent-departure headlines.\nQuality: Dominant franchise, High ROIC, Fortress balance sheet\nValuation: Low-20s P/E, below mega-cap peers\nWrong if: AI disrupts search economics, or ad spend structurally weakens\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.06 shares).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:58.956Z"
+      },
+      "mqtf4lpoleq": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Berkshire Hathaway B",
+          "ticker": "BRK-B",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "A diversified collection of high-quality businesses with a fortress balance sheet and large cash reserves — the portfolio's ballast and a hedge against the tech names. Conservatively run with a low drawdown profile.",
+          "quality_criteria_met": [
+            "Diversified quality",
+            "Fortress balance sheet",
+            "Disciplined capital allocation"
+          ],
+          "valuation_note": "Reasonable ~1.6x book / mid-teens earnings",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Prolonged value/insurance underperformance or a major post-Buffett capital-allocation misstep",
+          "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.74 share)."
+        },
+        "status": "proposed",
+        "message_id": 10,
+        "original_text": "💡 Proposal: BUY Berkshire Hathaway B (BRK-B)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: A diversified collection of high-quality businesses with a fortress balance sheet and large cash reserves — the portfolio's ballast and a hedge against the tech names. Conservatively run with a low drawdown profile.\nQuality: Diversified quality, Fortress balance sheet, Disciplined capital allocation\nValuation: Reasonable ~1.6x book / mid-teens earnings\nWrong if: Prolonged value/insurance underperformance or a major post-Buffett capital-allocation misstep\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.74 share).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:59.107Z"
+      },
+      "mqtf4ltvmc3": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Thermo Fisher Scientific",
+          "ticker": "TMO",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "The 'picks-and-shovels' supplier to life-sciences research and pharma, with a wide moat and recurring revenue. Down ~15% year-to-date and trading below most fair-value estimates.",
+          "quality_criteria_met": [
+            "Wide moat",
+            "Recurring revenue",
+            "High ROIC"
+          ],
+          "valuation_note": "Below historical multiple; estimated undervalued",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "A prolonged biotech/pharma funding downturn keeps demand depressed",
+          "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.75 share)."
+        },
+        "status": "proposed",
+        "message_id": 11,
+        "original_text": "💡 Proposal: BUY Thermo Fisher Scientific (TMO)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The 'picks-and-shovels' supplier to life-sciences research and pharma, with a wide moat and recurring revenue. Down ~15% year-to-date and trading below most fair-value estimates.\nQuality: Wide moat, Recurring revenue, High ROIC\nValuation: Below historical multiple; estimated undervalued\nWrong if: A prolonged biotech/pharma funding downturn keeps demand depressed\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.75 share).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:59.280Z"
+      },
+      "mqtf4lyo5ik": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Nestlé",
+          "ticker": "NESN.SW",
+          "target_weight_pct": 12,
+          "approx_dkk": 2610,
+          "thesis": "Defensive global staples leader with strong brands, a ~3% dividend yield and low correlation to the tech names — diversification ballast. Steady cash generation through cycles.",
+          "quality_criteria_met": [
+            "Durable brands",
+            "Stable cash flows",
+            "Reliable dividend"
+          ],
+          "valuation_note": "P/E ~23 with mid-single-digit growth",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Volume growth stays negative or brands lose pricing power",
+          "tax_note": "Buy — no realization. Swiss stock: approx 4 whole shares (~2,610 DKK)."
+        },
+        "status": "proposed",
+        "message_id": 12,
+        "original_text": "💡 Proposal: BUY Nestlé (NESN.SW)\nTarget weight: 12%\nApprox size: ~2610 DKK\nThesis: Defensive global staples leader with strong brands, a ~3% dividend yield and low correlation to the tech names — diversification ballast. Steady cash generation through cycles.\nQuality: Durable brands, Stable cash flows, Reliable dividend\nValuation: P/E ~23 with mid-single-digit growth\nWrong if: Volume growth stays negative or brands lose pricing power\nTax: Buy — no realization. Swiss stock: approx 4 whole shares (~2,610 DKK).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:59.417Z"
+      },
+      "mqtf4m2hcw2": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "LVMH",
+          "ticker": "MC.PA",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "The world's leading luxury house with pricing power and high returns, trading near 52-week lows after a luxury-demand slowdown. A high-quality cyclical bought when sentiment is weak.",
+          "quality_criteria_met": [
+            "Brand pricing power",
+            "High ROIC",
+            "Family-controlled, long-term run"
+          ],
+          "valuation_note": "Below its 5-year average multiple on depressed earnings",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "A deeper, longer luxury downturn (esp. China) than expected",
+          "tax_note": "Buy — no realization. French stock at ~3,685 DKK/share: needs fractional, else REJECT and we add later."
+        },
+        "status": "proposed",
+        "message_id": 13,
+        "original_text": "💡 Proposal: BUY LVMH (MC.PA)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The world's leading luxury house with pricing power and high returns, trading near 52-week lows after a luxury-demand slowdown. A high-quality cyclical bought when sentiment is weak.\nQuality: Brand pricing power, High ROIC, Family-controlled, long-term run\nValuation: Below its 5-year average multiple on depressed earnings\nWrong if: A deeper, longer luxury downturn (esp. China) than expected\nTax: Buy — no realization. French stock at ~3,685 DKK/share: needs fractional, else REJECT and we add later.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:59.558Z"
+      },
+      "mqtf4m6eup7": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "ASML Holding",
+          "ticker": "ASML.AS",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "The monopoly supplier of EUV lithography equipment essential to advanced chips — a near-irreplaceable moat with a long order backlog. Very high share price, so size it small.",
+          "quality_criteria_met": [
+            "Near-monopoly moat",
+            "High ROIC",
+            "Long order backlog"
+          ],
+          "valuation_note": "Premium multiple justified by the moat; cyclical entry point",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "A deep semiconductor capex downturn or export-control escalation hits orders",
+          "tax_note": "Buy — no realization. Dutch stock at ~11,615 DKK/share: ONLY via fractional (~0.2 share). If you can't, REJECT — do not buy a whole share."
+        },
+        "status": "proposed",
+        "message_id": 14,
+        "original_text": "💡 Proposal: BUY ASML Holding (ASML.AS)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The monopoly supplier of EUV lithography equipment essential to advanced chips — a near-irreplaceable moat with a long order backlog. Very high share price, so size it small.\nQuality: Near-monopoly moat, High ROIC, Long order backlog\nValuation: Premium multiple justified by the moat; cyclical entry point\nWrong if: A deep semiconductor capex downturn or export-control escalation hits orders\nTax: Buy — no realization. Dutch stock at ~11,615 DKK/share: ONLY via fractional (~0.2 share). If you can't, REJECT — do not buy a whole share.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-25T11:27:59.720Z"
+      }
+    },
+    "seeded": true
   }
 }
