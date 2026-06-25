@@ -1,14 +1,24 @@
 {
   "inception": {
-    "date": null,
+    "date": "2026-06-25",
     "deposit_dkk": 20000,
     "benchmark_levels": {
-      "msci_world": null,
-      "sp500": null
+      "msci_world": 199,
+      "sp500": 7358.22
     }
   },
   "fills": [],
-  "snapshots": [],
+  "snapshots": [
+    {
+      "date": "2026-06-25",
+      "total_value_dkk": 20000,
+      "benchmark_levels": {
+        "msci_world": 199,
+        "sp500": 7358.22
+      },
+      "kind": "pulse"
+    }
+  ],
   "telegram_state": {
     "last_update_id": 0,
     "pending": {}
