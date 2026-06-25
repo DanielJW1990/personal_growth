@@ -1,10 +1,12 @@
-name: Experiment — weekly propose cycle
+name: Experiment — opportunity screen
 
-# Sun 17:00 UTC ≈ 18:00 CET (winter) / 19:00 CEST (summer). Adjust if you want a
-# fixed local time year-round. Also runnable on demand from the Actions tab.
+# Screens for opportunities on weekday mornings (Mon–Fri, 07:11 UTC ≈ 09:11 CET),
+# while market context is fresh. It only messages you when it finds a genuine
+# buy/sell idea — it stays silent on "do nothing", which is the common case.
+# Also runnable on demand from the Actions tab.
 on:
   schedule:
-    - cron: '0 17 * * 0'
+    - cron: '11 7 * * 1-5'
   workflow_dispatch:
 
 # Serialize with the other experiment jobs so two runs never commit the ledger

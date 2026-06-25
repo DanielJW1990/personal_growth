@@ -36,10 +36,12 @@ repo as JSON. Nothing else to host.
 
 | Workflow | When | What |
 |---|---|---|
+| `experiment-cycle.yml` | Weekday mornings (Mon–Fri) | Screens for opportunities → guardrails → Telegram with Approve/Modify/Reject. **Silent unless it finds a real buy/sell idea** |
 | `experiment-pulse.yml` | Sun 16:00 UTC | Weekly performance pulse to Telegram |
-| `experiment-cycle.yml` | Sun 17:00 UTC | Analyst proposes → guardrails → Telegram with Approve/Modify/Reject |
 | `experiment-monthly.yml` | 1st of month | Full monthly report |
 | `experiment-handle-updates.yml` | every 15 min | Reads your taps + fill replies, books fills into the ledger |
+
+The opportunity screen runs frequently but only pings you when the analyst surfaces something worth acting on — there is no "here's a trade every week" scheme. Proposals aren't time-sensitive (low-turnover, long-horizon), so you place the approved order whenever the market is next open.
 
 The full loop:
 

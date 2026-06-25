@@ -29,16 +29,21 @@ export async function runCycle() {
     allowExotic: config.allowExotic,
   });
 
-  // Cycle note from the analyst (narration only).
-  const header = [`🧭 Weekly cycle — ${report.date}`, analyst.cycle_note].filter(Boolean).join('\n');
-  await sendMessage(header);
-
+  // Stay silent when there's nothing to act on. This is the common case for a
+  // low-turnover strategy — we only ping when the analyst has surfaced a real
+  // opportunity. Everything else is logged to the run for the record only.
   if (accepted.length === 0) {
-    const why = analyst.do_nothing_is_correct_if
-      ? `Holding is the call. ${analyst.do_nothing_is_correct_if}`
-      : 'No trades this week — holding.';
-    await sendMessage(`✅ ${why}`);
+    console.log(`No actionable proposal this screen. cycle_note: ${analyst.cycle_note}`);
+    if (analyst.do_nothing_is_correct_if) console.log(`do_nothing_is_correct_if: ${analyst.do_nothing_is_correct_if}`);
+    for (const r of rejected) {
+      console.log(`Guardrail-blocked: ${r.proposal.action} ${r.proposal.instrument} — ${r.reasons.join('; ')}`);
+    }
+    return { paused: false, accepted: 0, rejected: rejected.length, messaged: false };
   }
+
+  // There IS an opportunity — introduce it, then send each proposal to approve.
+  const header = [`💡 Screened a new opportunity — ${report.date}`, analyst.cycle_note].filter(Boolean).join('\n');
+  await sendMessage(header);
 
   for (const p of accepted) {
     const id = shortId();
@@ -52,7 +57,7 @@ export async function runCycle() {
     };
   }
 
-  // Surface guardrail rejections too — they're informative, not noise.
+  // Since we're already messaging, surface any guardrail rejections for context.
   for (const r of rejected) {
     await sendMessage(
       `🚫 Guardrail blocked: ${r.proposal.action?.toUpperCase()} ${r.proposal.instrument}\n` +
@@ -61,7 +66,7 @@ export async function runCycle() {
   }
 
   await saveLedger(led);
-  return { paused: false, accepted: accepted.length, rejected: rejected.length };
+  return { paused: false, accepted: accepted.length, rejected: rejected.length, messaged: true };
 }
 
 // Run when invoked directly.
