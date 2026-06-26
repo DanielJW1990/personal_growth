@@ -1,7 +1,7 @@
 {
   "inception": {
     "date": "2026-06-25",
-    "deposit_dkk": 25475,
+    "deposit_dkk": 20000,
     "benchmark_levels": {
       "msci_world": 199,
       "sp500": 7358.22
@@ -344,19 +344,5 @@
       }
     },
     "seeded": true
-  },
-  "contributions": [
-    {
-      "date": "2026-06-25",
-      "type": "cash",
-      "amount_dkk": 20000
-    },
-    {
-      "date": "2026-06-26",
-      "type": "in_kind",
-      "instrument": "Alphabet",
-      "amount_dkk": 5475,
-      "note": "2.45 pre-existing GOOGL shares folded in at market value"
-    }
-  ]
+  }
 }
