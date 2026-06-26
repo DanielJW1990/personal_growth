@@ -1,16 +1,31 @@
 // REPORTING — pure formatting. Takes the bookkeeper's report model and renders
-// the weekly pulse and the monthly full report (section 4). No numbers are
-// computed here beyond trivial display rounding; the bookkeeper owns the math.
+// the weekly pulse and monthly report (section 4) as Telegram-HTML, with an
+// aligned monospace holdings table so every position's gain/loss is visible.
+// No numbers are computed here beyond display rounding; the bookkeeper owns the
+// math.
 
 import { primaryBenchmark, secondaryBenchmark, BENCHMARKS } from './config.js';
 import { keyOf, yearsBetween } from './bookkeeper.js';
 
+// Pulses/reports are sent with parse_mode: 'HTML' so the <pre> table renders
+// monospace. Anything outside <pre> must have &, <, > escaped.
+export const PARSE_MODE = 'HTML';
+
+export function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/** Plain grouped number, no currency suffix, − for negatives. */
+export function fmtNum(n) {
+  if (n == null || !Number.isFinite(n)) return '—';
+  const r = Math.round(n);
+  const sign = r < 0 ? '−' : '';
+  return sign + Math.abs(r).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 export function fmtDkk(n) {
   if (n == null || !Number.isFinite(n)) return '—';
-  const rounded = Math.round(n);
-  const sign = rounded < 0 ? '−' : '';
-  const s = Math.abs(rounded).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  return `${sign}${s} DKK`;
+  return `${fmtNum(n)} DKK`;
 }
 
 export function fmtPct(x, digits = 1) {
@@ -30,48 +45,69 @@ function weekNumber(report) {
   return Math.floor(yearsBetween(report.inceptionDate, report.date) * 52.143) + 1;
 }
 
-function bestWorst(positions) {
-  const withPl = positions
-    .filter((p) => p.unrealizedPlDkk != null && p.costBasisDkk > 0)
-    .map((p) => ({ label: keyOf(p), pct: p.unrealizedPlDkk / p.costBasisDkk }));
-  if (!withPl.length) return null;
-  withPl.sort((a, b) => b.pct - a.pct);
-  return { best: withPl[0], worst: withPl[withPl.length - 1] };
-}
-
-/** Weekly pulse (short) — section 4. */
-export function formatWeeklyPulse(report) {
-  const prim = primaryBenchmark();
-  const sec = secondaryBenchmark();
-  const lines = [];
-  lines.push(`📊 Week ${weekNumber(report)} pulse — ${report.date}`);
-  lines.push(`Portfolio: ${fmtDkk(report.totalValueDkk)}  (${fmtPct(report.sinceReturn)} since start)`);
-  lines.push(`This week: ${report.weekReturn == null ? '— (first pulse)' : fmtPct(report.weekReturn)}`);
-
-  for (const b of [prim, sec]) {
-    const m = report.benchmarks[b.key];
-    lines.push(
-      `${b.label} since start: ${fmtPct(m.sinceReturn)}   → you: ${fmtPct(m.deltaVsPortfolio)} vs ${shortName(b)} ${ahead(m.deltaVsPortfolio)}`,
-    );
-  }
-
-  lines.push(`Cash: ${fmtDkk(report.cashDkk)} (${report.cashPct.toFixed(1)}%)`);
-
-  const bw = bestWorst(report.positions);
-  if (bw) {
-    lines.push(`Best: ${bw.best.label} ${fmtPct(bw.best.pct)} · Worst: ${bw.worst.label} ${fmtPct(bw.worst.pct)}`);
-  }
-  if (report.missingPrices.length) {
-    lines.push(`⚠️ No price for: ${report.missingPrices.join(', ')} (excluded from value)`);
-  }
-  return lines.join('\n');
-}
-
 function shortName(b) {
   return b.key === BENCHMARKS.sp500.key ? 'S&P' : 'world';
 }
 
-/** Monthly full report — section 4. */
+function clip(name, n) {
+  return name.length > n ? name.slice(0, n - 1) + '…' : name;
+}
+
+/**
+ * Aligned monospace holdings table (for inside a <pre> block): every position
+ * with current value, weight, and P/L (% and DKK), plus a cash row.
+ */
+export function holdingsTable(report) {
+  const W = { name: 12, val: 7, wt: 6, pl: 7, pld: 7 };
+  const pad = (s, w) => String(s).padStart(w);
+  const row = (name, val, wt, pl, pld) =>
+    clip(name, W.name).padEnd(W.name) + pad(val, W.val) + pad(wt, W.wt) + pad(pl, W.pl) + pad(pld, W.pld);
+
+  const lines = [row('Holding', 'Value', 'Wt', 'P/L', 'DKK')];
+
+  // Sort by weight desc so the biggest positions read first.
+  const positions = [...report.positions].sort((a, b) => (b.marketValueDkk ?? 0) - (a.marketValueDkk ?? 0));
+  for (const p of positions) {
+    const val = fmtNum(p.marketValueDkk);
+    const wt = p.weightPct == null ? '—' : `${p.weightPct.toFixed(1)}%`;
+    const plPct = p.unrealizedPlDkk == null || !p.costBasisDkk ? '—' : fmtPct(p.unrealizedPlDkk / p.costBasisDkk);
+    const plDkk = p.unrealizedPlDkk == null ? '—' : fmtNum(p.unrealizedPlDkk);
+    lines.push(row(p.instrument, val, wt, plPct, plDkk));
+  }
+  lines.push(row('Cash', fmtNum(report.cashDkk), `${report.cashPct.toFixed(1)}%`, '—', '—'));
+  return lines.join('\n');
+}
+
+/** Weekly pulse (short) — section 4, with full holdings table. Returns HTML. */
+export function formatWeeklyPulse(report) {
+  const prim = primaryBenchmark();
+  const sec = secondaryBenchmark();
+  const head = [];
+  head.push(`📊 Week ${weekNumber(report)} pulse — ${report.date}`);
+  head.push(`Portfolio: ${fmtDkk(report.totalValueDkk)}  (${fmtPct(report.sinceReturn)} since start)`);
+  head.push(`This week: ${report.weekReturn == null ? '— (first pulse)' : fmtPct(report.weekReturn)}`);
+  for (const b of [prim, sec]) {
+    const m = report.benchmarks[b.key];
+    head.push(`${b.label}: ${fmtPct(m.sinceReturn)}  → you ${fmtPct(m.deltaVsPortfolio)} vs ${shortName(b)} ${ahead(m.deltaVsPortfolio)}`);
+  }
+  head.push(`Cash: ${fmtDkk(report.cashDkk)} (${report.cashPct.toFixed(1)}%)`);
+  head.push('');
+  head.push('📦 Holdings');
+
+  const foot = [];
+  foot.push(`P/L — unrealized ${fmtDkk(report.unrealizedPlDkk)} · realized ${fmtDkk(report.realizedPlDkk)}`);
+  if (report.missingPrices.length) foot.push(`⚠️ No live price for: ${report.missingPrices.join(', ')} (shown as —)`);
+
+  return (
+    head.map(esc).join('\n') +
+    '\n<pre>' +
+    esc(holdingsTable(report)) +
+    '</pre>\n' +
+    foot.map(esc).join('\n')
+  );
+}
+
+/** Monthly full report — section 4. Returns HTML. */
 export function formatMonthlyReport(report) {
   const prim = primaryBenchmark();
   const sec = secondaryBenchmark();
@@ -87,7 +123,6 @@ export function formatMonthlyReport(report) {
     const m = report.benchmarks[b.key];
     L.push(`  ${b.label}: ${fmtPct(m.sinceReturn)} → you ${fmtPct(m.deltaVsPortfolio)} ${ahead(m.deltaVsPortfolio)}`);
   }
-  // Flag the split-decision case explicitly rather than spinning it.
   const pd = report.benchmarks[prim.key].deltaVsPortfolio;
   const sd = report.benchmarks[sec.key].deltaVsPortfolio;
   if (pd != null && sd != null && Math.sign(pd) !== Math.sign(sd)) {
@@ -105,15 +140,14 @@ export function formatMonthlyReport(report) {
   );
   L.push('');
   L.push('Allocation:');
-  for (const p of report.positions) {
-    const w = p.weightPct == null ? '—' : `${p.weightPct.toFixed(1)}%`;
-    const pl = p.unrealizedPlDkk == null ? '—' : fmtPct(p.unrealizedPlDkk / p.costBasisDkk);
-    L.push(`  ${keyOf(p)}: ${w} · ${fmtDkk(p.marketValueDkk)} · ${pl}`);
-  }
-  L.push(`  Cash: ${report.cashPct.toFixed(1)}% · ${fmtDkk(report.cashDkk)}`);
-  L.push('');
-  L.push(verdictLine(report, prim));
-  return L.join('\n');
+
+  const out =
+    L.map(esc).join('\n') +
+    '\n<pre>' +
+    esc(holdingsTable(report)) +
+    '</pre>\n' +
+    esc(verdictLine(report, prim));
+  return out;
 }
 
 /** One honest verdict line, with the noise caveat until ~12 months. */

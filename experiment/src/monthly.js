@@ -3,7 +3,7 @@
 import { config } from './config.js';
 import { saveLedger, appendSnapshot } from './ledger.js';
 import { gatherState } from './state.js';
-import { formatMonthlyReport } from './report.js';
+import { formatMonthlyReport, PARSE_MODE } from './report.js';
 import { sendMessage } from './telegram.js';
 
 export async function runMonthly() {
@@ -12,7 +12,7 @@ export async function runMonthly() {
     return { paused: true };
   }
   const { led, report, benchLevels } = await gatherState();
-  await sendMessage(formatMonthlyReport(report));
+  await sendMessage(formatMonthlyReport(report), { parse_mode: PARSE_MODE });
 
   appendSnapshot(led, {
     date: report.date,

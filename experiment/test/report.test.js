@@ -1,12 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { fmtDkk, fmtPct, formatWeeklyPulse, formatMonthlyReport } from '../src/report.js';
+import { fmtDkk, fmtPct, fmtNum, holdingsTable, formatWeeklyPulse, formatMonthlyReport } from '../src/report.js';
 import { buildReport } from '../src/bookkeeper.js';
 
-test('fmtDkk and fmtPct', () => {
+test('fmtDkk, fmtNum and fmtPct', () => {
   assert.equal(fmtDkk(20740), '20,740 DKK');
   assert.equal(fmtDkk(-1234.6), '−1,235 DKK');
   assert.equal(fmtDkk(null), '—');
+  assert.equal(fmtNum(20313), '20,313');
   assert.equal(fmtPct(0.037), '+3.7%');
   assert.equal(fmtPct(-0.024), '−2.4%');
   assert.equal(fmtPct(null), '—');
@@ -29,23 +30,36 @@ function sampleReport() {
   });
 }
 
-test('weekly pulse contains the headline lines and best/worst', () => {
-  const out = formatWeeklyPulse(sampleReport());
-  assert.match(out, /pulse —/);
-  assert.match(out, /Portfolio:/);
-  assert.match(out, /MSCI World since start:/);
-  assert.match(out, /S&P 500 since start:/);
-  assert.match(out, /Best: NOVO-B\.CO/);
-  assert.match(out, /Worst: ASML\.AS/);
+test('holdingsTable lists every position + cash with P/L', () => {
+  const t = holdingsTable(sampleReport());
+  assert.match(t, /Holding/);
+  assert.match(t, /Novo/);
+  assert.match(t, /ASML/);
+  assert.match(t, /Cash/);
+  assert.match(t, /\+6\.0%/); // Novo gain
+  assert.match(t, /−2\.4%/); // ASML loss
 });
 
-test('monthly report includes scoreboard, verdict, and allocation', () => {
+test('weekly pulse: headline, benchmarks, and a <pre> holdings table', () => {
+  const out = formatWeeklyPulse(sampleReport());
+  assert.match(out, /📊 Week \d+ pulse —/);
+  assert.match(out, /Portfolio:/);
+  assert.match(out, /MSCI World:/);
+  assert.match(out, /<pre>/);
+  assert.match(out, /<\/pre>/);
+  assert.match(out, /Novo/);
+  assert.match(out, /unrealized/);
+  // S&P label is HTML-escaped for parse_mode HTML.
+  assert.match(out, /S&amp;P/);
+});
+
+test('monthly report: scoreboard, verdict, and allocation table', () => {
   const out = formatMonthlyReport(sampleReport());
   assert.match(out, /Benchmark deltas \(the scoreboard\):/);
   assert.match(out, /Verdict:/);
-  assert.match(out, /within noise/); // < 12 months → noise caveat
+  assert.match(out, /within noise/);
   assert.match(out, /Allocation:/);
-  assert.match(out, /Cash:/);
+  assert.match(out, /<pre>/);
 });
 
 test('verdict flags split decision when ahead of one index and behind the other', () => {
@@ -54,7 +68,6 @@ test('verdict flags split decision when ahead of one index and behind the other'
     fills: [{ action: 'buy', instrument: 'A', ticker: 'A', shares: 100, price_dkk: 100, fee_dkk: 0 }],
     snapshots: [],
   };
-  // Portfolio +3%: ahead of world (+2%), behind sp500 (+4%).
   const report = buildReport({
     led,
     prices: { A: 106 }, // 10600 + 10000 cash = 20600 → +3%

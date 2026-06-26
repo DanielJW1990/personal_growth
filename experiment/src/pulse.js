@@ -3,7 +3,7 @@
 import { config } from './config.js';
 import { saveLedger, appendSnapshot } from './ledger.js';
 import { gatherState } from './state.js';
-import { formatWeeklyPulse } from './report.js';
+import { formatWeeklyPulse, PARSE_MODE } from './report.js';
 import { sendMessage } from './telegram.js';
 
 export async function runPulse() {
@@ -12,7 +12,7 @@ export async function runPulse() {
     return { paused: true };
   }
   const { led, report, benchLevels } = await gatherState();
-  await sendMessage(formatWeeklyPulse(report));
+  await sendMessage(formatWeeklyPulse(report), { parse_mode: PARSE_MODE });
 
   // Record this week's value so next week's "this week" delta has a baseline.
   appendSnapshot(led, {
