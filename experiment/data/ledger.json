@@ -1,7 +1,7 @@
 {
   "inception": {
     "date": "2026-06-25",
-    "deposit_dkk": 20000,
+    "deposit_dkk": 25475,
     "benchmark_levels": {
       "msci_world": 199,
       "sp500": 7358.22
@@ -25,6 +25,16 @@
       "ticker": "NOVO-B.CO",
       "shares": 8.03,
       "price_dkk": 308.75,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "Alphabet",
+      "ticker": "GOOGL",
+      "shares": 2.45,
+      "price_dkk": 2234.6938775510203,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
     }
@@ -116,7 +126,7 @@
           "what_would_make_this_wrong": "AI disrupts search economics, or ad spend structurally weakens",
           "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.06 shares)."
         },
-        "status": "proposed",
+        "status": "filled",
         "message_id": 9,
         "original_text": "💡 Proposal: BUY Alphabet (GOOGL)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: Dominant Search and YouTube advertising plus a fast-growing cloud business throwing off enormous free cash flow. The cheapest of the mega-cap compounders on earnings, recently weaker on AI-talent-departure headlines.\nQuality: Dominant franchise, High ROIC, Fortress balance sheet\nValuation: Low-20s P/E, below mega-cap peers\nWrong if: AI disrupts search economics, or ad spend structurally weakens\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.06 shares).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:58.956Z"
@@ -334,5 +344,19 @@
       }
     },
     "seeded": true
-  }
+  },
+  "contributions": [
+    {
+      "date": "2026-06-25",
+      "type": "cash",
+      "amount_dkk": 20000
+    },
+    {
+      "date": "2026-06-26",
+      "type": "in_kind",
+      "instrument": "Alphabet",
+      "amount_dkk": 5475,
+      "note": "2.45 pre-existing GOOGL shares folded in at market value"
+    }
+  ]
 }
