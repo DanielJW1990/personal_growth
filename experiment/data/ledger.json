@@ -7,7 +7,18 @@
       "sp500": 7358.22
     }
   },
-  "fills": [],
+  "fills": [
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "ASML Holding",
+      "ticker": "ASML.AS",
+      "shares": 0.20110294,
+      "price_dkk": 11809.872098339289,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
+    }
+  ],
   "snapshots": [
     {
       "date": "2026-06-25",
@@ -164,7 +175,7 @@
           "what_would_make_this_wrong": "Volume growth stays negative or brands lose pricing power",
           "tax_note": "Buy — no realization. Swiss stock: approx 4 whole shares (~2,610 DKK)."
         },
-        "status": "proposed",
+        "status": "rejected",
         "message_id": 12,
         "original_text": "💡 Proposal: BUY Nestlé (NESN.SW)\nTarget weight: 12%\nApprox size: ~2610 DKK\nThesis: Defensive global staples leader with strong brands, a ~3% dividend yield and low correlation to the tech names — diversification ballast. Steady cash generation through cycles.\nQuality: Durable brands, Stable cash flows, Reliable dividend\nValuation: P/E ~23 with mid-single-digit growth\nWrong if: Volume growth stays negative or brands lose pricing power\nTax: Buy — no realization. Swiss stock: approx 4 whole shares (~2,610 DKK).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:59.417Z"
@@ -187,7 +198,7 @@
           "what_would_make_this_wrong": "A deeper, longer luxury downturn (esp. China) than expected",
           "tax_note": "Buy — no realization. French stock at ~3,685 DKK/share: needs fractional, else REJECT and we add later."
         },
-        "status": "proposed",
+        "status": "rejected",
         "message_id": 13,
         "original_text": "💡 Proposal: BUY LVMH (MC.PA)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The world's leading luxury house with pricing power and high returns, trading near 52-week lows after a luxury-demand slowdown. A high-quality cyclical bought when sentiment is weak.\nQuality: Brand pricing power, High ROIC, Family-controlled, long-term run\nValuation: Below its 5-year average multiple on depressed earnings\nWrong if: A deeper, longer luxury downturn (esp. China) than expected\nTax: Buy — no realization. French stock at ~3,685 DKK/share: needs fractional, else REJECT and we add later.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:59.558Z"
@@ -210,7 +221,7 @@
           "what_would_make_this_wrong": "A deep semiconductor capex downturn or export-control escalation hits orders",
           "tax_note": "Buy — no realization. Dutch stock at ~11,615 DKK/share: ONLY via fractional (~0.2 share). If you can't, REJECT — do not buy a whole share."
         },
-        "status": "proposed",
+        "status": "filled",
         "message_id": 14,
         "original_text": "💡 Proposal: BUY ASML Holding (ASML.AS)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The monopoly supplier of EUV lithography equipment essential to advanced chips — a near-irreplaceable moat with a long order backlog. Very high share price, so size it small.\nQuality: Near-monopoly moat, High ROIC, Long order backlog\nValuation: Premium multiple justified by the moat; cyclical entry point\nWrong if: A deep semiconductor capex downturn or export-control escalation hits orders\nTax: Buy — no realization. Dutch stock at ~11,615 DKK/share: ONLY via fractional (~0.2 share). If you can't, REJECT — do not buy a whole share.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:59.720Z"
@@ -235,7 +246,7 @@
           "what_would_make_this_wrong": "AI-driven search disruption permanently erodes ad query monetization, or sustained antitrust remedies force a breakup/behavioral changes that structurally lower margins.",
           "tax_note": "Buy only — no realization event."
         },
-        "status": "proposed",
+        "status": "rejected",
         "message_id": 16,
         "original_text": "💡 Proposal: BUY Alphabet Inc. Class C (GOOG)\nTarget weight: 12.5%\nApprox size: ~2500 DKK\nThesis: Alphabet is a dominant, cash-generative platform (Search, YouTube, Cloud) with structurally high returns on capital and a fortress balance sheet holding net cash. At a market-multiple P/E it is not priced like a hype name despite double-digit revenue growth and an emerging AI/Cloud margin story.\nQuality: consistently profitable, high return on invested capital, net cash balance sheet, durable competitive moat in search/advertising, reasonable valuation relative to growth\nValuation: Roughly ~20x forward earnings — sensible for mid-teens earnings growth; not divorced from fundamentals.\nWrong if: AI-driven search disruption permanently erodes ad query monetization, or sustained antitrust remedies force a breakup/behavioral changes that structurally lower margins.\nTax: Buy only — no realization event.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T16:11:55.053Z"
@@ -260,7 +271,7 @@
           "what_would_make_this_wrong": "Competing GLP-1 entrants (notably Eli Lilly) take durable share with superior efficacy/oral options, or pricing pressure and pipeline trial disappointments compress the long-term growth outlook.",
           "tax_note": "Buy only — no realization event. Note for future: as a Danish name in a regular depot, any later trim will be a taxable realization."
         },
-        "status": "proposed",
+        "status": "rejected",
         "message_id": 17,
         "original_text": "💡 Proposal: BUY Novo Nordisk A/S (NOVO-B)\nTarget weight: 12.5%\nApprox size: ~2500 DKK\nThesis: Novo Nordisk is the global leader in diabetes/obesity care with exceptional return on invested capital and strong free cash flow, and the shares have de-rated sharply from peak hype, making the valuation far more reasonable than a year ago. The diabetes franchise remains durable while obesity demand provides a long runway, now without paying a euphoric multiple.\nQuality: consistently profitable, very high return on invested capital, healthy balance sheet, durable franchise in GLP-1/diabetes, valuation materially re-rated to a more sensible level\nValuation: P/E has compressed from extreme levels to a more defensible range after the drawdown; no longer a hype multiple, though still a premium to the market — justified by ROIC.\nWrong if: Competing GLP-1 entrants (notably Eli Lilly) take durable share with superior efficacy/oral options, or pricing pressure and pipeline trial disappointments compress the long-term growth outlook.\nTax: Buy only — no realization event. Note for future: as a Danish name in a regular depot, any later trim will be a taxable realization.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T16:11:55.201Z"
