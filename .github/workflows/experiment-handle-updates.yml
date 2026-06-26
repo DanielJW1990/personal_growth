@@ -6,7 +6,7 @@ name: Experiment — process Telegram replies
 # snappier fill confirmation.
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 concurrency:

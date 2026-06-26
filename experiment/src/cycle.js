@@ -23,6 +23,17 @@ export async function runCycle() {
 
   const { led, portfolio, report } = await gatherState();
 
+  // Don't pile on: if proposals are still awaiting your action (you haven't
+  // approved/rejected/filled them yet), skip this screen rather than propose
+  // overlapping trades. Resumes automatically once the queue is clear.
+  const unresolved = Object.values(led.telegram_state.pending).filter((p) =>
+    ['proposed', 'approved', 'modify'].includes(p.status),
+  );
+  if (unresolved.length) {
+    console.log(`Skipping screen — ${unresolved.length} proposal(s) still awaiting your action.`);
+    return { paused: false, skipped: true };
+  }
+
   const analyst = await runAnalyst({ portfolio, report });
   const { accepted, rejected } = validateProposals(analyst.proposals, portfolio, {
     allowSpeculative: config.allowSpeculative,

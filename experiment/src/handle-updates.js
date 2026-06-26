@@ -18,23 +18,30 @@ function findPendingByMessageId(led, messageId) {
 
 async function handleCallback(led, cb) {
   const [action, id] = String(cb.data ?? '').split(':');
+  // A callback expires ~1 minute after the tap, but our poller may run minutes
+  // later. Make both the acknowledgement and the message edit best-effort, so a
+  // stale callback never blocks the status change or the visible ❌/✅ update.
+  const ack = (text) => answerCallback(cb.id, text).catch((e) => console.error(`answerCallback: ${e.message}`));
+  const annotate = (msgId, orig, suffix) =>
+    annotateMessage(msgId, orig, suffix).catch((e) => console.error(`annotate: ${e.message}`));
+
   const entry = led.telegram_state.pending[id];
   if (!entry) {
-    await answerCallback(cb.id, 'This proposal is no longer pending.');
+    await ack('This proposal is no longer pending.');
     return;
   }
   if (action === 'apr') {
     entry.status = 'approved';
-    await answerCallback(cb.id, 'Approved — place the order, then reply with the fill.');
-    await annotateMessage(entry.message_id, entry.original_text, '✅ Approved. Reply to this message with your fill.');
+    await ack('Approved — place the order, then reply with the fill.');
+    await annotate(entry.message_id, entry.original_text, '✅ Approved. Reply to this message with your fill.');
   } else if (action === 'rej') {
     entry.status = 'rejected';
-    await answerCallback(cb.id, 'Rejected.');
-    await annotateMessage(entry.message_id, entry.original_text, '❌ Rejected — no action taken.');
+    await ack('Rejected.');
+    await annotate(entry.message_id, entry.original_text, '❌ Rejected — no action taken.');
   } else if (action === 'mod') {
     entry.status = 'modify';
-    await answerCallback(cb.id, 'Reply with your modified size/price.');
-    await annotateMessage(
+    await ack('Reply with your modified size/price.');
+    await annotate(
       entry.message_id,
       entry.original_text,
       '✏️ Modify — reply with the version you want, e.g. "filled 2 @ 140".',
