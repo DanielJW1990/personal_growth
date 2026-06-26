@@ -47,6 +47,16 @@
       "price_dkk": 2244.3396226415093,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "Microsoft",
+      "ticker": "MSFT",
+      "shares": 1.01,
+      "price_dkk": 2351.4851485148515,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
     }
   ],
   "snapshots": [
@@ -113,7 +123,7 @@
           "what_would_make_this_wrong": "Azure growth decelerates sharply, or AI capex fails to convert into returns",
           "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.0 share)."
         },
-        "status": "proposed",
+        "status": "filled",
         "message_id": 8,
         "original_text": "💡 Proposal: BUY Microsoft (MSFT)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: Wide-moat franchise across cloud (Azure), productivity software and AI, with durable double-digit growth and exceptional returns on capital. Trades around 22x earnings after a pullback from its 2025 high.\nQuality: Wide moat, High ROIC, Net-cash balance sheet\nValuation: P/E ~22 vs steady double-digit growth\nWrong if: Azure growth decelerates sharply, or AI capex fails to convert into returns\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.0 share).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:58.827Z"
