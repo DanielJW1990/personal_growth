@@ -87,6 +87,16 @@
       "price_dkk": 923.0470268169452,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "McDonald’s",
+      "ticker": "MCD",
+      "shares": 1.3572,
+      "price_dkk": 1749.9263188918362,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
     }
   ],
   "snapshots": [
