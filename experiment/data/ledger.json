@@ -77,6 +77,16 @@
       "price_dkk": 3383.672887875766,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "PepsiCo",
+      "ticker": "PEP",
+      "shares": 2.573,
+      "price_dkk": 923.0470268169452,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
     }
   ],
   "snapshots": [
@@ -354,7 +364,7 @@
           "what_would_make_this_wrong": "Volumes keep declining as health/GLP-1 trends durably curb snacking and soda",
           "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 2.6 shares)."
         },
-        "status": "proposed",
+        "status": "filled",
         "message_id": 19,
         "original_text": "💡 Proposal: BUY PepsiCo (PEP)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: Global snacks-and-beverages powerhouse (Frito-Lay, Gatorade, Pepsi) with durable brands and pricing power, derated to ~22x earnings with a ~4% yield after a soft patch. A 54-year dividend grower — defensive ballast that diversifies away from the tech names. (Replaces Nestlé.)\nQuality: Durable brand & distribution moat, High, stable ROIC, 54 consecutive years of dividend growth\nValuation: P/E ~22 with ~4% yield, below its historical multiple\nWrong if: Volumes keep declining as health/GLP-1 trends durably curb snacking and soda\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 2.6 shares).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-26T08:13:16.872Z"
