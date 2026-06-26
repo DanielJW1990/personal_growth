@@ -1,0 +1,43 @@
+name: Experiment — push ad-hoc proposals
+
+# Manually-triggered: sends the proposals in experiment/data/extra-proposals.json
+# to Telegram as Approve/Reject messages with fill tracking. Used for one-off
+# ideas or swaps outside the automated weekday screen.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: experiment-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: experiment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Push ad-hoc proposals
+        run: node src/push-proposals.js
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Commit ledger if changed
+        working-directory: .
+        run: |
+          if ! git diff --quiet -- experiment/data/ledger.json; then
+            git config user.name "experiment-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add experiment/data/ledger.json
+            git commit -m "chore(experiment): record ad-hoc proposals [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

@@ -1,0 +1,31 @@
+{
+  "intro": "🔁 Two swaps — Nestlé and LVMH aren't on Pluto (European exchanges). Please tap ❌ Reject on those two in the basket above, and here are two US-listed quality replacements that fill the same slots. Approve, buy, and reply with your fill as usual.",
+  "proposals": [
+    {
+      "action": "buy",
+      "instrument": "PepsiCo",
+      "ticker": "PEP",
+      "target_weight_pct": 12,
+      "approx_dkk": 2375,
+      "thesis": "Global snacks-and-beverages powerhouse (Frito-Lay, Gatorade, Pepsi) with durable brands and pricing power, derated to ~22x earnings with a ~4% yield after a soft patch. A 54-year dividend grower — defensive ballast that diversifies away from the tech names. (Replaces Nestlé.)",
+      "quality_criteria_met": ["Durable brand & distribution moat", "High, stable ROIC", "54 consecutive years of dividend growth"],
+      "valuation_note": "P/E ~22 with ~4% yield, below its historical multiple",
+      "is_speculative": false,
+      "what_would_make_this_wrong": "Volumes keep declining as health/GLP-1 trends durably curb snacking and soda",
+      "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 2.6 shares)."
+    },
+    {
+      "action": "buy",
+      "instrument": "McDonald's",
+      "ticker": "MCD",
+      "target_weight_pct": 12,
+      "approx_dkk": 2375,
+      "thesis": "The world's dominant quick-service restaurant — a high-margin franchise/royalty model with global scale and pricing power — trading ~22x earnings, about 14% below its 10-year median, after a pullback. Defensive consumer exposure to balance the basket. (Replaces LVMH.)",
+      "quality_criteria_met": ["Franchise/royalty model, high ROIC", "Global brand & scale moat", "Steady dividend grower"],
+      "valuation_note": "P/E ~22, ~14% below its 10-year median",
+      "is_speculative": false,
+      "what_would_make_this_wrong": "Sustained traffic declines from value-conscious consumers or franchise-system strain",
+      "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.3 shares)."
+    }
+  ]
+}
