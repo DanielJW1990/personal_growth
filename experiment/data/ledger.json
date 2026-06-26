@@ -264,6 +264,52 @@
         "message_id": 17,
         "original_text": "💡 Proposal: BUY Novo Nordisk A/S (NOVO-B)\nTarget weight: 12.5%\nApprox size: ~2500 DKK\nThesis: Novo Nordisk is the global leader in diabetes/obesity care with exceptional return on invested capital and strong free cash flow, and the shares have de-rated sharply from peak hype, making the valuation far more reasonable than a year ago. The diabetes franchise remains durable while obesity demand provides a long runway, now without paying a euphoric multiple.\nQuality: consistently profitable, very high return on invested capital, healthy balance sheet, durable franchise in GLP-1/diabetes, valuation materially re-rated to a more sensible level\nValuation: P/E has compressed from extreme levels to a more defensible range after the drawdown; no longer a hype multiple, though still a premium to the market — justified by ROIC.\nWrong if: Competing GLP-1 entrants (notably Eli Lilly) take durable share with superior efficacy/oral options, or pricing pressure and pipeline trial disappointments compress the long-term growth outlook.\nTax: Buy only — no realization event. Note for future: as a Danish name in a regular depot, any later trim will be a taxable realization.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T16:11:55.201Z"
+      },
+      "mqunm26x1nl": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "PepsiCo",
+          "ticker": "PEP",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "Global snacks-and-beverages powerhouse (Frito-Lay, Gatorade, Pepsi) with durable brands and pricing power, derated to ~22x earnings with a ~4% yield after a soft patch. A 54-year dividend grower — defensive ballast that diversifies away from the tech names. (Replaces Nestlé.)",
+          "quality_criteria_met": [
+            "Durable brand & distribution moat",
+            "High, stable ROIC",
+            "54 consecutive years of dividend growth"
+          ],
+          "valuation_note": "P/E ~22 with ~4% yield, below its historical multiple",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Volumes keep declining as health/GLP-1 trends durably curb snacking and soda",
+          "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 2.6 shares)."
+        },
+        "status": "proposed",
+        "message_id": 19,
+        "original_text": "💡 Proposal: BUY PepsiCo (PEP)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: Global snacks-and-beverages powerhouse (Frito-Lay, Gatorade, Pepsi) with durable brands and pricing power, derated to ~22x earnings with a ~4% yield after a soft patch. A 54-year dividend grower — defensive ballast that diversifies away from the tech names. (Replaces Nestlé.)\nQuality: Durable brand & distribution moat, High, stable ROIC, 54 consecutive years of dividend growth\nValuation: P/E ~22 with ~4% yield, below its historical multiple\nWrong if: Volumes keep declining as health/GLP-1 trends durably curb snacking and soda\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 2.6 shares).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-26T08:13:16.872Z"
+      },
+      "mqunm2fcgln": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "McDonald's",
+          "ticker": "MCD",
+          "target_weight_pct": 12,
+          "approx_dkk": 2375,
+          "thesis": "The world's dominant quick-service restaurant — a high-margin franchise/royalty model with global scale and pricing power — trading ~22x earnings, about 14% below its 10-year median, after a pullback. Defensive consumer exposure to balance the basket. (Replaces LVMH.)",
+          "quality_criteria_met": [
+            "Franchise/royalty model, high ROIC",
+            "Global brand & scale moat",
+            "Steady dividend grower"
+          ],
+          "valuation_note": "P/E ~22, ~14% below its 10-year median",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Sustained traffic declines from value-conscious consumers or franchise-system strain",
+          "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.3 shares)."
+        },
+        "status": "proposed",
+        "message_id": 20,
+        "original_text": "💡 Proposal: BUY McDonald's (MCD)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The world's dominant quick-service restaurant — a high-margin franchise/royalty model with global scale and pricing power — trading ~22x earnings, about 14% below its 10-year median, after a pullback. Defensive consumer exposure to balance the basket. (Replaces LVMH.)\nQuality: Franchise/royalty model, high ROIC, Global brand & scale moat, Steady dividend grower\nValuation: P/E ~22, ~14% below its 10-year median\nWrong if: Sustained traffic declines from value-conscious consumers or franchise-system strain\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.3 shares).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-06-26T08:13:16.990Z"
       }
     },
     "seeded": true
