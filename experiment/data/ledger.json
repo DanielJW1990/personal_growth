@@ -67,6 +67,16 @@
       "price_dkk": 3225.1493753394893,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "Thermo Fisher Scientific",
+      "ticker": "TMO",
+      "shares": 0.7019,
+      "price_dkk": 3383.672887875766,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
     }
   ],
   "snapshots": [
@@ -202,7 +212,7 @@
           "what_would_make_this_wrong": "A prolonged biotech/pharma funding downturn keeps demand depressed",
           "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.75 share)."
         },
-        "status": "proposed",
+        "status": "filled",
         "message_id": 11,
         "original_text": "💡 Proposal: BUY Thermo Fisher Scientific (TMO)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The 'picks-and-shovels' supplier to life-sciences research and pharma, with a wide moat and recurring revenue. Down ~15% year-to-date and trading below most fair-value estimates.\nQuality: Wide moat, Recurring revenue, High ROIC\nValuation: Below historical multiple; estimated undervalued\nWrong if: A prolonged biotech/pharma funding downturn keeps demand depressed\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.75 share).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:59.280Z"
