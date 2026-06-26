@@ -17,6 +17,16 @@
       "price_dkk": 11809.872098339289,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "Novo Nordisk B",
+      "ticker": "NOVO-B.CO",
+      "shares": 8.03,
+      "price_dkk": 308.75,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
     }
   ],
   "snapshots": [
@@ -60,7 +70,7 @@
           "what_would_make_this_wrong": "Clinical/pipeline setbacks or Lilly competition erode the franchise faster than expected",
           "tax_note": "Buy — no realization. On a regular depot a later sale is a taxable event. Approx 8 whole shares."
         },
-        "status": "proposed",
+        "status": "filled",
         "message_id": 7,
         "original_text": "💡 Proposal: BUY Novo Nordisk B (NOVO-B.CO)\nTarget weight: 12%\nApprox size: ~2460 DKK\nThesis: Best-in-class returns on capital in a structurally growing obesity/diabetes market, now well below its highs as the GLP-1 hype cooled. The valuation has reset to a sensible multiple for a durable compounder.\nQuality: High/consistent ROIC, Strong balance sheet, Durable GLP-1/diabetes franchise\nValuation: ~24x earnings with high-teens growth and ~4% yield, off peak multiples\nWrong if: Clinical/pipeline setbacks or Lilly competition erode the franchise faster than expected\nTax: Buy — no realization. On a regular depot a later sale is a taxable event. Approx 8 whole shares.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:58.684Z"
