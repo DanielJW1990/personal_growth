@@ -37,6 +37,16 @@
       "price_dkk": 2234.6938775510203,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "sell",
+      "instrument": "Alphabet",
+      "ticker": "GOOGL",
+      "shares": 1.3900000000000001,
+      "price_dkk": 2244.3396226415093,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
     }
   ],
   "snapshots": [
