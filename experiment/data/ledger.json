@@ -57,6 +57,16 @@
       "price_dkk": 2351.4851485148515,
       "fee_dkk": 0,
       "est_or_confirmed": "confirmed"
+    },
+    {
+      "date": "2026-06-26",
+      "action": "buy",
+      "instrument": "Berkshire Hathaway B",
+      "ticker": "BRK-B",
+      "shares": 0.7364,
+      "price_dkk": 3225.1493753394893,
+      "fee_dkk": 0,
+      "est_or_confirmed": "confirmed"
     }
   ],
   "snapshots": [
@@ -169,7 +179,7 @@
           "what_would_make_this_wrong": "Prolonged value/insurance underperformance or a major post-Buffett capital-allocation misstep",
           "tax_note": "Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.74 share)."
         },
-        "status": "proposed",
+        "status": "filled",
         "message_id": 10,
         "original_text": "💡 Proposal: BUY Berkshire Hathaway B (BRK-B)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: A diversified collection of high-quality businesses with a fortress balance sheet and large cash reserves — the portfolio's ballast and a hedge against the tech names. Conservatively run with a low drawdown profile.\nQuality: Diversified quality, Fortress balance sheet, Disciplined capital allocation\nValuation: Reasonable ~1.6x book / mid-teens earnings\nWrong if: Prolonged value/insurance underperformance or a major post-Buffett capital-allocation misstep\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 0.74 share).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-25T11:27:59.107Z"
