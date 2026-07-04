@@ -140,3 +140,29 @@ test('buildReport: ties it together with both benchmark deltas', () => {
   approx(report.benchmarks.msci_world.deltaVsPortfolio, 0.05 - 0.029, 1e-9);
   approx(report.benchmarks.sp500.deltaVsPortfolio, 0.05 - 0.034, 1e-9);
 });
+
+test('dividends: add to cash net of withholding, tracked per position, no share change', () => {
+  const fills = [
+    { date: '2026-01-01', action: 'buy', instrument: 'Novo', ticker: 'NOVO-B.CO', shares: 10, price_dkk: 100, fee_dkk: 0 },
+    { date: '2026-03-15', action: 'dividend', instrument: 'Novo', ticker: 'NOVO-B.CO', amount_dkk: 50, fee_dkk: 13.5 },
+  ];
+  const { open, dividendsDkk } = derivePositions(fills);
+  assert.equal(open.length, 1);
+  approx(open[0].shares, 10); // unchanged
+  approx(dividendsDkk, 36.5); // 50 − 13.5 withholding
+  approx(computeCash(20000, fills), 20000 - 1000 + 36.5);
+});
+
+test('buildReport exposes dividendsDkk', () => {
+  const led = {
+    inception: { date: '2026-01-01', deposit_dkk: 20000, benchmark_levels: { msci_world: 100, sp500: 100 } },
+    fills: [
+      { action: 'buy', instrument: 'A', ticker: 'A', shares: 10, price_dkk: 100, fee_dkk: 0 },
+      { action: 'dividend', instrument: 'A', ticker: 'A', amount_dkk: 25, fee_dkk: 0 },
+    ],
+    snapshots: [],
+  };
+  const report = buildReport({ led, prices: { A: 100 }, benchLevels: { msci_world: 101, sp500: 101 }, now: '2026-04-01' });
+  approx(report.dividendsDkk, 25);
+  approx(report.cashDkk, 20000 - 1000 + 25);
+});

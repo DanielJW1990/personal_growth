@@ -35,15 +35,22 @@ export function derivePositions(fills) {
         shares: 0,
         costBasisDkk: 0, // total cost of the shares currently held
         realizedPlDkk: 0,
+        dividendsDkk: 0,
         tradeCount: 0,
         closed: false,
       };
       byKey.set(key, p);
     }
-    p.tradeCount += 1;
     const shares = Number(f.shares);
     const price = Number(f.price_dkk);
     const fee = Number(f.fee_dkk ?? 0);
+
+    // Dividends: cash income, net of withholding (fee_dkk). No share change.
+    if (f.action === 'dividend') {
+      p.dividendsDkk += Number(f.amount_dkk ?? 0) - fee;
+      continue;
+    }
+    p.tradeCount += 1;
 
     if (f.action === 'buy' || f.action === 'add') {
       p.shares += shares;
@@ -68,13 +75,15 @@ export function derivePositions(fills) {
   const open = [];
   const closed = [];
   let realizedPlDkk = 0;
+  let dividendsDkk = 0;
   for (const p of byKey.values()) {
     p.avgCostDkk = p.shares > SHARE_EPSILON ? p.costBasisDkk / p.shares : 0;
     realizedPlDkk += p.realizedPlDkk;
+    dividendsDkk += p.dividendsDkk;
     if (p.shares > SHARE_EPSILON) open.push(p);
     else closed.push(p);
   }
-  return { open, closed, realizedPlDkk, byKey };
+  return { open, closed, realizedPlDkk, dividendsDkk, byKey };
 }
 
 /**
@@ -89,6 +98,7 @@ export function computeCash(depositDkk, fills) {
     const fee = Number(f.fee_dkk ?? 0);
     if (f.action === 'buy' || f.action === 'add') cash -= notional + fee;
     else if (f.action === 'sell' || f.action === 'trim') cash += notional - fee;
+    else if (f.action === 'dividend') cash += Number(f.amount_dkk ?? 0) - fee;
   }
   return cash;
 }
@@ -101,7 +111,7 @@ export function computeCash(depositDkk, fills) {
 export function computePortfolio(led, prices) {
   const depositDkk = led.inception?.deposit_dkk ?? 0;
   const fills = led.fills ?? [];
-  const { open, closed, realizedPlDkk } = derivePositions(fills);
+  const { open, closed, realizedPlDkk, dividendsDkk } = derivePositions(fills);
   const cashDkk = computeCash(depositDkk, fills);
 
   let unrealizedPlDkk = 0;
@@ -141,6 +151,7 @@ export function computePortfolio(led, prices) {
     totalValueDkk,
     realizedPlDkk,
     unrealizedPlDkk,
+    dividendsDkk,
     closedPositions: closed,
     missingPrices: positions.filter((p) => p.priceDkk == null).map((p) => keyOf(p)),
   };
@@ -269,6 +280,7 @@ export function buildReport({ led, prices, benchLevels, now }) {
     benchmarks,
     realizedPlDkk: pf.realizedPlDkk,
     unrealizedPlDkk: pf.unrealizedPlDkk,
+    dividendsDkk: pf.dividendsDkk,
     maxDrawdown: maxDrawdown(led.snapshots, pf.totalValueDkk),
     cagr: cagr(sinceReturn, inception.date, today),
     turnover: turnover(led.fills, pf.totalValueDkk),

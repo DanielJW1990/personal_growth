@@ -7,6 +7,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { BENCHMARKS } from './config.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const LEDGER_PATH = process.env.LEDGER_PATH ?? join(__dirname, '..', 'data', 'ledger.json');
@@ -55,21 +56,32 @@ export function setInception(led, { date, levels }) {
   led.inception ??= { deposit_dkk: 20000 };
   led.inception.date = date ?? new Date().toISOString().slice(0, 10);
   led.inception.benchmark_levels = { msci_world: levels.msci_world, sp500: levels.sp500 };
+  // Record which proxy symbols the levels came from, so a later proxy change
+  // can be detected and re-based instead of silently mixing scales.
+  led.inception.benchmark_symbols = {
+    msci_world: BENCHMARKS.msci_world.symbol,
+    sp500: BENCHMARKS.sp500.symbol,
+  };
   return led;
 }
 
-/** Append a confirmed/estimated fill. Returns the appended fill. */
+/**
+ * Append a confirmed/estimated fill. Returns the appended fill.
+ * Trades carry shares/price_dkk; a `dividend` carries amount_dkk (cash paid
+ * out) with fee_dkk usable for withholding tax.
+ */
 export function appendFill(led, fill) {
   const normalized = {
     date: fill.date ?? new Date().toISOString().slice(0, 10),
     action: fill.action,
     instrument: fill.instrument,
     ticker: fill.ticker ?? '',
-    shares: Number(fill.shares),
-    price_dkk: Number(fill.price_dkk),
+    shares: Number(fill.shares ?? 0),
+    price_dkk: Number(fill.price_dkk ?? 0),
     fee_dkk: Number(fill.fee_dkk ?? 0),
     est_or_confirmed: fill.est_or_confirmed ?? 'confirmed',
   };
+  if (fill.amount_dkk != null) normalized.amount_dkk = Number(fill.amount_dkk);
   led.fills.push(normalized);
   return normalized;
 }

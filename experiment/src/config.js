@@ -53,12 +53,14 @@ export const STRATEGY = {
 };
 
 // Benchmarks. Tickers are the market-data adapter's symbols (Yahoo Finance).
-// MSCI World is proxied by URTH (iShares MSCI World ETF, USD); S&P 500 by ^GSPC.
-// These are levels for the since-inception ratio — the bookkeeper never needs
-// them in DKK because a benchmark *return* is currency-neutral as a ratio.
+// Both proxies are ACCUMULATING UCITS ETFs, deliberately: the level ratio then
+// measures TOTAL return (dividends reinvested), matching a portfolio that also
+// receives dividends — a price-only index would understate the bar. They are
+// EUR-denominated, so the currency effect matches a DKK (EUR-pegged) investor.
+// The bookkeeper never needs them in DKK: a benchmark return is a level ratio.
 export const BENCHMARKS = {
-  msci_world: { key: 'msci_world', label: 'MSCI World', symbol: 'URTH' },
-  sp500: { key: 'sp500', label: 'S&P 500', symbol: '^GSPC' },
+  msci_world: { key: 'msci_world', label: 'MSCI World', symbol: 'IWDA.AS' }, // iShares Core MSCI World Acc
+  sp500: { key: 'sp500', label: 'S&P 500', symbol: 'SXR8.DE' }, // iShares Core S&P 500 Acc
 };
 
 export function primaryBenchmark() {

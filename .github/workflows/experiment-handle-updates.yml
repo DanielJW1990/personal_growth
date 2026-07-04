@@ -1,12 +1,12 @@
 name: Experiment — process Telegram replies
 
 # Polls Telegram for your button taps and fill replies, and books confirmed
-# fills into the ledger. Every 15 minutes (GitHub's minimum scheduled interval
-# is 5 min; 15 keeps Actions-minute usage modest). Bump to '*/5' if you want
-# snappier fill confirmation.
+# fills into the ledger. Every 30 minutes — sized so the repo can be made
+# PRIVATE without blowing the free Actions budget (~1,500 min/month vs the
+# 2,000 free on private repos). Fills booked via chat land instantly anyway.
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '7,37 * * * *'
   workflow_dispatch:
 
 concurrency:

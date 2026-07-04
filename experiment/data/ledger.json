@@ -1,10 +1,14 @@
 {
   "inception": {
     "date": "2026-06-25",
-    "deposit_dkk": 20000,
+    "deposit_dkk": 20454.04252,
     "benchmark_levels": {
       "msci_world": 199,
       "sp500": 7358.22
+    },
+    "benchmark_symbols": {
+      "msci_world": "URTH",
+      "sp500": "^GSPC"
     }
   },
   "fills": [
@@ -34,9 +38,10 @@
       "instrument": "Alphabet",
       "ticker": "GOOGL",
       "shares": 2.45,
-      "price_dkk": 2049.3704000000002,
+      "price_dkk": 2234.6938775510203,
       "fee_dkk": 0,
-      "est_or_confirmed": "confirmed"
+      "est_or_confirmed": "confirmed",
+      "note": "basis re-based to inception-day value; pre-inception gain moved into deposit base"
     },
     {
       "date": "2026-06-26",

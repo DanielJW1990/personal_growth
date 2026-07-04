@@ -95,7 +95,8 @@ export function formatWeeklyPulse(report) {
   head.push('📦 Holdings');
 
   const foot = [];
-  foot.push(`P/L — unrealized ${fmtDkk(report.unrealizedPlDkk)} · realized ${fmtDkk(report.realizedPlDkk)}`);
+  const divs = report.dividendsDkk > 0 ? ` · dividends ${fmtDkk(report.dividendsDkk)}` : '';
+  foot.push(`P/L — unrealized ${fmtDkk(report.unrealizedPlDkk)} · realized ${fmtDkk(report.realizedPlDkk)}${divs}`);
   if (report.missingPrices.length) foot.push(`⚠️ No live price for: ${report.missingPrices.join(', ')} (shown as —)`);
 
   return (
@@ -131,6 +132,7 @@ export function formatMonthlyReport(report) {
   L.push('');
   L.push(`Annualized (CAGR): ${report.cagr == null ? '— (need ≥3 months)' : fmtPct(report.cagr)}`);
   L.push(`Realized P/L: ${fmtDkk(report.realizedPlDkk)} · Unrealized P/L: ${fmtDkk(report.unrealizedPlDkk)}`);
+  L.push(`Dividends received: ${fmtDkk(report.dividendsDkk ?? 0)}`);
   L.push(`Max drawdown since inception: ${fmtPct(report.maxDrawdown)}`);
   const t = report.turnover;
   const churn = t.pctOfPortfolio > 100 ? '  ⚠️ high turnover' : '';

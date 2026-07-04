@@ -17,46 +17,37 @@ const SYSTEM_PROMPT = `You are a disciplined equity analyst running a long-horiz
 
 ## How to reason each cycle
 - Start from "do nothing." Deviate only with a specific, written reason.
+- You have a web_search tool. Before deciding, check recent news on each holding (earnings, guidance changes, thesis-relevant events) and on any candidate you consider. Facts you cite must come from what you found or what the bookkeeper supplied — never from stale memory when search contradicts it.
 - For any buy: name the quality criteria it meets, the rough valuation, the thesis in 2 sentences, and what would prove the thesis wrong.
 - For any sell: state whether the thesis broke or it's a swap, and note this is a taxable/realization event.
 - Separate fact (a reported number) from speculation (your view). Label the second.
 - Never chase recent performance. If a candidate is up a lot recently, say so and justify buying anyway.
 
-You will return ONLY the structured object requested. If holding is right, return an empty proposals array and say why in cycle_note. Propose at most 2 changes; fewer is better.`;
-
-// Strict-ish JSON schema matching section 2's output contract.
-const PROPOSAL_SCHEMA = {
-  type: 'object',
-  properties: {
-    action: { type: 'string', enum: ['buy', 'sell', 'trim', 'add'] },
-    instrument: { type: 'string' },
-    ticker: { type: 'string' },
-    target_weight_pct: { type: 'number' },
-    approx_dkk: { type: 'number' },
-    thesis: { type: 'string' },
-    quality_criteria_met: { type: 'array', items: { type: 'string' } },
-    valuation_note: { type: 'string' },
-    is_speculative: { type: 'boolean' },
-    what_would_make_this_wrong: { type: 'string' },
-    tax_note: { type: 'string' },
-  },
-  required: [
-    'action', 'instrument', 'ticker', 'target_weight_pct', 'approx_dkk', 'thesis',
-    'quality_criteria_met', 'valuation_note', 'is_speculative', 'what_would_make_this_wrong', 'tax_note',
+## Output — your FINAL message must be ONLY this JSON object (no prose before or after, no code fences)
+{
+  "cycle_note": "<=2 sentences: portfolio posture, citing anything material you found in the news",
+  "proposals": [
+    {
+      "action": "buy" | "sell" | "trim" | "add",
+      "instrument": "<name>",
+      "ticker": "<Yahoo Finance symbol, e.g. NOVO-B.CO, MSFT>",
+      "target_weight_pct": <number>,
+      "approx_dkk": <number>,
+      "thesis": "<2 sentences>",
+      "quality_criteria_met": ["...", "..."],
+      "valuation_note": "<e.g. P/E ~18 vs ~12% growth>",
+      "is_speculative": false,
+      "what_would_make_this_wrong": "<disconfirming condition>",
+      "tax_note": "<realization impact if a sell>"
+    }
   ],
-  additionalProperties: false,
-};
+  "do_nothing_is_correct_if": "<when no trade is the right call>"
+}
 
-const OUTPUT_SCHEMA = {
-  type: 'object',
-  properties: {
-    cycle_note: { type: 'string' },
-    proposals: { type: 'array', items: PROPOSAL_SCHEMA },
-    do_nothing_is_correct_if: { type: 'string' },
-  },
-  required: ['cycle_note', 'proposals', 'do_nothing_is_correct_if'],
-  additionalProperties: false,
-};
+If holding is right, return an empty proposals array and say why in cycle_note. Propose at most 2 changes; fewer is better.`;
+
+// Live news access for the screen — capped so a run can't spiral.
+const WEB_SEARCH_TOOL = { type: 'web_search_20260209', name: 'web_search', max_uses: 8 };
 
 function buildUserMessage(portfolio, report, candidateIdeas) {
   const taxWrapper = config.taxWrapper === 'ask' ? 'Aktiesparekonto (ASK)' : 'regular depot';
@@ -118,25 +109,43 @@ export async function runAnalyst({ portfolio, report, candidateIdeas = [] }) {
   const { default: Anthropic } = await import('@anthropic-ai/sdk');
   const client = new Anthropic({ apiKey: config.anthropicApiKey });
 
-  const response = await client.messages.create({
+  const base = {
     model: config.analystModel,
-    max_tokens: 4000,
+    max_tokens: 8000,
     thinking: { type: 'adaptive' },
     system: SYSTEM_PROMPT,
-    output_config: { format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },
-    messages: [{ role: 'user', content: buildUserMessage(portfolio, report, candidateIdeas) }],
-  });
+    tools: [WEB_SEARCH_TOOL],
+  };
 
-  const text = response.content.find((b) => b.type === 'text')?.text ?? '{}';
-  const parsed = parseAnalystJson(text);
-  parsed.proposals ??= [];
-  return parsed;
+  let messages = [{ role: 'user', content: buildUserMessage(portfolio, report, candidateIdeas) }];
+  let response = await client.messages.create({ ...base, messages });
+
+  // The server-side search loop can pause mid-turn; re-send to resume.
+  for (let i = 0; i < 5 && response.stop_reason === 'pause_turn'; i++) {
+    messages = [...messages, { role: 'assistant', content: response.content }];
+    response = await client.messages.create({ ...base, messages });
+  }
+
+  // With search in play the response interleaves text and tool blocks; the
+  // decision JSON is the final text. Try text blocks last-first.
+  const texts = response.content.filter((b) => b.type === 'text').map((b) => b.text);
+  let lastErr;
+  for (let i = texts.length - 1; i >= 0; i--) {
+    try {
+      const parsed = parseAnalystJson(texts[i]);
+      parsed.proposals ??= [];
+      return parsed;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr ?? new Error('Analyst returned no text output');
 }
 
 /**
- * Parse the analyst's reply. With output_config the text block is pure JSON, but
- * be tolerant of a stray code fence or surrounding prose as a safety net so a
- * minor format slip never drops a cycle.
+ * Parse the analyst's reply. The prompt demands bare JSON, but be tolerant of a
+ * stray code fence or surrounding prose so a minor format slip never drops a
+ * cycle.
  */
 export function parseAnalystJson(text) {
   const tryParse = (s) => {
