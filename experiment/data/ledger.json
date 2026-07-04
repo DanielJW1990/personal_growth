@@ -3,12 +3,12 @@
     "date": "2026-06-25",
     "deposit_dkk": 20454.04252,
     "benchmark_levels": {
-      "msci_world": 199,
-      "sp500": 7358.22
+      "msci_world": 125.74,
+      "sp500": 706.12
     },
     "benchmark_symbols": {
-      "msci_world": "URTH",
-      "sp500": "^GSPC"
+      "msci_world": "IWDA.AS",
+      "sp500": "SXR8.DE"
     }
   },
   "fills": [
@@ -158,6 +158,15 @@
         "sp500": 7483.23
       },
       "kind": "monthly"
+    },
+    {
+      "date": "2026-07-04",
+      "total_value_dkk": 21279.85968452576,
+      "benchmark_levels": {
+        "msci_world": 125.74,
+        "sp500": 706.12
+      },
+      "kind": "pulse"
     }
   ],
   "telegram_state": {
