@@ -3,13 +3,14 @@
     "date": "2026-06-25",
     "deposit_dkk": 20454.04252,
     "benchmark_levels": {
-      "msci_world": 125.74,
-      "sp500": 706.12
+      "msci_world": 124.09,
+      "sp500": 695.84
     },
     "benchmark_symbols": {
       "msci_world": "IWDA.AS",
       "sp500": "SXR8.DE"
-    }
+    },
+    "benchmark_note": "Levels are Jun-25 values of IWDA.AS (exact close) and SXR8.DE (estimated ±0.3%); proxies switched from URTH/^GSPC on 2026-07-04."
   },
   "fills": [
     {
