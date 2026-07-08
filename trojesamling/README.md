@@ -64,8 +64,8 @@ browser og på den enhed, du sidder ved. Billeder komprimeres automatisk
 
 Brug **Eksportér backup** på admin-siden jævnligt — det giver én
 JSON-fil med alle trøjer *og* billeder. **Importér backup** på en anden
-enhed flytter hele samlingen med (import erstatter det eksisterende
-indhold). Vil du have automatisk synkronisering mellem enheder, kræver
+enhed flytter hele samlingen med — du vælger selv, om importen skal
+*flettes* ind i det eksisterende (tilføj/opdatér) eller *erstatte* alt. Vil du have automatisk synkronisering mellem enheder, kræver
 det en backend (fx Supabase, som beskrevet i rodens README).
 
 ## Valg truffet

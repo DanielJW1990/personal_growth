@@ -1155,11 +1155,20 @@ async function importBackup(file) {
     toast('Filen kunne ikke læses som en gyldig backup.');
     return;
   }
-  if (!confirm(`Importér ${payload.shirts.length} trøjer? Det ERSTATTER alt, der ligger her nu.`)) return;
-  // ryd eksisterende
-  for (const s of await idbAll('shirts')) await idbDel('shirts', s.id);
-  for (const im of await idbAll('images')) await idbDel('images', im.id);
-  urlCache.clear();
+  const n = payload.shirts.length;
+  if (!confirm(`Importér ${n} ${n === 1 ? 'trøje' : 'trøjer'} fra backuppen?`)) return;
+  if (shirts.length) {
+    const merge = confirm(
+      `Du har allerede ${shirts.length} ${shirts.length === 1 ? 'trøje' : 'trøjer'} i samlingen.\n\n` +
+      `OK = FLET — behold det nuværende og tilføj/opdater fra backuppen.\n` +
+      `Annuller = ERSTAT — slet alt og indlæs kun backuppen.`);
+    if (!merge) {
+      if (!confirm('Er du sikker? Hele den nuværende samling slettes.')) return;
+      for (const s of await idbAll('shirts')) await idbDel('shirts', s.id);
+      for (const im of await idbAll('images')) await idbDel('images', im.id);
+      urlCache.clear();
+    }
+  }
   // indlæs
   for (const im of (payload.images || [])) {
     const blob = await (await fetch(im.data)).blob();
@@ -1167,7 +1176,7 @@ async function importBackup(file) {
   }
   for (const s of payload.shirts) await idbPut('shirts', s);
   await loadShirts();
-  toast(`Importerede ${payload.shirts.length} trøjer.`);
+  toast(`Importerede ${n} ${n === 1 ? 'trøje' : 'trøjer'}.`);
   renderAdmin(null);
 }
 
