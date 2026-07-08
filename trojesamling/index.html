@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Trøjesamlingen</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&f[]=zodiak@400,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #f5f4f1;
+    --line: #e7e5e0;
+    --ink: #12181f;
+    --muted: #8a8f96;
+    --navy: #0b1f3a;
+    --gold: #b3872e;
+    --danger: #b04a3a;
+    --maxw: 1240px;
+    --nav-h: 60px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Switzer", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+  .kicker {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  h1, h2, .display { font-family: "Zodiak", Georgia, serif; font-weight: 700; letter-spacing: 0.01em; }
+
+  /* ── Topbar ─────────────────────────────────────── */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: var(--maxw); margin: 0 auto; padding: 0 20px;
+    height: var(--nav-h);
+    display: flex; align-items: center; gap: 28px;
+  }
+  .logo {
+    font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase;
+    font-size: 0.85rem; white-space: nowrap;
+  }
+  .logo span { color: var(--gold); }
+  nav.mainnav { display: flex; align-items: center; gap: 4px; flex: 1; }
+  .navlink, .navdrop > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+    padding: 8px 12px; border-radius: 3px; color: var(--ink);
+    background: none; border: none; display: inline-block;
+  }
+  .navlink:hover, .navdrop > summary:hover { background: var(--panel); }
+  .navdrop { position: relative; }
+  .navdrop > summary::-webkit-details-marker { display: none; }
+  .navdrop > summary::after { content: " ▾"; font-size: 0.6rem; color: var(--muted); }
+  .navdrop-menu {
+    position: absolute; top: calc(100% + 6px); left: 0; min-width: 200px;
+    background: #fff; border: 1px solid var(--line); border-radius: 4px;
+    box-shadow: 0 12px 32px rgba(16,24,32,0.10);
+    padding: 6px; max-height: 320px; overflow: auto; z-index: 60;
+  }
+  .navdrop-menu button {
+    display: block; width: 100%; text-align: left; background: none; border: none;
+    padding: 8px 10px; font-size: 0.82rem; cursor: pointer; border-radius: 3px;
+  }
+  .navdrop-menu button:hover { background: var(--panel); }
+  .navdrop-menu .count { color: var(--muted); font-size: 0.72rem; }
+  .nav-right { display: flex; align-items: center; gap: 4px; }
+  .burger {
+    display: none; background: none; border: none; cursor: pointer;
+    font-size: 1.3rem; padding: 6px 10px; margin-left: auto;
+  }
+
+  /* ── Hero ───────────────────────────────────────── */
+  .hero {
+    position: relative; min-height: 440px;
+    display: flex; align-items: flex-end;
+    background: linear-gradient(160deg, #0b1f3a 0%, #16324f 55%, #274a6d 100%);
+    color: #fff; overflow: hidden;
+  }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(8,16,28,0.82) 0%, rgba(8,16,28,0.25) 55%, rgba(8,16,28,0.35) 100%);
+  }
+  .hero-content { position: relative; z-index: 2; padding: 72px 20px 56px; max-width: var(--maxw); margin: 0 auto; width: 100%; }
+  .hero .kicker { color: rgba(255,255,255,0.75); }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin: 10px 0 14px; text-transform: uppercase; }
+  .hero p.sub { color: rgba(255,255,255,0.85); font-size: 1.02rem; max-width: 560px; }
+  .hero-stats { display: flex; gap: 34px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-stat .n { font-family: "Zodiak", Georgia, serif; font-size: 1.9rem; font-weight: 700; line-height: 1.1; }
+  .hero-stat .l { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+  .btn {
+    display: inline-block; cursor: pointer; border-radius: 3px;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+    padding: 13px 26px; border: 1px solid var(--ink); background: var(--ink); color: #fff;
+    transition: background 0.15s, color 0.15s;
+  }
+  .btn:hover { background: #fff; color: var(--ink); }
+  .btn.light { background: #fff; color: var(--ink); border-color: #fff; }
+  .btn.light:hover { background: transparent; color: #fff; }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn.ghost:hover { background: var(--ink); color: #fff; }
+  .btn.danger { background: var(--danger); border-color: var(--danger); }
+  .btn.danger:hover { background: #fff; color: var(--danger); }
+  .btn.sm { padding: 8px 14px; font-size: 0.64rem; }
+
+  /* ── Toolbar (filter/sort) ─────────────────────── */
+  .toolbar {
+    border-bottom: 1px solid var(--line);
+    padding: 16px 0;
+    background: var(--bg);
+  }
+  .toolbar-inner { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .toolbar input[type="search"], .toolbar select {
+    border: 1px solid var(--line); border-radius: 3px; background: #fff;
+    padding: 9px 12px; font-size: 0.85rem; min-width: 130px;
+  }
+  .toolbar input[type="search"] { flex: 1 1 200px; }
+  .toolbar select { cursor: pointer; }
+  .result-count { font-size: 0.78rem; color: var(--muted); margin-left: auto; white-space: nowrap; }
+  .linkbtn { background: none; border: none; cursor: pointer; font-size: 0.78rem; color: var(--muted); text-decoration: underline; padding: 6px; }
+  .linkbtn:hover { color: var(--ink); }
+
+  /* ── Sektioner / grid ──────────────────────────── */
+  .section { padding: 44px 0 10px; }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; }
+  .section-head h2 { font-size: 1.5rem; text-transform: uppercase; }
+  .section-head .count { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; }
+  .grid {
+    display: grid; gap: 26px 18px;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    padding-bottom: 40px;
+  }
+  .card { display: block; cursor: pointer; }
+  .card-imgbox {
+    position: relative; aspect-ratio: 3/4; background: var(--panel);
+    border-radius: 4px; overflow: hidden; margin-bottom: 12px;
+  }
+  .card-imgbox img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.25s ease, transform 0.4s ease; }
+  .card:hover .card-imgbox img.primary { transform: scale(1.03); }
+  .card-imgbox img.alt { position: absolute; inset: 0; opacity: 0; }
+  .card:hover .card-imgbox img.alt { opacity: 1; }
+  .card-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge {
+    font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
+    padding: 4px 8px; border-radius: 2px; background: #fff; color: var(--ink);
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .badge.autentisk { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .badge.replica { background: #fff; color: var(--ink); }
+  .badge.signeret { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .card h3 { font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+  .card .meta { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+  .placeholder-jersey { width: 46%; margin: 27% auto 0; opacity: 0.28; }
+
+  .empty {
+    text-align: center; padding: 90px 20px; color: var(--muted);
+  }
+  .empty h2 { color: var(--ink); font-size: 1.6rem; margin-bottom: 10px; }
+  .empty p { margin-bottom: 22px; }
+
+  /* ── Statistik ─────────────────────────────────── */
+  .stats-band { background: var(--panel); border-top: 1px solid var(--line); padding: 54px 0 60px; margin-top: 30px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 26px; margin-top: 26px; }
+  .stat-tile .n { font-family: "Zodiak", Georgia, serif; font-size: 2.3rem; font-weight: 700; line-height: 1; }
+  .stat-tile .l { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .klub-bars { margin-top: 34px; display: grid; gap: 10px; max-width: 620px; }
+  .klub-bar { display: grid; grid-template-columns: 150px 1fr 34px; gap: 12px; align-items: center; font-size: 0.82rem; }
+  .klub-bar .bar { height: 8px; background: #e2e0da; border-radius: 4px; overflow: hidden; }
+  .klub-bar .bar i { display: block; height: 100%; background: var(--navy); border-radius: 4px; }
+  .klub-bar .num { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* ── Detaljeside ───────────────────────────────── */
+  .backlink { display: inline-block; margin: 26px 0 8px; font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); cursor: pointer; background: none; border: none; }
+  .backlink:hover { color: var(--ink); }
+  .detail { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; padding: 10px 0 70px; }
+  .gallery-main {
+    aspect-ratio: 3/4; background: var(--panel); border-radius: 4px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gallery-main img { width: 100%; height: 100%; object-fit: contain; }
+  .thumbs { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .thumbs button {
+    width: 72px; height: 90px; border-radius: 3px; overflow: hidden; cursor: pointer;
+    border: 1px solid var(--line); background: var(--panel); padding: 0;
+  }
+  .thumbs button.active { border-color: var(--ink); }
+  .thumbs img { width: 100%; height: 100%; object-fit: cover; }
+  .detail-info .kicker { margin-top: 8px; }
+  .detail-info h1 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); text-transform: uppercase; line-height: 1.1; margin: 8px 0 4px; }
+  .detail-sub { color: var(--muted); font-size: 1rem; margin-bottom: 16px; }
+  .detail-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+  .detail-badges .badge { font-size: 0.64rem; padding: 6px 11px; }
+  .speclist { border-top: 1px solid var(--line); margin-bottom: 28px; }
+  .speclist .row { display: flex; justify-content: space-between; gap: 18px; padding: 12px 2px; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
+  .speclist .row dt { color: var(--muted); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 3px; }
+  .speclist .row dd { text-align: right; font-weight: 500; }
+  .notes h2 { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-family: "Switzer", sans-serif; font-weight: 600; margin-bottom: 10px; }
+  .notes p { font-size: 0.93rem; color: #3c4450; white-space: pre-wrap; }
+  .detail-actions { display: flex; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
+
+  /* ── Login ─────────────────────────────────────── */
+  .login-page {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #0b1f3a 0%, #16324f 60%, #274a6d 100%); padding: 20px;
+  }
+  .login-card {
+    background: #fff; border-radius: 6px; padding: 44px 38px; width: 100%; max-width: 400px;
+    box-shadow: 0 24px 70px rgba(4,10,20,0.45); text-align: center;
+  }
+  .login-card .logo { font-size: 0.95rem; }
+  .login-card h1 { font-size: 1.45rem; margin: 18px 0 6px; }
+  .login-card p { color: var(--muted); font-size: 0.86rem; margin-bottom: 24px; }
+  .login-card input[type="password"] {
+    width: 100%; border: 1px solid var(--line); border-radius: 3px; padding: 13px 14px;
+    font-size: 1rem; text-align: center; letter-spacing: 0.2em; margin-bottom: 12px;
+  }
+  .login-card input[type="password"]:focus { outline: 2px solid var(--navy); border-color: var(--navy); }
+  .login-card .btn { width: 100%; }
+  .login-remember { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; color: var(--muted); margin: 4px 0 16px; }
+  .login-error { color: var(--danger); font-size: 0.82rem; min-height: 1.3em; margin-bottom: 10px; }
+
+  /* ── Admin ─────────────────────────────────────── */
+  .admin-head { padding: 40px 0 6px; }
+  .admin-head h1 { font-size: 1.9rem; text-transform: uppercase; }
+  .admin-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 44px; padding: 24px 0 80px; align-items: start; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 26px; }
+  .panel h2 { font-size: 1.05rem; text-transform: uppercase; margin-bottom: 18px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: #555c66; margin-bottom: 5px; }
+  .field input[type="text"], .field input[type="number"], .field select, .field textarea {
+    width: 100%; border: 1px solid var(--line); border-radius: 3px; background: #fff; padding: 10px 12px; font-size: 0.9rem;
+  }
+  .field textarea { min-height: 110px; resize: vertical; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .radio-row { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.88rem; }
+  .radio-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.88rem; color: var(--ink); }
+  .dropzone {
+    border: 2px dashed #cfccc4; border-radius: 5px; background: #fff; padding: 22px; text-align: center;
+    color: var(--muted); font-size: 0.84rem; cursor: pointer;
+  }
+  .dropzone.drag { border-color: var(--navy); color: var(--navy); }
+  .img-previews { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .img-previews .pv { position: relative; width: 76px; height: 95px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+  .img-previews .pv img { width: 100%; height: 100%; object-fit: cover; }
+  .img-previews .pv .rm {
+    position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(16,24,32,0.75); color: #fff; border: none; cursor: pointer; font-size: 0.7rem; line-height: 1;
+  }
+  .img-previews .pv .tag { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(11,31,58,0.8); color:#fff; font-size: 0.55rem; text-align:center; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 0; }
+  .form-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .admin-list { display: grid; gap: 10px; }
+  .admin-row {
+    display: grid; grid-template-columns: 54px 1fr auto; gap: 14px; align-items: center;
+    background: #fff; border: 1px solid var(--line); border-radius: 5px; padding: 10px 14px;
+  }
+  .admin-row .thumb { width: 54px; height: 66px; border-radius: 3px; background: var(--panel); overflow: hidden; }
+  .admin-row .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .admin-row .t { font-weight: 600; font-size: 0.9rem; }
+  .admin-row .m { font-size: 0.78rem; color: var(--muted); }
+  .admin-row .acts { display: flex; gap: 6px; }
+  .datatools { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .datatools .hint { flex-basis: 100%; font-size: 0.74rem; color: var(--muted); }
+
+  footer { border-top: 1px solid var(--line); padding: 30px 0 46px; margin-top: 20px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── Toast ─────────────────────────────────────── */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 4px;
+    font-size: 0.84rem; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 100;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Mobil ─────────────────────────────────────── */
+  @media (max-width: 860px) {
+    .detail, .admin-grid { grid-template-columns: 1fr; gap: 30px; }
+    .speclist .row dd { text-align: left; }
+  }
+  @media (max-width: 720px) {
+    .burger { display: block; }
+    nav.mainnav {
+      display: none; position: absolute; top: var(--nav-h); left: 0; right: 0;
+      background: #fff; border-bottom: 1px solid var(--line);
+      flex-direction: column; align-items: stretch; padding: 10px 14px 16px; gap: 2px;
+      box-shadow: 0 16px 32px rgba(16,24,32,0.08);
+    }
+    nav.mainnav.open { display: flex; }
+    .navdrop-menu { position: static; box-shadow: none; border: none; border-left: 2px solid var(--line); border-radius: 0; margin: 4px 0 4px 12px; }
+    .hero { min-height: 360px; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; }
+    .toolbar .result-count { flex-basis: 100%; margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════
+   Trøjesamlingen — privat katalog over fodboldtrøjer.
+   Ren visning/katalogisering: ingen priser, kurv eller betaling.
+   Data og billeder gemmes lokalt i browserens IndexedDB.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Adgangskoden gemmes kun som SHA-256-hash. Skift kode: kør
+   `node -e "console.log(require('crypto').createHash('sha256').update('NY-KODE').digest('hex'))"`
+   og indsæt resultatet her. */
+const PASS_HASH = '0b2ca7a9d7a006511855dfcdadd7c1b4c3497eba676f4d7866155977a83758c9';
+const AUTH_KEY = 'ts_auth_v1';
+
+const TYPE_LABELS = { hjemme: 'Hjemme', ude: 'Ude', tredje: 'Tredje', anden: 'Anden' };
+const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', 'Børnestr.', 'Andet'];
+
+const PLACEHOLDER_SVG = `
+  <svg class="placeholder-jersey" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M35 10 L20 18 L8 40 L22 47 L26 40 L26 90 L74 90 L74 40 L78 47 L92 40 L80 18 L65 10
+             C63 17 57 21 50 21 C43 21 37 17 35 10 Z"
+          fill="none" stroke="#12181f" stroke-width="3" stroke-linejoin="round"/>
+  </svg>`;
+
+/* ── State ──────────────────────────────────────── */
+let db = null;
+let shirts = [];                 // alle trøjer i hukommelsen
+const urlCache = new Map();      // imageId -> objectURL
+let filters = { q: '', klub: '', saeson: '', type: '', sort: 'nyeste' };
+let editImages = [];             // billeder i admin-formularen: {id?, blob, url}
+let editRemoved = [];            // billed-id'er der skal slettes ved gem
+
+/* ── IndexedDB ──────────────────────────────────── */
+function openDB() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open('trojesamlingen', 1);
+    r.onupgradeneeded = () => {
+      const d = r.result;
+      if (!d.objectStoreNames.contains('shirts')) d.createObjectStore('shirts', { keyPath: 'id' });
+      if (!d.objectStoreNames.contains('images')) d.createObjectStore('images', { keyPath: 'id' });
+    };
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+function tx(store, mode, fn) {
+  return new Promise((res, rej) => {
+    const t = db.transaction(store, mode);
+    const s = t.objectStore(store);
+    const out = fn(s);
+    t.oncomplete = () => res(out && 'result' in out ? out.result : undefined);
+    t.onerror = () => rej(t.error);
+  });
+}
+const idbPut = (store, val) => tx(store, 'readwrite', s => s.put(val));
+const idbDel = (store, key) => tx(store, 'readwrite', s => s.delete(key));
+function idbGet(store, key) {
+  return new Promise((res, rej) => {
+    const r = db.transaction(store).objectStore(store).get(key);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+function idbAll(store) {
+  return new Promise((res, rej) => {
+    const r = db.transaction(store).objectStore(store).getAll();
+    r.onsuccess = () => res(r.result || []);
+    r.onerror = () => rej(r.error);
+  });
+}
+
+async function loadShirts() {
+  shirts = await idbAll('shirts');
+  shirts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+}
+
+/* ── Billeder ───────────────────────────────────── */
+function newId() {
+  return (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+}
+
+/* Komprimér upload til maks 1600 px JPEG, så IndexedDB ikke vokser unødigt. */
+async function compressImage(file) {
+  try {
+    const bmp = await createImageBitmap(file);
+    const max = 1600;
+    const scale = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const w = Math.round(bmp.width * scale), h = Math.round(bmp.height * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(bmp, 0, 0, w, h);
+    bmp.close && bmp.close();
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.85));
+    return blob || file;
+  } catch {
+    return file; // ukendt format — gem originalen
+  }
+}
+
+/* Data-URL'er frem for objectURL'er: blob:-URL'er blokeres, når siden
+   åbnes direkte fra file://, og data-URL'er virker overalt. */
+async function urlFor(imageId) {
+  if (!imageId) return null;
+  if (urlCache.has(imageId)) return urlCache.get(imageId);
+  const rec = await idbGet('images', imageId);
+  if (!rec || !rec.blob) return null;
+  const u = await blobToDataURL(rec.blob);
+  urlCache.set(imageId, u);
+  return u;
+}
+
+/* ── Hjælpere ───────────────────────────────────── */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function seasonKey(s) {
+  const m = /(\d{4})/.exec(s || '');
+  return m ? parseInt(m[1], 10) : 0;
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._h);
+  toast._h = setTimeout(() => t.classList.remove('show'), 2600);
+}
+function badgesHtml(s, big) {
+  const b = [];
+  b.push(s.kvalitet === 'autentisk'
+    ? '<span class="badge autentisk">Autentisk</span>'
+    : '<span class="badge replica">Replica</span>');
+  if (s.signeret) b.push('<span class="badge signeret">Signeret</span>');
+  return b.join('');
+}
+function subtitle(s) {
+  const parts = [];
+  if (s.type) parts.push(TYPE_LABELS[s.type] || s.type);
+  if (s.saeson) parts.push(s.saeson);
+  let t = parts.join(' · ');
+  if (s.spiller) t += (t ? ' — ' : '') + s.spiller + (s.nummer ? ' #' + s.nummer : '');
+  return t;
+}
+
+/* ── SHA-256 (crypto.subtle + ren JS-fallback) ──── */
+async function sha256hex(str) {
+  if (crypto.subtle) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  return sha256js(str);
+}
+function sha256js(ascii) { // kompakt fallback til usikre kontekster
+  function rr(v, a) { return (v >>> a) | (v << (32 - a)); }
+  const words = []; let asciiBitLength = ascii.length * 8;
+  let hash = sha256js.h = sha256js.h || [];
+  const k = sha256js.k = sha256js.k || [];
+  let primeCounter = k.length;
+  const isComposite = {};
+  for (let candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (Math.pow(candidate, 0.5) * 4294967296) | 0;
+      k[primeCounter++] = (Math.pow(candidate, 1 / 3) * 4294967296) | 0;
+    }
+  }
+  ascii = unescape(encodeURIComponent(ascii)) + '\x80';
+  while (ascii.length % 64 - 56) ascii += '\x00';
+  for (let i = 0; i < ascii.length; i++) {
+    const j = ascii.charCodeAt(i);
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words.length] = ((asciiBitLength / 4294967296) | 0);
+  words[words.length] = (asciiBitLength);
+  let result = '';
+  const h = hash.slice(0, 8);
+  for (let j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16);
+    const oldHash = h.slice(0);
+    for (let i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2];
+      const a = h[0], e = h[4];
+      const temp1 = h[7]
+        + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25))
+        + ((e & h[5]) ^ (~e & h[6]))
+        + k[i]
+        + (w[i] = (i < 16) ? w[i] : (
+            w[i - 16]
+            + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3))
+            + w[i - 7]
+            + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))
+          ) | 0);
+      const temp2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22))
+        + ((a & h[1]) ^ (a & h[2]) ^ (h[1] & h[2]));
+      h.unshift((temp1 + temp2) | 0);
+      h.pop();
+      h[4] = (h[4] + temp1) | 0;
+    }
+    for (let i = 0; i < 8; i++) h[i] = (h[i] + oldHash[i]) | 0;
+  }
+  for (let i = 0; i < 8; i++) {
+    for (let j = 3; j + 1; j--) {
+      const b = (h[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+/* ── Adgang ─────────────────────────────────────── */
+function isAuthed() {
+  return sessionStorage.getItem(AUTH_KEY) === PASS_HASH || localStorage.getItem(AUTH_KEY) === PASS_HASH;
+}
+function logout() {
+  sessionStorage.removeItem(AUTH_KEY);
+  localStorage.removeItem(AUTH_KEY);
+  location.hash = '#/login';
+}
+
+/* ── Router ─────────────────────────────────────── */
+const app = document.getElementById('app');
+let pendingHash = null;
+
+async function route() {
+  const h = location.hash || '#/';
+  if (!isAuthed()) {
+    if (h !== '#/login') pendingHash = h;
+    renderLogin();
+    return;
+  }
+  if (h === '#/login') { location.hash = pendingHash || '#/'; return; }
+  const parts = h.replace(/^#\//, '').split('/');
+  if (parts[0] === 'troje' && parts[1]) await renderDetail(parts[1]);
+  else if (parts[0] === 'admin' && parts[1] === 'rediger' && parts[2]) await renderAdmin(parts[2]);
+  else if (parts[0] === 'admin') await renderAdmin(null);
+  else await renderHome();
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+
+/* ── Topbar ─────────────────────────────────────── */
+function uniqueSorted(field) {
+  const map = new Map();
+  for (const s of shirts) {
+    const v = (s[field] || '').trim();
+    if (!v) continue;
+    const key = v.toLocaleLowerCase('da');
+    map.set(key, { label: v, count: (map.get(key)?.count || 0) + 1 });
+  }
+  return [...map.values()].sort((a, b) => a.label.localeCompare(b.label, 'da'));
+}
+function navDrop(title, items) {
+  if (!items.length) return '';
+  return `<details class="navdrop">
+    <summary>${title}</summary>
+    <div class="navdrop-menu">${items}</div>
+  </details>`;
+}
+function topbarHtml() {
+  const klubber = uniqueSorted('klub').map(k =>
+    `<button data-filter="klub" data-value="${esc(k.label)}">${esc(k.label)} <span class="count">(${k.count})</span></button>`).join('');
+  const saesoner = uniqueSorted('saeson')
+    .sort((a, b) => seasonKey(b.label) - seasonKey(a.label))
+    .map(k => `<button data-filter="saeson" data-value="${esc(k.label)}">${esc(k.label)} <span class="count">(${k.count})</span></button>`).join('');
+  const typer = Object.entries(TYPE_LABELS)
+    .filter(([v]) => shirts.some(s => s.type === v))
+    .map(([v, l]) => `<button data-filter="type" data-value="${v}">${l}</button>`).join('');
+  return `
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="#/">Trøje<span>·</span>Samlingen</a>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+      <nav class="mainnav" id="mainnav">
+        <a class="navlink" href="#/" data-nav="alle">Samlingen</a>
+        ${navDrop('Klub', klubber)}
+        ${navDrop('Sæson', saesoner)}
+        ${navDrop('Type', typer)}
+        <span style="flex:1"></span>
+        <div class="nav-right">
+          <a class="navlink" href="#/admin">Administrér</a>
+          <button class="navlink" id="logoutBtn" style="cursor:pointer">Log ud</button>
+        </div>
+      </nav>
+    </div>
+  </header>`;
+}
+function bindTopbar() {
+  const nav = document.getElementById('mainnav');
+  document.getElementById('burger').onclick = () => nav.classList.toggle('open');
+  document.getElementById('logoutBtn').onclick = logout;
+  nav.querySelector('[data-nav="alle"]').onclick = () => {
+    filters = { ...filters, q: '', klub: '', saeson: '', type: '' };
+  };
+  nav.querySelectorAll('.navdrop-menu button').forEach(b => {
+    b.onclick = () => {
+      filters = { ...filters, q: '', klub: '', saeson: '', type: '' };
+      filters[b.dataset.filter] = b.dataset.value;
+      nav.classList.remove('open');
+      nav.querySelectorAll('details').forEach(d => d.open = false);
+      if (location.hash === '#/' || location.hash === '') renderHome();
+      else location.hash = '#/';
+    };
+  });
+  // luk dropdowns ved klik udenfor
+  document.addEventListener('click', e => {
+    nav.querySelectorAll('details[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; });
+  }, { capture: true });
+}
+
+/* ── Login ──────────────────────────────────────── */
+function renderLogin() {
+  app.innerHTML = `
+  <div class="login-page">
+    <form class="login-card" id="loginForm">
+      <div class="logo">Trøje<span>·</span>Samlingen</div>
+      <h1>Privat samling</h1>
+      <p>Indtast adgangskoden for at se kataloget.</p>
+      <input type="password" id="pw" placeholder="Adgangskode" autocomplete="current-password" autofocus>
+      <label class="login-remember"><input type="checkbox" id="remember"> Husk mig på denne enhed</label>
+      <div class="login-error" id="loginError"></div>
+      <button class="btn" type="submit">Lås op</button>
+    </form>
+  </div>`;
+  document.getElementById('loginForm').onsubmit = async e => {
+    e.preventDefault();
+    const val = document.getElementById('pw').value;
+    const hash = await sha256hex(val);
+    if (hash === PASS_HASH) {
+      (document.getElementById('remember').checked ? localStorage : sessionStorage).setItem(AUTH_KEY, hash);
+      location.hash = pendingHash || '#/';
+      pendingHash = null;
+      route();
+    } else {
+      document.getElementById('loginError').textContent = 'Forkert adgangskode — prøv igen.';
+      document.getElementById('pw').value = '';
+      document.getElementById('pw').focus();
+    }
+  };
+}
+
+/* ── Forside ────────────────────────────────────── */
+function applyFilters(list) {
+  let out = list.filter(s => {
+    if (filters.klub && (s.klub || '').toLocaleLowerCase('da') !== filters.klub.toLocaleLowerCase('da')) return false;
+    if (filters.saeson && (s.saeson || '') !== filters.saeson) return false;
+    if (filters.type && s.type !== filters.type) return false;
+    if (filters.q) {
+      const hay = [s.klub, s.saeson, s.spiller, s.nummer, s.noter, TYPE_LABELS[s.type], s.stoerrelse]
+        .join(' ').toLocaleLowerCase('da');
+      if (!hay.includes(filters.q.toLocaleLowerCase('da'))) return false;
+    }
+    return true;
+  });
+  switch (filters.sort) {
+    case 'aeldst': out.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)); break;
+    case 'klub': out.sort((a, b) => (a.klub || '').localeCompare(b.klub || '', 'da') || seasonKey(b.saeson) - seasonKey(a.saeson)); break;
+    case 'saeson': out.sort((a, b) => seasonKey(b.saeson) - seasonKey(a.saeson) || (a.klub || '').localeCompare(b.klub || '', 'da')); break;
+    default: out.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  }
+  return out;
+}
+
+async function cardHtml(s) {
+  const u1 = await urlFor(s.billeder?.[0]);
+  const u2 = await urlFor(s.billeder?.[1]);
+  const img = u1
+    ? `<img class="primary" src="${u1}" alt="${esc(s.klub)}" loading="lazy">${u2 ? `<img class="alt" src="${u2}" alt="" loading="lazy">` : ''}`
+    : PLACEHOLDER_SVG;
+  return `
+  <a class="card" href="#/troje/${s.id}">
+    <div class="card-imgbox">
+      ${img}
+      <div class="card-badges">${badgesHtml(s)}</div>
+    </div>
+    <h3>${esc(s.klub) || 'Ukendt klub'}</h3>
+    <p class="meta">${esc(subtitle(s))}</p>
+  </a>`;
+}
+
+function statsData() {
+  const klubMap = new Map();
+  for (const s of shirts) {
+    const k = (s.klub || 'Ukendt').trim() || 'Ukendt';
+    klubMap.set(k, (klubMap.get(k) || 0) + 1);
+  }
+  return {
+    total: shirts.length,
+    klubber: klubMap.size,
+    saesoner: new Set(shirts.map(s => s.saeson).filter(Boolean)).size,
+    autentiske: shirts.filter(s => s.kvalitet === 'autentisk').length,
+    signerede: shirts.filter(s => s.signeret).length,
+    perKlub: [...klubMap.entries()].sort((a, b) => b[1] - a[1]),
+  };
+}
+
+async function renderHome() {
+  const st = statsData();
+  const filtered = applyFilters(shirts);
+  const heroImg = await urlFor(shirts.find(s => s.billeder?.length)?.billeder[0]);
+  const activeFilter = filters.klub || filters.saeson || (filters.type && TYPE_LABELS[filters.type]) || '';
+
+  let gridHtml;
+  if (!shirts.length) {
+    gridHtml = `<div class="empty">
+      <h2>Samlingen er tom — endnu</h2>
+      <p>Tilføj din første trøje via administrationssiden.</p>
+      <a class="btn" href="#/admin">Tilføj første trøje</a>
+    </div>`;
+  } else if (!filtered.length) {
+    gridHtml = `<div class="empty"><h2>Ingen trøjer matcher</h2><p>Prøv at justere søgning eller filtre.</p></div>`;
+  } else if (filters.sort === 'klub') {
+    // Grupperede "kollektioner" pr. klub, Como-style
+    const groups = new Map();
+    for (const s of filtered) {
+      const k = (s.klub || 'Ukendt').trim() || 'Ukendt';
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(s);
+    }
+    const sections = [];
+    for (const [klub, list] of groups) {
+      const cards = await Promise.all(list.map(cardHtml));
+      sections.push(`<section class="section">
+        <div class="section-head"><h2>${esc(klub)}</h2><span class="count">${list.length} ${list.length === 1 ? 'trøje' : 'trøjer'}</span></div>
+        <div class="grid">${cards.join('')}</div>
+      </section>`);
+    }
+    gridHtml = sections.join('');
+  } else {
+    const cards = await Promise.all(filtered.map(cardHtml));
+    const heading = activeFilter ? esc(activeFilter) : 'Hele samlingen';
+    gridHtml = `<section class="section">
+      <div class="section-head"><h2>${heading}</h2><span class="count">${filtered.length} ${filtered.length === 1 ? 'trøje' : 'trøjer'}</span></div>
+      <div class="grid">${cards.join('')}</div>
+    </section>`;
+  }
+
+  app.innerHTML = `
+  ${topbarHtml()}
+  <section class="hero">
+    ${heroImg ? `<img class="hero-img" src="${heroImg}" alt="">` : ''}
+    <div class="hero-content">
+      <div class="kicker">Privat katalog · Kun visning</div>
+      <h1>Min trøjesamling</h1>
+      <p class="sub">Et personligt arkiv over fodboldtrøjer — klubber, sæsoner og historierne bag dem.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="n">${st.total}</div><div class="l">${st.total === 1 ? 'Trøje' : 'Trøjer'}</div></div>
+        <div class="hero-stat"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
+        <div class="hero-stat"><div class="n">${st.saesoner}</div><div class="l">Sæsoner</div></div>
+        <div class="hero-stat"><div class="n">${st.signerede}</div><div class="l">Signerede</div></div>
+      </div>
+      <div style="margin-top:28px"><a class="btn light" href="#collection">Se samlingen</a></div>
+    </div>
+  </section>
+  <div class="toolbar" id="collection">
+    <div class="wrap toolbar-inner">
+      <input type="search" id="fQ" placeholder="Søg i klub, spiller, sæson, noter …" value="${esc(filters.q)}">
+      <select id="fKlub">
+        <option value="">Alle klubber</option>
+        ${uniqueSorted('klub').map(k => `<option ${filters.klub.toLocaleLowerCase('da') === k.label.toLocaleLowerCase('da') ? 'selected' : ''} value="${esc(k.label)}">${esc(k.label)}</option>`).join('')}
+      </select>
+      <select id="fSaeson">
+        <option value="">Alle sæsoner</option>
+        ${uniqueSorted('saeson').sort((a, b) => seasonKey(b.label) - seasonKey(a.label)).map(k => `<option ${filters.saeson === k.label ? 'selected' : ''} value="${esc(k.label)}">${esc(k.label)}</option>`).join('')}
+      </select>
+      <select id="fType">
+        <option value="">Alle typer</option>
+        ${Object.entries(TYPE_LABELS).map(([v, l]) => `<option ${filters.type === v ? 'selected' : ''} value="${v}">${l}</option>`).join('')}
+      </select>
+      <select id="fSort">
+        <option value="nyeste" ${filters.sort === 'nyeste' ? 'selected' : ''}>Nyest tilføjet</option>
+        <option value="aeldst" ${filters.sort === 'aeldst' ? 'selected' : ''}>Ældst tilføjet</option>
+        <option value="klub" ${filters.sort === 'klub' ? 'selected' : ''}>Klub (grupperet)</option>
+        <option value="saeson" ${filters.sort === 'saeson' ? 'selected' : ''}>Sæson, nyeste først</option>
+      </select>
+      ${(filters.q || filters.klub || filters.saeson || filters.type) ? '<button class="linkbtn" id="fReset">Nulstil</button>' : ''}
+      <span class="result-count">${filtered.length} af ${shirts.length} ${shirts.length === 1 ? 'trøje' : 'trøjer'}</span>
+    </div>
+  </div>
+  <main class="wrap">${gridHtml}</main>
+  ${shirts.length ? `
+  <section class="stats-band">
+    <div class="wrap">
+      <div class="kicker">Statistik</div>
+      <div class="stats-grid">
+        <div class="stat-tile"><div class="n">${st.total}</div><div class="l">Trøjer i samlingen</div></div>
+        <div class="stat-tile"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
+        <div class="stat-tile"><div class="n">${st.autentiske}</div><div class="l">Autentiske</div></div>
+        <div class="stat-tile"><div class="n">${st.total - st.autentiske}</div><div class="l">Replica</div></div>
+        <div class="stat-tile"><div class="n">${st.signerede}</div><div class="l">Signerede</div></div>
+      </div>
+      <div class="klub-bars">
+        ${st.perKlub.slice(0, 8).map(([k, n]) => `
+          <div class="klub-bar">
+            <span>${esc(k)}</span>
+            <span class="bar"><i style="width:${Math.round(n / st.total * 100)}%"></i></span>
+            <span class="num">${n}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''}
+  <footer><div class="wrap"><span>Trøjesamlingen — privat arkiv</span><span>Ingen salg · Ingen kurv · Kun kærlighed til trøjer</span></div></footer>`;
+
+  bindTopbar();
+  const rerender = () => renderHome();
+  const q = document.getElementById('fQ');
+  q.oninput = () => { filters.q = q.value; clearTimeout(q._t); q._t = setTimeout(() => { const pos = q.selectionStart; rerender().then(() => { const nq = document.getElementById('fQ'); nq.focus(); nq.setSelectionRange(pos, pos); }); }, 250); };
+  document.getElementById('fKlub').onchange = e => { filters.klub = e.target.value; rerender(); };
+  document.getElementById('fSaeson').onchange = e => { filters.saeson = e.target.value; rerender(); };
+  document.getElementById('fType').onchange = e => { filters.type = e.target.value; rerender(); };
+  document.getElementById('fSort').onchange = e => { filters.sort = e.target.value; rerender(); };
+  const reset = document.getElementById('fReset');
+  if (reset) reset.onclick = () => { filters = { q: '', klub: '', saeson: '', type: '', sort: filters.sort }; rerender(); };
+}
+
+/* ── Detaljeside ────────────────────────────────── */
+async function renderDetail(id) {
+  const s = shirts.find(x => x.id === id);
+  if (!s) { location.hash = '#/'; return; }
+  const urls = [];
+  for (const imgId of (s.billeder || [])) {
+    const u = await urlFor(imgId);
+    if (u) urls.push(u);
+  }
+  const added = s.createdAt ? new Date(s.createdAt).toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  const spec = [
+    ['Klub', s.klub],
+    ['Sæson', s.saeson],
+    ['Type', TYPE_LABELS[s.type] || s.type],
+    ['Spiller', s.spiller ? s.spiller + (s.nummer ? ' · #' + s.nummer : '') : (s.nummer ? '#' + s.nummer : '')],
+    ['Størrelse', s.stoerrelse],
+    ['Kvalitet', s.kvalitet === 'autentisk' ? 'Autentisk (spillerversion)' : 'Replica (fanversion)'],
+    ['Signeret', s.signeret ? 'Ja' : ''],
+    ['Tilføjet', added],
+  ].filter(([, v]) => v);
+
+  app.innerHTML = `
+  ${topbarHtml()}
+  <main class="wrap">
+    <button class="backlink" onclick="history.length > 1 ? history.back() : location.hash='#/'">← Tilbage til samlingen</button>
+    <div class="detail">
+      <div class="gallery">
+        <div class="gallery-main" id="galleryMain">
+          ${urls.length ? `<img src="${urls[0]}" alt="${esc(s.klub)}">` : PLACEHOLDER_SVG}
+        </div>
+        ${urls.length > 1 ? `<div class="thumbs">${urls.map((u, i) =>
+          `<button data-i="${i}" class="${i === 0 ? 'active' : ''}"><img src="${u}" alt=""></button>`).join('')}</div>` : ''}
+      </div>
+      <div class="detail-info">
+        <div class="kicker">${esc(s.saeson || '')}${s.saeson && s.type ? ' · ' : ''}${esc(TYPE_LABELS[s.type] || '')}</div>
+        <h1>${esc(s.klub) || 'Ukendt klub'}</h1>
+        <p class="detail-sub">${esc(s.spiller ? s.spiller + (s.nummer ? ' #' + s.nummer : '') : (TYPE_LABELS[s.type] || '') + (s.saeson ? ' ' + s.saeson : ''))}</p>
+        <div class="detail-badges">${badgesHtml(s)}</div>
+        <dl class="speclist">
+          ${spec.map(([k, v]) => `<div class="row"><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}
+        </dl>
+        ${s.noter ? `<div class="notes"><h2>Historie &amp; noter</h2><p>${esc(s.noter)}</p></div>` : ''}
+        <div class="detail-actions">
+          <a class="btn ghost sm" href="#/admin/rediger/${s.id}">Redigér</a>
+          <button class="btn danger sm" id="delBtn">Slet trøje</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer><div class="wrap"><span>Trøjesamlingen — privat arkiv</span><span>Ingen salg · Ingen kurv</span></div></footer>`;
+
+  bindTopbar();
+  document.querySelectorAll('.thumbs button').forEach(b => {
+    b.onclick = () => {
+      document.querySelector('#galleryMain img').src = urls[+b.dataset.i];
+      document.querySelectorAll('.thumbs button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+    };
+  });
+  document.getElementById('delBtn').onclick = () => deleteShirt(s.id, true);
+}
+
+/* ── Slet ───────────────────────────────────────── */
+async function deleteShirt(id, goHome) {
+  const s = shirts.find(x => x.id === id);
+  if (!s) return;
+  if (!confirm(`Slet "${s.klub || 'trøje'} ${s.saeson || ''}" permanent? Billederne slettes også.`)) return;
+  for (const imgId of (s.billeder || [])) {
+    await idbDel('images', imgId);
+    urlCache.delete(imgId);
+  }
+  await idbDel('shirts', id);
+  await loadShirts();
+  toast('Trøjen er slettet.');
+  if (goHome) location.hash = '#/';
+  else renderAdmin(null);
+}
+
+/* ── Admin ──────────────────────────────────────── */
+async function renderAdmin(editId) {
+  const editing = editId ? shirts.find(x => x.id === editId) : null;
+  if (editId && !editing) { location.hash = '#/admin'; return; }
+
+  // nulstil formular-billedstate
+  editImages = [];
+  editRemoved = [];
+  if (editing) {
+    for (const imgId of (editing.billeder || [])) {
+      const u = await urlFor(imgId);
+      if (u) editImages.push({ id: imgId, url: u });
+    }
+  }
+
+  const rowsHtml = await Promise.all(shirts.map(async s => {
+    const u = await urlFor(s.billeder?.[0]);
+    return `<div class="admin-row">
+      <a class="thumb" href="#/troje/${s.id}">${u ? `<img src="${u}" alt="">` : ''}</a>
+      <div><div class="t">${esc(s.klub) || 'Ukendt klub'}</div><div class="m">${esc(subtitle(s))}</div></div>
+      <div class="acts">
+        <a class="btn ghost sm" href="#/admin/rediger/${s.id}">Redigér</a>
+        <button class="btn danger sm" data-del="${s.id}">Slet</button>
+      </div>
+    </div>`;
+  }));
+
+  const v = f => esc(editing ? (editing[f] ?? '') : '');
+  app.innerHTML = `
+  ${topbarHtml()}
+  <main class="wrap">
+    <div class="admin-head">
+      <div class="kicker">Administration</div>
+      <h1>${editing ? 'Redigér trøje' : 'Tilføj &amp; administrér'}</h1>
+    </div>
+    <div class="admin-grid">
+      <form class="panel" id="shirtForm">
+        <h2>${editing ? `Redigér: ${esc(editing.klub || 'trøje')}` : 'Ny trøje'}</h2>
+        <div class="field">
+          <label for="inKlub">Klub *</label>
+          <input type="text" id="inKlub" list="klubList" required value="${v('klub')}" placeholder="fx Como 1907">
+          <datalist id="klubList">${uniqueSorted('klub').map(k => `<option value="${esc(k.label)}">`).join('')}</datalist>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="inSaeson">Sæson</label>
+            <input type="text" id="inSaeson" value="${v('saeson')}" placeholder="fx 2023/24">
+          </div>
+          <div class="field">
+            <label for="inType">Type</label>
+            <select id="inType">
+              ${Object.entries(TYPE_LABELS).map(([val, l]) => `<option value="${val}" ${editing?.type === val ? 'selected' : ''}>${l}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="inSpiller">Spillernavn</label>
+            <input type="text" id="inSpiller" value="${v('spiller')}" placeholder="fx Fàbregas">
+          </div>
+          <div class="field">
+            <label for="inNummer">Nummer</label>
+            <input type="number" id="inNummer" min="0" max="99" value="${v('nummer')}" placeholder="fx 4">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="inStr">Størrelse</label>
+            <select id="inStr">
+              <option value="">— vælg —</option>
+              ${SIZES.map(sz => `<option ${editing?.stoerrelse === sz ? 'selected' : ''}>${sz}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>Kvalitet</label>
+            <div class="radio-row" style="padding-top:8px">
+              <label><input type="radio" name="kvalitet" value="autentisk" ${editing?.kvalitet === 'autentisk' ? 'checked' : ''}> Autentisk</label>
+              <label><input type="radio" name="kvalitet" value="replica" ${!editing || editing.kvalitet !== 'autentisk' ? 'checked' : ''}> Replica</label>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:0.88rem;color:var(--ink);font-weight:400">
+            <input type="checkbox" id="inSigneret" ${editing?.signeret ? 'checked' : ''}> Trøjen er signeret
+          </label>
+        </div>
+        <div class="field">
+          <label>Billeder (forside, bagside m.m.)</label>
+          <div class="dropzone" id="dropzone">Klik eller træk billeder hertil<br><small>Første billede bliver hovedbilledet</small></div>
+          <input type="file" id="inImgs" accept="image/*" multiple hidden>
+          <div class="img-previews" id="imgPreviews"></div>
+        </div>
+        <div class="field">
+          <label for="inNoter">Noter / historie</label>
+          <textarea id="inNoter" placeholder="Hvor og hvornår er den købt? Anekdoter, kampe, minder …">${v('noter')}</textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn" type="submit">${editing ? 'Gem ændringer' : 'Tilføj trøje'}</button>
+          ${editing ? '<a class="btn ghost" href="#/admin">Annullér</a>' : ''}
+        </div>
+      </form>
+      <div>
+        <div class="panel" style="background:#fff">
+          <h2>Samlingen (${shirts.length})</h2>
+          <div class="admin-list">
+            ${shirts.length ? rowsHtml.join('') : '<p style="color:var(--muted);font-size:0.88rem">Ingen trøjer endnu — brug formularen til venstre.</p>'}
+          </div>
+          <div class="datatools">
+            <button class="btn ghost sm" id="exportBtn">Eksportér backup</button>
+            <button class="btn ghost sm" id="importBtn">Importér backup</button>
+            <input type="file" id="importFile" accept="application/json" hidden>
+            <span class="hint">Data ligger kun i denne browser. Tag en backup jævnligt, og importér den på andre enheder for at flytte samlingen med.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>`;
+
+  bindTopbar();
+
+  /* billeder i formularen */
+  const dz = document.getElementById('dropzone');
+  const fileInput = document.getElementById('inImgs');
+  const pvBox = document.getElementById('imgPreviews');
+
+  function renderPreviews() {
+    pvBox.innerHTML = editImages.map((p, i) => `
+      <div class="pv">
+        <img src="${p.url}" alt="">
+        ${i === 0 ? '<span class="tag">Hovedbillede</span>' : ''}
+        <button type="button" class="rm" data-i="${i}" title="Fjern">✕</button>
+      </div>`).join('');
+    pvBox.querySelectorAll('.rm').forEach(b => {
+      b.onclick = () => {
+        const p = editImages.splice(+b.dataset.i, 1)[0];
+        if (p.id) editRemoved.push(p.id);
+        renderPreviews();
+      };
+    });
+  }
+  renderPreviews();
+
+  async function addFiles(files) {
+    for (const f of files) {
+      if (!f.type.startsWith('image/')) continue;
+      const blob = await compressImage(f);
+      const url = await blobToDataURL(blob);
+      editImages.push({ blob, url });
+    }
+    renderPreviews();
+  }
+  dz.onclick = () => fileInput.click();
+  fileInput.onchange = () => { addFiles([...fileInput.files]); fileInput.value = ''; };
+  dz.ondragover = e => { e.preventDefault(); dz.classList.add('drag'); };
+  dz.ondragleave = () => dz.classList.remove('drag');
+  dz.ondrop = e => { e.preventDefault(); dz.classList.remove('drag'); addFiles([...e.dataTransfer.files]); };
+
+  /* gem */
+  document.getElementById('shirtForm').onsubmit = async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    try {
+      const imageIds = [];
+      for (const p of editImages) {
+        if (p.id) { imageIds.push(p.id); continue; }
+        const id = newId();
+        await idbPut('images', { id, blob: p.blob });
+        urlCache.set(id, p.url);
+        imageIds.push(id);
+      }
+      for (const removedId of editRemoved) {
+        await idbDel('images', removedId);
+        urlCache.delete(removedId);
+      }
+      const shirt = {
+        id: editing ? editing.id : newId(),
+        klub: document.getElementById('inKlub').value.trim(),
+        saeson: document.getElementById('inSaeson').value.trim(),
+        type: document.getElementById('inType').value,
+        spiller: document.getElementById('inSpiller').value.trim(),
+        nummer: document.getElementById('inNummer').value.trim(),
+        stoerrelse: document.getElementById('inStr').value,
+        kvalitet: document.querySelector('input[name="kvalitet"]:checked').value,
+        signeret: document.getElementById('inSigneret').checked,
+        noter: document.getElementById('inNoter').value.trim(),
+        billeder: imageIds,
+        createdAt: editing ? (editing.createdAt || Date.now()) : Date.now(),
+        updatedAt: Date.now(),
+      };
+      await idbPut('shirts', shirt);
+      await loadShirts();
+      toast(editing ? 'Ændringerne er gemt.' : `${shirt.klub || 'Trøjen'} er føjet til samlingen.`);
+      if (editing) location.hash = '#/troje/' + shirt.id;
+      else renderAdmin(null);
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  /* slet fra listen */
+  document.querySelectorAll('[data-del]').forEach(b => {
+    b.onclick = () => deleteShirt(b.dataset.del, false);
+  });
+
+  /* eksport / import */
+  document.getElementById('exportBtn').onclick = exportBackup;
+  document.getElementById('importBtn').onclick = () => document.getElementById('importFile').click();
+  document.getElementById('importFile').onchange = e => importBackup(e.target.files[0]);
+}
+
+/* ── Backup ─────────────────────────────────────── */
+function blobToDataURL(blob) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = () => rej(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+async function exportBackup() {
+  toast('Pakker backup …');
+  const images = [];
+  for (const rec of await idbAll('images')) {
+    images.push({ id: rec.id, data: await blobToDataURL(rec.blob) });
+  }
+  const payload = { app: 'trojesamlingen', version: 1, exportedAt: new Date().toISOString(), shirts, images };
+  const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `trojesamlingen-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  toast('Backup downloadet.');
+}
+async function importBackup(file) {
+  if (!file) return;
+  let payload;
+  try {
+    payload = JSON.parse(await file.text());
+    if (payload.app !== 'trojesamlingen' || !Array.isArray(payload.shirts)) throw new Error('format');
+  } catch {
+    toast('Filen kunne ikke læses som en gyldig backup.');
+    return;
+  }
+  if (!confirm(`Importér ${payload.shirts.length} trøjer? Det ERSTATTER alt, der ligger her nu.`)) return;
+  // ryd eksisterende
+  for (const s of await idbAll('shirts')) await idbDel('shirts', s.id);
+  for (const im of await idbAll('images')) await idbDel('images', im.id);
+  urlCache.clear();
+  // indlæs
+  for (const im of (payload.images || [])) {
+    const blob = await (await fetch(im.data)).blob();
+    await idbPut('images', { id: im.id, blob });
+  }
+  for (const s of payload.shirts) await idbPut('shirts', s);
+  await loadShirts();
+  toast(`Importerede ${payload.shirts.length} trøjer.`);
+  renderAdmin(null);
+}
+
+/* ── Init ───────────────────────────────────────── */
+(async function init() {
+  db = await openDB();
+  await loadShirts();
+  route();
+})();
+</script>
+</body>
+</html>
