@@ -14,7 +14,7 @@ af repoet.
 
 Hele siten ligger bag ét fælles password-login (ingen brugerkonti):
 
-> **como1907**
+> **\*Gunners2680** (stjernen er en del af koden)
 
 Sæt kryds i "Husk mig på denne enhed" for at slippe for at taste koden
 hver gang. "Log ud" i topmenuen låser igen.
