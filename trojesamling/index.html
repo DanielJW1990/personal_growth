@@ -446,10 +446,9 @@ function toast(msg) {
   toast._h = setTimeout(() => t.classList.remove('show'), 2600);
 }
 function badgesHtml(s, big) {
+  // Replica vises ikke som badge — det er standarden; kvaliteten står i info-listen.
   const b = [];
-  b.push(s.kvalitet === 'autentisk'
-    ? '<span class="badge autentisk">Autentisk</span>'
-    : '<span class="badge replica">Replica</span>');
+  if (s.kvalitet === 'autentisk') b.push('<span class="badge autentisk">Autentisk</span>');
   if (s.signeret) b.push('<span class="badge signeret">Signeret</span>');
   return b.join('');
 }
