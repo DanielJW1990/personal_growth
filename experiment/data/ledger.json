@@ -177,6 +177,15 @@
         "sp500": 706.12
       },
       "kind": "pulse"
+    },
+    {
+      "date": "2026-07-12",
+      "total_value_dkk": 20912.409250372537,
+      "benchmark_levels": {
+        "msci_world": 126.15,
+        "sp500": 711.48
+      },
+      "kind": "pulse"
     }
   ],
   "telegram_state": {
