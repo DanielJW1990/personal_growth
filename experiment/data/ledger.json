@@ -470,6 +470,48 @@
         "message_id": 20,
         "original_text": "💡 Proposal: BUY McDonald's (MCD)\nTarget weight: 12%\nApprox size: ~2375 DKK\nThesis: The world's dominant quick-service restaurant — a high-margin franchise/royalty model with global scale and pricing power — trading ~22x earnings, about 14% below its 10-year median, after a pullback. Defensive consumer exposure to balance the basket. (Replaces LVMH.)\nQuality: Franchise/royalty model, high ROIC, Global brand & scale moat, Steady dividend grower\nValuation: P/E ~22, ~14% below its 10-year median\nWrong if: Sustained traffic declines from value-conscious consumers or franchise-system strain\nTax: Buy — no realization. US stock: buy for ~2,375 DKK (fractional ≈ 1.3 shares).\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
         "created": "2026-06-26T08:13:16.990Z"
+      },
+      "mroqbim12i8": {
+        "proposal": {
+          "action": "sell",
+          "instrument": "Novo Nordisk B",
+          "ticker": "NOVO-B.CO",
+          "target_weight_pct": 0,
+          "approx_dkk": 2664,
+          "thesis": "The 'durable, protected GLP-1 franchise with pricing power' thesis is impaired: Novo lost a court trial shielding Wegovy from generic competition, cut guidance twice, and now expects US sales to decline in 2026 amid share loss to Eli Lilly. This is a change in the competitive-moat facts, not price noise, so the QARP quality criterion no longer holds.",
+          "quality_criteria_met": [],
+          "valuation_note": "Cheap after a ~46% 2025 drawdown, but low multiple reflects genuine moat erosion, not mispricing—value-trap risk outweighs the discount",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "Oral Wegovy and CagriSema drive a durable US volume/pricing rebound and stabilize share vs Lilly, restoring high-single/double-digit profitable growth—if that becomes evident, the sell was premature.",
+          "tax_note": "Realization event in the regular depot: the position's ~+7.4% unrealized gain becomes a realized, taxable capital gain this year."
+        },
+        "status": "proposed",
+        "message_id": 32,
+        "original_text": "💡 Proposal: SELL Novo Nordisk B (NOVO-B.CO)\nTarget weight: 0%\nApprox size: ~2664 DKK\nThesis: The 'durable, protected GLP-1 franchise with pricing power' thesis is impaired: Novo lost a court trial shielding Wegovy from generic competition, cut guidance twice, and now expects US sales to decline in 2026 amid share loss to Eli Lilly. This is a change in the competitive-moat facts, not price noise, so the QARP quality criterion no longer holds.\nValuation: Cheap after a ~46% 2025 drawdown, but low multiple reflects genuine moat erosion, not mispricing—value-trap risk outweighs the discount\nWrong if: Oral Wegovy and CagriSema drive a durable US volume/pricing rebound and stabilize share vs Lilly, restoring high-single/double-digit profitable growth—if that becomes evident, the sell was premature.\nTax: Realization event in the regular depot: the position's ~+7.4% unrealized gain becomes a realized, taxable capital gain this year.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-07-17T09:22:09.114Z"
+      },
+      "mroqbivugjl": {
+        "proposal": {
+          "action": "buy",
+          "instrument": "Novartis AG",
+          "ticker": "NOVN.SW",
+          "target_weight_pct": 12.5,
+          "approx_dkk": 2630,
+          "thesis": "Novartis is a diversified, cash-generative pharma whose growth drivers (Kisqali, Pluvicto, Kesimpta, Scemblix) are compounding strongly even as US generic erosion caps near-term core income. It replaces a single-franchise, moat-impaired name with a broader, more durable healthcare business at a sensible price.",
+          "quality_criteria_met": [
+            "Consistently profitable (2025 high-single-digit sales growth, ~40% core margin)",
+            "Durable, diversified competitive position across oncology/immunology/cardio-renal/neuro",
+            "Healthy balance sheet with 30-year record of consecutive dividend increases and active buybacks"
+          ],
+          "valuation_note": "P/E ~20 vs low-single-digit near-term sales growth but a strong multi-blockbuster pipeline; ~2.1% dividend yield—reasonable, not a hype multiple",
+          "is_speculative": false,
+          "what_would_make_this_wrong": "US patent-cliff generic erosion outpaces the launch ramp and core operating income declines beyond the low-single-digit guide, signaling the pipeline can't offset losses of exclusivity.",
+          "tax_note": "N/A (purchase); no realization event."
+        },
+        "status": "proposed",
+        "message_id": 33,
+        "original_text": "💡 Proposal: BUY Novartis AG (NOVN.SW)\nTarget weight: 12.5%\nApprox size: ~2630 DKK\nThesis: Novartis is a diversified, cash-generative pharma whose growth drivers (Kisqali, Pluvicto, Kesimpta, Scemblix) are compounding strongly even as US generic erosion caps near-term core income. It replaces a single-franchise, moat-impaired name with a broader, more durable healthcare business at a sensible price.\nQuality: Consistently profitable (2025 high-single-digit sales growth, ~40% core margin), Durable, diversified competitive position across oncology/immunology/cardio-renal/neuro, Healthy balance sheet with 30-year record of consecutive dividend increases and active buybacks\nValuation: P/E ~20 vs low-single-digit near-term sales growth but a strong multi-blockbuster pipeline; ~2.1% dividend yield—reasonable, not a hype multiple\nWrong if: US patent-cliff generic erosion outpaces the launch ramp and core operating income declines beyond the low-single-digit guide, signaling the pipeline can't offset losses of exclusivity.\nTax: N/A (purchase); no realization event.\n\nAfter you place the order, reply to this message with the fill, e.g.:\n\"filled 3.4 shares @ 142.10 DKK\" — or \"filled at market\".",
+        "created": "2026-07-17T09:22:09.314Z"
       }
     },
     "seeded": true
