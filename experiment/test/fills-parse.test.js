@@ -34,3 +34,21 @@ test('returns null for non-fill text', () => {
   assert.equal(parseFill('what is the weather'), null);
   assert.equal(parseFill(''), null);
 });
+
+test('parses "Sold 8,032 novo shares for 2677,60 dkk" (total-based, Danish commas)', () => {
+  const f = parseFill('Sold 8,032 novo shares for 2677,60 dkk');
+  assert.equal(f.shares, 8.032);
+  assert.ok(Math.abs(f.price_dkk - 2677.6 / 8.032) < 1e-9);
+  assert.equal(f.est_or_confirmed, 'confirmed');
+});
+
+test('parses "Bought 2,611 novartis shares for 2630 dkk at stockprice 153,67$" — USD price ignored, DKK total used', () => {
+  const f = parseFill('Bought 2,611 novartis shares for 2630 dkk at stockprice 153,67$');
+  assert.equal(f.shares, 2.611);
+  assert.ok(Math.abs(f.price_dkk - 2630 / 2.611) < 1e-9);
+});
+
+test('explicit @price still wins over a total', () => {
+  const f = parseFill('filled 2 shares @ 140 dkk for 300 dkk');
+  assert.equal(f.price_dkk, 140);
+});

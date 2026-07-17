@@ -47,6 +47,14 @@ export function parseFill(text) {
     if (m) shares = num(m[1]);
   }
 
+  // Total consideration: "for 2677,60 dkk" — the natural way people report a
+  // fill. When there's no explicit @price, derive per-share price from it.
+  if (price == null && shares) {
+    const totalMatch = text.match(/\bfor\s*([\d.,]+)\s*(?:dkk|kr)\b/i);
+    const total = totalMatch ? num(totalMatch[1]) : null;
+    if (total != null && total > 0) price = total / shares;
+  }
+
   const confirmed = price != null && !atMarket;
   return {
     shares,

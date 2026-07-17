@@ -70,6 +70,12 @@ async function handleMessage(led, msg) {
     await sendMessage('That proposal was rejected — ignoring the fill.');
     return;
   }
+  // Guard against double-booking: once a proposal is filled, further replies to
+  // it are ignored (corrections go through Claude, who edits the ledger).
+  if (entry.status === 'filled') {
+    await sendMessage('That trade is already booked — ignoring to avoid a double entry. If this is a correction, tell Claude in the chat.');
+    return;
+  }
 
   const proposal = entry.proposal;
   let price = parsed.price_dkk;

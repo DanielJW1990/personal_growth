@@ -56,8 +56,8 @@ export function formatProposal(p) {
   if (p.tax_note) L.push(`Tax: ${p.tax_note}`);
   if (p.is_speculative) L.push('⚠️ Tagged SPECULATIVE (tracked separately).');
   L.push('');
-  L.push('After you place the order, reply to this message with the fill, e.g.:');
-  L.push('"filled 3.4 shares @ 142.10 DKK" — or "filled at market".');
+  L.push('After you place the order, REPLY to this message (swipe it) with the fill, e.g.:');
+  L.push('"filled 3.4 shares @ 142.10 DKK" · "sold 8,03 shares for 2677,60 dkk" · or "filled at market".');
   return L.join('\n');
 }
 
