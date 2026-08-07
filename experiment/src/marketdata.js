@@ -14,6 +14,7 @@ const CHART = (symbol) =>
 async function fetchJson(url) {
   const res = await fetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0 (index-beating-experiment)' },
+    signal: AbortSignal.timeout(30_000), // fail fast; callers tolerate a missing quote
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.json();

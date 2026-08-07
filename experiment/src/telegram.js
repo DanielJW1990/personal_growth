@@ -9,14 +9,27 @@ const API = (method) => `https://api.telegram.org/bot${config.telegramBotToken}/
 
 async function call(method, body) {
   if (!config.telegramBotToken) throw new Error('TELEGRAM_BOT_TOKEN is not set');
-  const res = await fetch(API(method), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  const data = await res.json();
-  if (!data.ok) throw new Error(`Telegram ${method} failed: ${data.description}`);
-  return data.result;
+  // 30s timeout + one retry: a stalled Telegram API must fail the run fast
+  // (the next scheduled poll picks up where the offset left off), not hang
+  // until the job's 15-minute kill switch.
+  let lastErr;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, 5000));
+    try {
+      const res = await fetch(API(method), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(30_000),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(`Telegram ${method} failed: ${data.description}`);
+      return data.result;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr;
 }
 
 export async function sendMessage(text, extra = {}) {
