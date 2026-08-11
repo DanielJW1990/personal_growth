@@ -141,6 +141,7 @@ export const da = {
 
   body: {
     title: 'Kropsdata',
+    measurements: 'Målinger',
     newScan: 'Ny måling',
     editScan: 'Redigér måling',
     scale: 'Fra kropsanalysevægt',
@@ -191,6 +192,9 @@ export const da = {
     movingAverage: 'Gennemsnit (7 d)',
     compositionTitle: 'Fedtmasse vs. lean body mass',
     compositionSubtitle: 'Her ser du om det virker',
+    compositionAbsolute: 'Absolut',
+    compositionChange: 'Ændring',
+    compositionChangeHint: 'Ændring i kg siden første måling ({date})',
     fatMass: 'Fedtmasse',
     leanBodyMass: 'Lean body mass',
     noExerciseData: 'Ingen sæt logget for denne øvelse endnu.',

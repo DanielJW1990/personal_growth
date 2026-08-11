@@ -36,6 +36,18 @@ export function weeksOnProgram(programStartDate: string, todayIso: string): numb
   return Math.floor(days / 7) + 1;
 }
 
+/**
+ * The start of the current block: whichever came first, the configured start
+ * date or the oldest logged session. Without this, importing a backup would
+ * reset the block to week 1.
+ */
+export function programStart(configuredStart: string, sessionDates: string[]): string {
+  return sessionDates.reduce(
+    (earliest, date) => (date < earliest ? date : earliest),
+    configuredStart,
+  );
+}
+
 export interface SeriesPoint {
   date: string;
   value: number;

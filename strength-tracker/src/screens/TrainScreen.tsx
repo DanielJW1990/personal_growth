@@ -7,7 +7,7 @@ import { EmptyState, SectionTitle } from '../components/ui';
 import { LogScreen } from './LogScreen';
 import { formatSetScheme } from './ProgramScreen';
 import { formatLongDate, formatShortDate, todayIso } from '../lib/date';
-import { computeWeekStreak, sessionsInMonth, weeksOnProgram } from '../lib/stats';
+import { computeWeekStreak, programStart, sessionsInMonth, weeksOnProgram } from '../lib/stats';
 import { tonnage } from '../lib/history';
 import { formatTonnage } from '../lib/format';
 
@@ -58,7 +58,7 @@ export function TrainScreen() {
   const today = todayIso();
   const streak = computeWeekStreak(doneDates, today);
   const monthCount = sessionsInMonth(doneDates, today);
-  const programWeek = weeksOnProgram(settings.programStartDate, today);
+  const programWeek = weeksOnProgram(programStart(settings.programStartDate, doneDates), today);
 
   const lastByTemplate = new Map<string, string>();
   for (const session of [...done].sort((a, b) => a.startedAt - b.startedAt)) {
