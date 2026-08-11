@@ -94,6 +94,13 @@ export interface Session {
   startedAt: number;
   endedAt: number | null;
   templateId: string | null;
+  /** Template name as it was when the session started. */
+  templateName: string;
+  /**
+   * Snapshot of the template's exercises taken at start, so editing the
+   * template later does not rewrite a session that is already under way.
+   */
+  plan: TemplateExercise[];
   /** Filled when the session is finished. */
   durationMin: number | null;
   bodyWeightKg: number | null;

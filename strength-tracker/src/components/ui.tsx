@@ -46,7 +46,7 @@ export function Stepper({
         >
           −
         </button>
-        <div className="flex min-h-[56px] flex-1 items-baseline justify-center gap-1 rounded-xl bg-ink-700 px-2 ring-1 ring-inset ring-ink-500">
+        <div className="flex min-h-[56px] min-w-0 flex-1 items-baseline justify-center gap-1 rounded-xl bg-ink-700 px-2 ring-1 ring-inset ring-ink-500">
           <span className="self-center text-3xl font-bold tabular-nums">{format(value)}</span>
           {suffix ? <span className="self-center text-sm text-slate-400">{suffix}</span> : null}
         </div>
