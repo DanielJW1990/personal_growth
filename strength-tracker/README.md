@@ -31,15 +31,27 @@ loaded from the network. Handy for hosting the app as a single page or mailing
 it to yourself. Note that browsers block IndexedDB on `file://` URLs, so the
 file needs to be served over http(s) rather than double-clicked.
 
-## Deploying to Vercel
+## Deploying
+
+The app is a static site: any host that serves files over HTTPS will do. Once
+deployed, open it on the phone and use "Add to home screen". It then runs
+standalone and works offline — the app makes no network requests of its own, so
+after the first load only an app update needs the network.
+
+### Netlify (no repository connection needed)
+
+Run `npm run build`, then drag the *contents* of `dist/` — or a zip of them —
+onto https://app.netlify.com/drop. `public/_redirects` and `public/_headers`
+ship with the build and give Netlify the SPA fallback and the cache rules the
+service worker needs.
+
+### Vercel
 
 Import the repository, set **Root Directory** to `strength-tracker`, and accept
 the detected Vite preset (`npm run build` → `dist`). `vercel.json` already
-handles SPA rewrites and the cache headers the service worker needs.
-
-Once deployed, open it on the phone and use "Add to home screen". It then runs
-standalone and works offline — the app makes no network requests of its own, so
-after the first load nothing but an app update needs the network.
+handles SPA rewrites and the same cache headers. Note that Vercel builds the
+repository's production branch, so the app has to be on that branch — or the
+production branch has to be changed in Settings → Git.
 
 ## Data model
 

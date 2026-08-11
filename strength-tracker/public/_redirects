@@ -1,0 +1,2 @@
+# SPA fallback for Netlify. Real files (sw.js, assets, icons) are served first.
+/*  /index.html  200
