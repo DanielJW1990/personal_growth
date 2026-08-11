@@ -2,7 +2,31 @@ import type { Exercise, TemplateExercise, WorkoutTemplate } from './types';
 import { DEFAULT_INCREMENT_KG } from './types';
 
 /** Bump when the seed content changes so existing installs pick up new exercises. */
-export const SEED_VERSION = 1;
+export const SEED_VERSION = 2;
+
+/**
+ * Seed version 2 moved the display names from Danish to the English names used
+ * on the gym floor. The migration only renames an exercise whose name is still
+ * exactly the old seed value, so a name the user changed by hand is left alone.
+ */
+export const RENAMED_IN_SEED_V2: Record<string, string> = {
+  bench_press: 'Bænkpres',
+  romanian_deadlift: 'Rumænsk dødløft',
+  lateral_raise: 'Sidehævninger',
+  ez_bar_curl: 'EZ-curl',
+  deadlift: 'Dødløft',
+  incline_dumbbell_press: 'Skrå håndvægtspres',
+  seated_shoulder_press: 'Siddende skulderpres',
+  triceps_pushdown: 'Triceps pressdown',
+  hip_thrust: 'Hoftestød',
+  standing_calf_raise: 'Stående lægpres',
+  seated_leg_curl: 'Siddende bencurl',
+  leg_press: 'Benpres',
+  cable_crunch: 'Kabelcrunch',
+  overhead_press: 'Militærpres',
+  barbell_row: 'Stangroning',
+  lat_pulldown: 'Latpulldown',
+};
 
 type ExerciseSeed = Omit<Exercise, 'createdAt' | 'custom' | 'incrementKg' | 'perSide'> & {
   incrementKg?: number;
@@ -20,7 +44,7 @@ const EXERCISE_SEEDS: ExerciseSeed[] = [
   },
   {
     id: 'bench_press',
-    name: 'Bænkpres',
+    name: 'Bench press',
     muscles: ['chest', 'triceps', 'shoulders'],
     equipment: 'barbell',
     defaultRepRange: { min: 6, max: 8 },
@@ -34,21 +58,21 @@ const EXERCISE_SEEDS: ExerciseSeed[] = [
   },
   {
     id: 'romanian_deadlift',
-    name: 'Rumænsk dødløft',
+    name: 'Romanian deadlift',
     muscles: ['hamstrings', 'glutes', 'back'],
     equipment: 'barbell',
     defaultRepRange: { min: 8, max: 10 },
   },
   {
     id: 'lateral_raise',
-    name: 'Sidehævninger',
+    name: 'Lateral raise',
     muscles: ['side_delts'],
     equipment: 'dumbbell',
     defaultRepRange: { min: 12, max: 15 },
   },
   {
     id: 'ez_bar_curl',
-    name: 'EZ-curl',
+    name: 'EZ-bar curl',
     muscles: ['biceps'],
     equipment: 'barbell',
     defaultRepRange: { min: 10, max: 12 },
@@ -57,14 +81,14 @@ const EXERCISE_SEEDS: ExerciseSeed[] = [
   // --- Full body B ---
   {
     id: 'deadlift',
-    name: 'Dødløft',
+    name: 'Deadlift',
     muscles: ['back', 'hamstrings', 'glutes'],
     equipment: 'barbell',
     defaultRepRange: { min: 4, max: 6 },
   },
   {
     id: 'incline_dumbbell_press',
-    name: 'Skrå håndvægtspres',
+    name: 'Incline dumbbell press',
     muscles: ['chest', 'shoulders', 'triceps'],
     equipment: 'dumbbell',
     defaultRepRange: { min: 8, max: 10 },
@@ -86,14 +110,14 @@ const EXERCISE_SEEDS: ExerciseSeed[] = [
   },
   {
     id: 'seated_shoulder_press',
-    name: 'Siddende skulderpres',
+    name: 'Seated shoulder press',
     muscles: ['shoulders', 'triceps'],
     equipment: 'dumbbell',
     defaultRepRange: { min: 8, max: 10 },
   },
   {
     id: 'triceps_pushdown',
-    name: 'Triceps pressdown',
+    name: 'Triceps pushdown',
     muscles: ['triceps'],
     equipment: 'machine',
     defaultRepRange: { min: 10, max: 12 },
@@ -123,7 +147,7 @@ const EXERCISE_SEEDS: ExerciseSeed[] = [
   },
   {
     id: 'hip_thrust',
-    name: 'Hoftestød',
+    name: 'Hip thrust',
     muscles: ['glutes', 'hamstrings'],
     equipment: 'barbell',
     defaultRepRange: { min: 8, max: 10 },
@@ -147,49 +171,49 @@ const EXERCISE_SEEDS: ExerciseSeed[] = [
   // --- Extra library entries, not part of any seeded template ---
   {
     id: 'standing_calf_raise',
-    name: 'Stående lægpres',
+    name: 'Standing calf raise',
     muscles: ['calves'],
     equipment: 'machine',
     defaultRepRange: { min: 10, max: 15 },
   },
   {
     id: 'seated_leg_curl',
-    name: 'Siddende bencurl',
+    name: 'Seated leg curl',
     muscles: ['hamstrings'],
     equipment: 'machine',
     defaultRepRange: { min: 10, max: 12 },
   },
   {
     id: 'leg_press',
-    name: 'Benpres',
+    name: 'Leg press',
     muscles: ['quads', 'glutes'],
     equipment: 'machine',
     defaultRepRange: { min: 8, max: 12 },
   },
   {
     id: 'cable_crunch',
-    name: 'Kabelcrunch',
+    name: 'Cable crunch',
     muscles: ['core'],
     equipment: 'machine',
     defaultRepRange: { min: 10, max: 15 },
   },
   {
     id: 'overhead_press',
-    name: 'Militærpres',
+    name: 'Overhead press',
     muscles: ['shoulders', 'triceps'],
     equipment: 'barbell',
     defaultRepRange: { min: 5, max: 8 },
   },
   {
     id: 'barbell_row',
-    name: 'Stangroning',
+    name: 'Barbell row',
     muscles: ['back', 'biceps'],
     equipment: 'barbell',
     defaultRepRange: { min: 6, max: 10 },
   },
   {
     id: 'lat_pulldown',
-    name: 'Latpulldown',
+    name: 'Lat pulldown',
     muscles: ['back', 'biceps'],
     equipment: 'machine',
     defaultRepRange: { min: 8, max: 12 },

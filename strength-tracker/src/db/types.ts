@@ -50,7 +50,7 @@ export interface RepRange {
 export interface Exercise {
   /** English slug, stable across renames, e.g. "romanian_deadlift". */
   id: string;
-  /** Danish display name, e.g. "Rumænsk dødløft". */
+  /** Display name, e.g. "Romanian deadlift". Editable by the user. */
   name: string;
   muscles: MuscleGroup[];
   equipment: Equipment;

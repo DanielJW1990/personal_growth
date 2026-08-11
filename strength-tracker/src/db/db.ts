@@ -1,7 +1,7 @@
 import Dexie, { type Table } from 'dexie';
 import type { BodyScan, Exercise, Session, SetLog, Settings, WorkoutTemplate } from './types';
 import { DEFAULT_SETTINGS } from './types';
-import { SEED_VERSION, seedExercises, seedTemplates } from './seed';
+import { RENAMED_IN_SEED_V2, SEED_VERSION, seedExercises, seedTemplates } from './seed';
 import { todayIso } from '../lib/date';
 
 export class StrengthDb extends Dexie {
@@ -63,11 +63,32 @@ export async function ensureSeeded(database: StrengthDb = db): Promise<void> {
         await database.templates.bulkAdd(seedTemplates(now));
       }
 
+      if (current && current.seedVersion < 2) {
+        await renameSeedExercisesToEnglish(database);
+      }
+
       if (current && current.seedVersion !== SEED_VERSION) {
         await database.settings.put({ ...current, seedVersion: SEED_VERSION });
       }
     },
   );
+}
+
+/**
+ * Seed version 2 switched the built-in exercises to their English names.
+ * Only exercises still carrying the exact old Danish seed name are renamed,
+ * so anything the user renamed themselves is left untouched. Set logs and
+ * templates reference exercises by id, so nothing else has to change.
+ */
+async function renameSeedExercisesToEnglish(database: StrengthDb): Promise<void> {
+  const seedsById = new Map(seedExercises(Date.now()).map((seed) => [seed.id, seed]));
+
+  for (const [exerciseId, oldDanishName] of Object.entries(RENAMED_IN_SEED_V2)) {
+    const stored = await database.exercises.get(exerciseId);
+    const seed = seedsById.get(exerciseId);
+    if (!stored || !seed || stored.custom || stored.name !== oldDanishName) continue;
+    await database.exercises.update(exerciseId, { name: seed.name });
+  }
 }
 
 /** Short, sortable, collision-safe enough for a single-user local database. */

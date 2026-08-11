@@ -5,7 +5,9 @@ Single user, no login, no backend: everything lives in the browser's IndexedDB
 and leaves the device only when you export it yourself.
 
 The interface is in Danish; the code, database fields and this README are in
-English. Every user-facing string lives in `src/i18n/da.ts`.
+English. Every user-facing string lives in `src/i18n/da.ts`. Exercise names are
+the English ones used on the gym floor ("Hip thrust", not "Hoftestød") — they
+are ordinary data, so rename any of them from **Program → Øvelser**.
 
 ## Running it
 
@@ -57,7 +59,7 @@ production branch has to be changed in Settings → Git.
 
 | Table | Contents |
 |---|---|
-| `exercises` | English id (`romanian_deadlift`), Danish name, muscle groups, equipment, smallest weight jump, default rep range |
+| `exercises` | Stable id (`romanian_deadlift`), display name, muscle groups, equipment, smallest weight jump, default rep range |
 | `templates` | Named workout (A/B/C), each entry with sets, rep range and superset group |
 | `sessions` | Date, template, snapshot of the plan, duration, body weight, sleep 1-5, energy 1-5, notes |
 | `setLogs` | Session, exercise, set number, weight, reps, RIR 0-4, warmup flag, PR flags |
@@ -73,6 +75,12 @@ deleted; **Indstillinger → Gendan standardskabeloner** puts the originals back
 
 A session stores a *copy* of the template's exercises, so editing a template
 never rewrites a workout that is already logged or under way.
+
+`SEED_VERSION` guards changes to the built-in data. Version 2 switched the
+exercise names from Danish to English; the migration in `ensureSeeded` only
+touches an exercise still carrying the exact old seed name, so a name changed
+by hand survives an update. Templates and set logs reference exercises by id,
+so renaming never orphans training history.
 
 ## How the logging screen works
 
