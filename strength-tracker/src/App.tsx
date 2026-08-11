@@ -6,6 +6,7 @@ import { TrainScreen } from './screens/TrainScreen';
 import { BodyScreen } from './screens/BodyScreen';
 import { StatsScreen } from './screens/StatsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
+import { PwaUpdater } from './components/PwaUpdater';
 
 type Tab = 'train' | 'body' | 'stats' | 'program' | 'settings';
 
@@ -35,6 +36,7 @@ export default function App() {
 
   return (
     <div className="mx-auto min-h-screen max-w-lg pb-20">
+      <PwaUpdater />
       <main className="safe-top">
         {tab === 'train' ? <TrainScreen /> : null}
         {tab === 'body' ? <BodyScreen /> : null}
