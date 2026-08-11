@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: theme('colors.ink.900');
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ink-900 text-slate-100 font-sans antialiased;
+    /* Stops the whole page from bouncing while scrolling a list in the gym. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Number inputs are only used with the +/- buttons, so hide the spinners. */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+}
+
+@layer components {
+  /* Minimum 48px touch targets throughout — this is used with sweaty thumbs. */
+  .btn {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-4
+           text-base font-semibold transition active:scale-[0.98] disabled:opacity-40
+           disabled:active:scale-100;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-ink-900;
+  }
+
+  .btn-secondary {
+    @apply btn bg-ink-600 text-slate-100;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-slate-300 ring-1 ring-inset ring-ink-500;
+  }
+
+  .btn-danger {
+    @apply btn bg-bad/15 text-bad ring-1 ring-inset ring-bad/40;
+  }
+
+  .card {
+    @apply rounded-2xl bg-ink-800 p-4 ring-1 ring-ink-600/60;
+  }
+
+  .field {
+    @apply min-h-[48px] w-full rounded-xl bg-ink-700 px-3 text-base text-slate-100
+           ring-1 ring-inset ring-ink-500 placeholder:text-slate-500
+           focus:outline-none focus:ring-2 focus:ring-accent;
+  }
+
+  .label {
+    @apply mb-1 block text-sm font-medium text-slate-400;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px));
+  }
+
+  .safe-top {
+    padding-top: calc(env(safe-area-inset-top, 0px));
+  }
+}
