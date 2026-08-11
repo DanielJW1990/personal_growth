@@ -23,6 +23,14 @@ Icons are generated, not checked in as third-party assets:
 node scripts/generate-icons.mjs
 ```
 
+### Single-file build
+
+`npm run build:standalone` packs the whole app — markup, styles and script —
+into one HTML file in `dist-standalone/`, with no service worker and nothing
+loaded from the network. Handy for hosting the app as a single page or mailing
+it to yourself. Note that browsers block IndexedDB on `file://` URLs, so the
+file needs to be served over http(s) rather than double-clicked.
+
 ## Deploying to Vercel
 
 Import the repository, set **Root Directory** to `strength-tracker`, and accept
@@ -43,6 +51,9 @@ after the first load nothing but an app update needs the network.
 | `setLogs` | Session, exercise, set number, weight, reps, RIR 0-4, warmup flag, PR flags |
 | `bodyScans` | Date plus every scale field, tape measurements and progress photos — all optional |
 | `settings` | Bar weight, available plates, rest times, sound/vibration, program start, weekly set target |
+
+Data is scoped to the origin the app is served from. Two deployments of the
+same app do not share a database — move data between them with the JSON export.
 
 Three templates are seeded on first run (Full body A, B and C). They are
 ordinary rows: edit them, delete them, add your own. Deleted templates stay

@@ -5,3 +5,5 @@ dev-dist
 *.local
 .vercel
 .DS_Store
+dist-standalone
+tsconfig.tsbuildinfo
