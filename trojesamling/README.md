@@ -68,6 +68,19 @@ enhed flytter hele samlingen med — du vælger selv, om importen skal
 *flettes* ind i det eksisterende (tilføj/opdatér) eller *erstatte* alt. Vil du have automatisk synkronisering mellem enheder, kræver
 det en backend (fx Supabase, som beskrevet i rodens README).
 
+## Design
+
+Glas-æstetik inspireret af Apples Liquid Glass: hvert panel er baggrunds­sløring
+plus mætning, et lag farvet glas, en lysere kant foroven og et diskret
+spejlstrejf. **Glasset tones af trøjens klubfarve** — vælger du en Arsenal-trøje
+bliver hele siden rød, en Brøndby-trøje gør den gul. Farven kommer fra en
+indbygget klubtabel; ukendte klubber får en stabil tone udledt af navnet, og
+hver enkelt trøje kan overstyre den med sit eget farvevalg i admin-formularen.
+
+Typografi: **Bricolage Grotesque** til overskrifter, **Manrope** til brødtekst
+og data (med tabulære tal). Lyst og mørkt tema følger systemet og kan skiftes
+med ◐-knappen i topbjælken.
+
 ## Valg truffet
 
 | Emne | Valg |
@@ -75,4 +88,4 @@ det en backend (fx Supabase, som beskrevet i rodens README).
 | Teknologi | Ren HTML/CSS/JS i én fil, ingen afhængigheder ud over webfonte |
 | Datalagring | IndexedDB (trøjer + billed-blobs), backup via JSON-eksport/-import |
 | Login | Fælles kode, SHA-256-hash, session- eller localStorage |
-| Design | Como 1907-inspireret: minimalistisk, meget luft, uppercase topmenu, hero, 3:4-produktkort, badges i stedet for "SALE" |
+| Design | Liquid Glass: gennemfarvet glas pr. klub, flydende topbjælke, stablede hero-plader, 4:5-produktkort |

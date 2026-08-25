@@ -5,315 +5,361 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Trøjesamlingen</title>
-<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&f[]=zodiak@400,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #ffffff;
-    --panel: #f5f4f1;
-    --line: #e7e5e0;
-    --ink: #12181f;
-    --muted: #8a8f96;
-    --navy: #0b1f3a;
-    --gold: #b3872e;
-    --danger: #b04a3a;
+    color-scheme: light dark;
+    /* Kølig, let blåtonet neutral — ikke rent grå */
+    --ground-1: #dfe9f4;
+    --ground-2: #f4f8fc;
+    --ink: #101722;
+    --muted: #5a6779;
+    --glass-tint: 255 255 255;
+    --glass-a: .55;
+    --glass-b: .28;
+    --edge: rgba(255, 255, 255, .70);
+    --shadow: 0 30px 70px -30px rgba(12, 20, 34, .5);
+    --field: rgba(255, 255, 255, .6);
+    --field-line: rgba(16, 23, 34, .12);
+    --danger: 358 62% 48%;
+    /* Aktiv trøjetone — sættes af siden */
+    --tone: 222 55% 32%;
     --maxw: 1240px;
-    --nav-h: 60px;
   }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --ground-1: #070b12;
+      --ground-2: #10161f;
+      --ink: #f2f6fb;
+      --muted: #9aa6b8;
+      --glass-tint: 190 210 240;
+      --glass-a: .16;
+      --glass-b: .07;
+      --edge: rgba(255, 255, 255, .28);
+      --shadow: 0 30px 70px -30px rgba(0, 0, 0, .85);
+      --field: rgba(255, 255, 255, .08);
+      --field-line: rgba(255, 255, 255, .16);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground-1: #070b12;
+    --ground-2: #10161f;
+    --ink: #f2f6fb;
+    --muted: #9aa6b8;
+    --glass-tint: 190 210 240;
+    --glass-a: .16;
+    --glass-b: .07;
+    --edge: rgba(255, 255, 255, .28);
+    --shadow: 0 30px 70px -30px rgba(0, 0, 0, .85);
+    --field: rgba(255, 255, 255, .08);
+    --field-line: rgba(255, 255, 255, .16);
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: "Switzer", "Helvetica Neue", Arial, sans-serif;
-    background: var(--bg);
+    font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     color: var(--ink);
+    background: linear-gradient(178deg, var(--ground-1) 0%, var(--ground-2) 55%, var(--ground-1) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
   img { display: block; max-width: 100%; }
   a { color: inherit; text-decoration: none; }
   button, input, select, textarea { font: inherit; color: inherit; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+  button { background: none; border: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid hsl(var(--tone)); outline-offset: 3px; border-radius: 8px; }
 
-  .kicker {
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 600;
-  }
-  h1, h2, .display { font-family: "Zodiak", Georgia, serif; font-weight: 700; letter-spacing: 0.01em; }
+  .display { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; letter-spacing: -.02em; }
 
-  /* ── Topbar ─────────────────────────────────────── */
-  .topbar {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(255,255,255,0.94);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
+  /* ── Omgivende lys: farvede skyer der følger trøjen ── */
+  .aura { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .aura i {
+    position: absolute; display: block; border-radius: 50%;
+    background: hsl(var(--tone) / .5); filter: blur(90px);
+    transition: background 700ms ease;
   }
-  .topbar-inner {
-    max-width: var(--maxw); margin: 0 auto; padding: 0 20px;
-    height: var(--nav-h);
-    display: flex; align-items: center; gap: 28px;
+  .aura i:nth-child(1) { width: 46vw; height: 46vw; top: -14vw; left: -8vw; opacity: .5; }
+  .aura i:nth-child(2) { width: 38vw; height: 38vw; bottom: -14vw; right: -6vw; opacity: .38; }
+
+  .wrap { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+  /* ── Glasmateriale ─────────────────────────────────── */
+  .glass {
+    position: relative; border-radius: 26px;
+    background: linear-gradient(158deg, rgb(var(--glass-tint) / var(--glass-a)), rgb(var(--glass-tint) / var(--glass-b)));
+    backdrop-filter: blur(26px) saturate(175%);
+    -webkit-backdrop-filter: blur(26px) saturate(175%);
+    border: 1px solid var(--edge);
+    box-shadow: var(--shadow), inset 0 1px 0 rgb(255 255 255 / .5);
+    isolation: isolate;
   }
-  .logo {
-    font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase;
-    font-size: 0.85rem; white-space: nowrap;
+  .glass::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(130% 90% at 10% -15%, rgb(255 255 255 / .5), transparent 58%);
+    mix-blend-mode: screen; opacity: .8; z-index: -1;
   }
-  .logo span { color: var(--gold); }
-  nav.mainnav { display: flex; align-items: center; gap: 4px; flex: 1; }
+  .toned {
+    background:
+      linear-gradient(158deg, hsl(var(--tone) / .84), hsl(var(--tone) / .6)),
+      linear-gradient(158deg, rgb(255 255 255 / .2), rgb(255 255 255 / .04));
+    color: #fff; border-color: hsl(var(--tone) / .5);
+    transition: background 700ms ease, border-color 700ms ease;
+  }
+
+  /* ── Topbjælke ─────────────────────────────────────── */
+  .bar-holder { position: sticky; top: 12px; z-index: 40; padding: 12px 0 0; }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 9px 10px 9px 18px; border-radius: 999px; }
+  .brand { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: .95rem; display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+  .brand i { width: 22px; height: 22px; border-radius: 7px; display: grid; place-items: center; background: hsl(var(--tone)); color: #fff; font-size: .68rem; font-style: normal; transition: background 700ms ease; }
+  nav.mainnav { display: flex; align-items: center; gap: 2px; flex: 1; min-width: 0; }
   .navlink, .navdrop > summary {
-    list-style: none; cursor: pointer; user-select: none;
-    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
-    padding: 8px 12px; border-radius: 3px; color: var(--ink);
-    background: none; border: none; display: inline-block;
+    list-style: none; cursor: pointer; user-select: none; display: inline-block;
+    padding: 8px 13px; border-radius: 999px; font-size: .82rem; font-weight: 600; color: var(--muted);
+    white-space: nowrap; transition: color .2s, background .2s;
   }
-  .navlink:hover, .navdrop > summary:hover { background: var(--panel); }
+  .navlink:hover, .navdrop > summary:hover { color: var(--ink); background: rgb(var(--glass-tint) / .4); }
   .navdrop { position: relative; }
   .navdrop > summary::-webkit-details-marker { display: none; }
-  .navdrop > summary::after { content: " ▾"; font-size: 0.6rem; color: var(--muted); }
+  .navdrop > summary::after { content: " ⌄"; opacity: .6; }
   .navdrop-menu {
-    position: absolute; top: calc(100% + 6px); left: 0; min-width: 200px;
-    background: #fff; border: 1px solid var(--line); border-radius: 4px;
-    box-shadow: 0 12px 32px rgba(16,24,32,0.10);
-    padding: 6px; max-height: 320px; overflow: auto; z-index: 60;
+    position: absolute; top: calc(100% + 10px); left: 0; min-width: 220px; z-index: 50;
+    padding: 8px; border-radius: 20px; max-height: 340px; overflow: auto;
   }
   .navdrop-menu button {
-    display: block; width: 100%; text-align: left; background: none; border: none;
-    padding: 8px 10px; font-size: 0.82rem; cursor: pointer; border-radius: 3px;
+    display: flex; justify-content: space-between; gap: 12px; width: 100%; text-align: left;
+    padding: 9px 12px; font-size: .86rem; font-weight: 500; border-radius: 12px;
   }
-  .navdrop-menu button:hover { background: var(--panel); }
-  .navdrop-menu .count { color: var(--muted); font-size: 0.72rem; }
-  .nav-right { display: flex; align-items: center; gap: 4px; }
-  .burger {
-    display: none; background: none; border: none; cursor: pointer;
-    font-size: 1.3rem; padding: 6px 10px; margin-left: auto;
-  }
+  .navdrop-menu button:hover { background: hsl(var(--tone) / .9); color: #fff; }
+  .navdrop-menu .count { color: var(--muted); font-size: .76rem; font-variant-numeric: tabular-nums; }
+  .navdrop-menu button:hover .count { color: rgb(255 255 255 / .8); }
+  .nav-right { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .icon-btn { width: 38px; height: 38px; border-radius: 999px; display: grid; place-items: center; background: rgb(var(--glass-tint) / .45); border: 1px solid var(--edge); font-size: .95rem; }
+  .burger { display: none; }
 
-  /* ── Hero ───────────────────────────────────────── */
-  .hero {
-    position: relative; min-height: 440px;
-    display: flex; align-items: flex-end;
-    background: linear-gradient(160deg, #0b1f3a 0%, #16324f 55%, #274a6d 100%);
-    color: #fff; overflow: hidden;
+  /* ── Hero ──────────────────────────────────────────── */
+  .hero { padding: 104px 0 0; }
+  .feature-note { font-size: .92rem; line-height: 1.6; color: rgb(255 255 255 / .8); max-width: 46ch; margin-top: 22px; }
+  .stack { position: relative; padding-top: 58px; }
+  .sheet {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    border-radius: 24px 24px 0 0; height: 92px; overflow: hidden;
+    display: flex; align-items: flex-start; padding: 15px 26px 0; gap: 12px;
   }
-  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
-  .hero::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(8,16,28,0.82) 0%, rgba(8,16,28,0.25) 55%, rgba(8,16,28,0.35) 100%);
-  }
-  .hero-content { position: relative; z-index: 2; padding: 72px 20px 56px; max-width: var(--maxw); margin: 0 auto; width: 100%; }
-  .hero .kicker { color: rgba(255,255,255,0.75); }
-  .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin: 10px 0 14px; text-transform: uppercase; }
-  .hero p.sub { color: rgba(255,255,255,0.85); font-size: 1.02rem; max-width: 560px; }
-  .hero-stats { display: flex; gap: 34px; margin-top: 26px; flex-wrap: wrap; }
-  .hero-stat .n { font-family: "Zodiak", Georgia, serif; font-size: 1.9rem; font-weight: 700; line-height: 1.1; }
-  .hero-stat .l { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+  .sheet.s1 { top: 0; width: min(74%, 780px); opacity: .5; }
+  .sheet.s2 { top: 26px; width: min(86%, 940px); opacity: .78; }
+  .sheet-label { font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .pill { font-size: .7rem; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: rgb(var(--glass-tint) / .5); border: 1px solid var(--edge); color: var(--ink); white-space: nowrap; }
+
+  .feature { position: relative; border-radius: 30px; overflow: hidden; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+  .feature-img { position: relative; min-height: 380px; display: grid; place-items: center; padding: 26px; }
+  .feature-img::before { content: ""; position: absolute; inset: 0; background: radial-gradient(80% 60% at 50% 100%, rgb(0 0 0 / .26), transparent 70%); }
+  .feature-img img { position: relative; max-height: 430px; width: auto; border-radius: 14px; box-shadow: 0 40px 70px -30px rgb(0 0 0 / .6); }
+  .feature-body { padding: 34px; display: flex; flex-direction: column; }
+  .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgb(255 255 255 / .72); margin-bottom: 12px; }
+  .feature h1 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: .96; letter-spacing: -.03em; text-wrap: balance; }
+  .feature .sub { font-size: 1rem; color: rgb(255 255 255 / .78); margin: 6px 0 20px; }
+  .hero-stats { display: flex; gap: 26px; flex-wrap: wrap; margin-top: auto; padding-top: 22px; }
+  .hero-stat .n { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .hero-stat .l { font-size: .66rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgb(255 255 255 / .68); margin-top: 5px; }
+
   .btn {
-    display: inline-block; cursor: pointer; border-radius: 3px;
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
-    padding: 13px 26px; border: 1px solid var(--ink); background: var(--ink); color: #fff;
-    transition: background 0.15s, color 0.15s;
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border-radius: 999px;
+    font-size: .84rem; font-weight: 600; padding: 11px 20px; white-space: nowrap;
+    background: hsl(var(--tone) / .95); color: #fff; border: 1px solid hsl(var(--tone) / .6);
+    box-shadow: 0 12px 26px -14px hsl(var(--tone)); transition: transform .2s, filter .2s;
   }
-  .btn:hover { background: #fff; color: var(--ink); }
-  .btn.light { background: #fff; color: var(--ink); border-color: #fff; }
-  .btn.light:hover { background: transparent; color: #fff; }
-  .btn.ghost { background: transparent; color: var(--ink); }
-  .btn.ghost:hover { background: var(--ink); color: #fff; }
-  .btn.danger { background: var(--danger); border-color: var(--danger); }
-  .btn.danger:hover { background: #fff; color: var(--danger); }
-  .btn.sm { padding: 8px 14px; font-size: 0.64rem; }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .btn.on-tone { background: rgb(255 255 255 / .18); border-color: rgb(255 255 255 / .35); backdrop-filter: blur(8px); }
+  .btn.ghost { background: rgb(var(--glass-tint) / .5); color: var(--ink); border-color: var(--edge); box-shadow: none; }
+  .btn.danger { background: hsl(var(--danger) / .9); border-color: hsl(var(--danger) / .5); box-shadow: none; }
+  .btn.sm { padding: 8px 14px; font-size: .78rem; }
 
-  /* ── Toolbar (filter/sort) ─────────────────────── */
-  .toolbar {
-    border-bottom: 1px solid var(--line);
-    padding: 16px 0;
-    background: var(--bg);
-  }
-  .toolbar-inner { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  /* ── Værktøjslinje ─────────────────────────────────── */
+  .toolbar { margin: 26px 0 0; padding: 12px; border-radius: 22px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
   .toolbar input[type="search"], .toolbar select {
-    border: 1px solid var(--line); border-radius: 3px; background: #fff;
-    padding: 9px 12px; font-size: 0.85rem; min-width: 130px;
+    border: 1px solid var(--field-line); border-radius: 14px; background: var(--field);
+    padding: 10px 14px; font-size: .86rem; color: var(--ink);
   }
-  .toolbar input[type="search"] { flex: 1 1 200px; }
+  .toolbar input[type="search"] { flex: 1 1 220px; min-width: 0; }
   .toolbar select { cursor: pointer; }
-  .result-count { font-size: 0.78rem; color: var(--muted); margin-left: auto; white-space: nowrap; }
-  .linkbtn { background: none; border: none; cursor: pointer; font-size: 0.78rem; color: var(--muted); text-decoration: underline; padding: 6px; }
+  .result-count { font-size: .78rem; color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .linkbtn { font-size: .8rem; color: var(--muted); text-decoration: underline; padding: 6px; }
   .linkbtn:hover { color: var(--ink); }
 
-  /* ── Sektioner / grid ──────────────────────────── */
-  .section { padding: 44px 0 10px; }
-  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; }
-  .section-head h2 { font-size: 1.5rem; text-transform: uppercase; }
-  .section-head .count { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; }
-  .grid {
-    display: grid; gap: 26px 18px;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    padding-bottom: 40px;
+  /* ── Gitter ────────────────────────────────────────── */
+  .section { padding: 44px 0 0; }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; padding: 0 4px; }
+  .section-head h2 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 1.45rem; letter-spacing: -.02em; }
+  .section-head .count { font-size: .8rem; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(216px, 1fr)); gap: 16px; }
+  .card {
+    position: relative; display: flex; flex-direction: column; gap: 12px; padding: 14px;
+    border-radius: 24px; color: #fff; text-align: left;
+    background:
+      linear-gradient(158deg, hsl(var(--tone) / .72), hsl(var(--tone) / .44)),
+      linear-gradient(158deg, rgb(255 255 255 / .2), rgb(255 255 255 / .04));
+    backdrop-filter: blur(20px) saturate(170%);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    border: 1px solid hsl(var(--tone) / .45);
+    box-shadow: 0 22px 44px -26px hsl(var(--tone) / .95), inset 0 1px 0 rgb(255 255 255 / .38);
+    transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s;
   }
-  .card { display: block; cursor: pointer; }
-  .card-imgbox {
-    position: relative; aspect-ratio: 3/4; background: var(--panel);
-    border-radius: 4px; overflow: hidden; margin-bottom: 12px;
+  .card::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(120% 80% at 14% -10%, rgb(255 255 255 / .4), transparent 55%);
+    mix-blend-mode: screen; opacity: .75;
   }
-  .card-imgbox img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.25s ease, transform 0.4s ease; }
-  .card:hover .card-imgbox img.primary { transform: scale(1.03); }
-  .card-imgbox img.alt { position: absolute; inset: 0; opacity: 0; }
-  .card:hover .card-imgbox img.alt { opacity: 1; }
-  .card-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
-  .badge {
-    font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    padding: 4px 8px; border-radius: 2px; background: #fff; color: var(--ink);
-    border: 1px solid rgba(0,0,0,0.08);
-  }
-  .badge.autentisk { background: var(--navy); color: #fff; border-color: var(--navy); }
-  .badge.replica { background: #fff; color: var(--ink); }
-  .badge.signeret { background: var(--gold); color: #fff; border-color: var(--gold); }
-  .card h3 { font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
-  .card .meta { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
-  .placeholder-jersey { width: 46%; margin: 27% auto 0; opacity: 0.28; }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 34px 60px -28px hsl(var(--tone)), inset 0 1px 0 rgb(255 255 255 / .5); }
+  .card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .card-img { position: relative; aspect-ratio: 4/5; border-radius: 16px; overflow: hidden; background: rgb(0 0 0 / .16); display: grid; place-items: center; }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; transition: opacity .3s ease, transform .5s ease; }
+  .card:hover .card-img img.primary { transform: scale(1.04); }
+  .card-img img.alt { position: absolute; inset: 0; opacity: 0; }
+  .card:hover .card-img img.alt { opacity: 1; }
+  .card h3 { font-size: .94rem; font-weight: 700; letter-spacing: -.01em; }
+  .card .meta { font-size: .78rem; color: rgb(255 255 255 / .74); font-variant-numeric: tabular-nums; }
+  .tag { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; background: rgb(255 255 255 / .2); border: 1px solid rgb(255 255 255 / .3); }
+  .badge { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; background: rgb(255 255 255 / .9); color: #12181f; }
+  .placeholder-jersey { width: 46%; opacity: .35; }
 
-  .empty {
-    text-align: center; padding: 90px 20px; color: var(--muted);
-  }
-  .empty h2 { color: var(--ink); font-size: 1.6rem; margin-bottom: 10px; }
-  .empty p { margin-bottom: 22px; }
+  .empty { text-align: center; padding: 80px 20px; }
+  .empty h2 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 1.6rem; margin-bottom: 8px; }
+  .empty p { color: var(--muted); margin-bottom: 22px; }
 
-  /* ── Statistik ─────────────────────────────────── */
-  .stats-band { background: var(--panel); border-top: 1px solid var(--line); padding: 54px 0 60px; margin-top: 30px; }
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 26px; margin-top: 26px; }
-  .stat-tile .n { font-family: "Zodiak", Georgia, serif; font-size: 2.3rem; font-weight: 700; line-height: 1; }
-  .stat-tile .l { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
-  .klub-bars { margin-top: 34px; display: grid; gap: 10px; max-width: 620px; }
-  .klub-bar { display: grid; grid-template-columns: 150px 1fr 34px; gap: 12px; align-items: center; font-size: 0.82rem; }
-  .klub-bar .bar { height: 8px; background: #e2e0da; border-radius: 4px; overflow: hidden; }
-  .klub-bar .bar i { display: block; height: 100%; background: var(--navy); border-radius: 4px; }
+  /* ── Statistik ─────────────────────────────────────── */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(158px, 1fr)); gap: 14px; }
+  .stat { padding: 22px; border-radius: 22px; }
+  .stat .n { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat .l { font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+  .klub-bars { display: grid; gap: 10px; margin-top: 16px; padding: 22px; border-radius: 22px; }
+  .klub-bar { display: grid; grid-template-columns: minmax(90px, 160px) 1fr 34px; gap: 12px; align-items: center; font-size: .84rem; }
+  .klub-bar .bar { height: 8px; border-radius: 999px; background: rgb(var(--glass-tint) / .4); overflow: hidden; }
+  .klub-bar .bar i { display: block; height: 100%; border-radius: 999px; background: hsl(var(--k) / .95); }
   .klub-bar .num { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
 
-  /* ── Detaljeside ───────────────────────────────── */
-  .backlink { display: inline-block; margin: 26px 0 8px; font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); cursor: pointer; background: none; border: none; }
+  /* ── Detaljeside ───────────────────────────────────── */
+  .backlink { display: inline-flex; align-items: center; gap: 8px; margin: 22px 0 14px; font-size: .82rem; font-weight: 600; color: var(--muted); }
   .backlink:hover { color: var(--ink); }
-  .detail { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; padding: 10px 0 70px; }
-  .gallery-main {
-    aspect-ratio: 3/4; background: var(--panel); border-radius: 4px; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .gallery-main img { width: 100%; height: 100%; object-fit: contain; }
-  .thumbs { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-  .thumbs button {
-    width: 72px; height: 90px; border-radius: 3px; overflow: hidden; cursor: pointer;
-    border: 1px solid var(--line); background: var(--panel); padding: 0;
-  }
-  .thumbs button.active { border-color: var(--ink); }
+  .detail { border-radius: 30px; overflow: hidden; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); }
+  .gallery { position: relative; padding: 26px; display: flex; flex-direction: column; gap: 14px; }
+  .gallery::before { content: ""; position: absolute; inset: 0; background: radial-gradient(80% 60% at 50% 100%, rgb(0 0 0 / .26), transparent 70%); }
+  .gallery-main { position: relative; border-radius: 18px; overflow: hidden; display: grid; place-items: center; min-height: 340px; background: rgb(0 0 0 / .12); }
+  .gallery-main img { max-height: 520px; width: 100%; object-fit: contain; }
+  .thumbs { position: relative; display: flex; gap: 10px; flex-wrap: wrap; }
+  .thumbs button { width: 68px; height: 84px; border-radius: 12px; overflow: hidden; padding: 0; border: 1px solid rgb(255 255 255 / .3); background: rgb(0 0 0 / .15); opacity: .65; transition: opacity .2s, border-color .2s; }
+  .thumbs button.active { opacity: 1; border-color: #fff; }
   .thumbs img { width: 100%; height: 100%; object-fit: cover; }
-  .detail-info .kicker { margin-top: 8px; }
-  .detail-info h1 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); text-transform: uppercase; line-height: 1.1; margin: 8px 0 4px; }
-  .detail-sub { color: var(--muted); font-size: 1rem; margin-bottom: 16px; }
-  .detail-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
-  .detail-badges .badge { font-size: 0.64rem; padding: 6px 11px; }
-  .speclist { border-top: 1px solid var(--line); margin-bottom: 28px; }
-  .speclist .row { display: flex; justify-content: space-between; gap: 18px; padding: 12px 2px; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
-  .speclist .row dt { color: var(--muted); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 3px; }
-  .speclist .row dd { text-align: right; font-weight: 500; }
-  .notes h2 { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-family: "Switzer", sans-serif; font-weight: 600; margin-bottom: 10px; }
-  .notes p { font-size: 0.93rem; color: #3c4450; white-space: pre-wrap; }
-  .detail-actions { display: flex; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
+  .detail-body { padding: 34px; display: flex; flex-direction: column; }
+  .detail-body h1 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: .98; letter-spacing: -.03em; text-wrap: balance; }
+  .detail-sub { font-size: 1rem; color: rgb(255 255 255 / .78); margin: 6px 0 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .chip { font-size: .74rem; font-weight: 600; padding: 7px 13px; border-radius: 999px; background: rgb(255 255 255 / .16); border: 1px solid rgb(255 255 255 / .3); }
+  .specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2px; border-radius: 18px; overflow: hidden; background: rgb(255 255 255 / .16); margin-bottom: 22px; }
+  .spec { background: hsl(var(--tone) / .55); padding: 14px 16px; transition: background 700ms ease; }
+  .spec dt { font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgb(255 255 255 / .7); margin-bottom: 4px; }
+  .spec dd { font-size: 1rem; font-weight: 600; }
+  .notes h2 { font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgb(255 255 255 / .7); margin-bottom: 8px; }
+  .notes p { font-size: .94rem; line-height: 1.65; color: rgb(255 255 255 / .85); white-space: pre-wrap; }
+  .detail-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
 
-  /* ── Login ─────────────────────────────────────── */
-  .login-page {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(160deg, #0b1f3a 0%, #16324f 60%, #274a6d 100%); padding: 20px;
-  }
-  .login-card {
-    background: #fff; border-radius: 6px; padding: 44px 38px; width: 100%; max-width: 400px;
-    box-shadow: 0 24px 70px rgba(4,10,20,0.45); text-align: center;
-  }
-  .login-card .logo { font-size: 0.95rem; }
-  .login-card h1 { font-size: 1.45rem; margin: 18px 0 6px; }
-  .login-card p { color: var(--muted); font-size: 0.86rem; margin-bottom: 24px; }
+  /* ── Login ─────────────────────────────────────────── */
+  .login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; position: relative; z-index: 1; }
+  .login-card { width: 100%; max-width: 400px; padding: 40px 34px; border-radius: 30px; text-align: center; }
+  .login-card .brand { justify-content: center; font-size: 1rem; margin-bottom: 20px; }
+  .login-card h1 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 1.6rem; letter-spacing: -.02em; }
+  .login-card p { color: var(--muted); font-size: .88rem; margin: 6px 0 22px; }
   .login-card input[type="password"] {
-    width: 100%; border: 1px solid var(--line); border-radius: 3px; padding: 13px 14px;
-    font-size: 1rem; text-align: center; letter-spacing: 0.2em; margin-bottom: 12px;
+    width: 100%; border: 1px solid var(--field-line); border-radius: 16px; background: var(--field);
+    padding: 14px; font-size: 1rem; text-align: center; letter-spacing: .12em; margin-bottom: 12px;
   }
-  .login-card input[type="password"]:focus { outline: 2px solid var(--navy); border-color: var(--navy); }
-  .login-card .btn { width: 100%; }
-  .login-remember { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; color: var(--muted); margin: 4px 0 16px; }
-  .login-error { color: var(--danger); font-size: 0.82rem; min-height: 1.3em; margin-bottom: 10px; }
+  .login-remember { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: .82rem; color: var(--muted); margin-bottom: 16px; }
+  .login-error { color: hsl(var(--danger)); font-size: .82rem; min-height: 1.3em; margin-bottom: 10px; }
+  .login-card .btn { width: 100%; justify-content: center; }
 
-  /* ── Admin ─────────────────────────────────────── */
-  .admin-head { padding: 40px 0 6px; }
-  .admin-head h1 { font-size: 1.9rem; text-transform: uppercase; }
-  .admin-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 44px; padding: 24px 0 80px; align-items: start; }
-  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 26px; }
-  .panel h2 { font-size: 1.05rem; text-transform: uppercase; margin-bottom: 18px; }
+  /* ── Admin ─────────────────────────────────────────── */
+  .admin-head { padding: 84px 0 4px; }
+  .admin-head h1 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 2rem; letter-spacing: -.03em; }
+  .admin-head .eyebrow { color: var(--muted); margin-bottom: 8px; }
+  .admin-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; padding: 20px 0 70px; align-items: start; }
+  .panel { padding: 26px; border-radius: 26px; }
+  .panel h2 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -.02em; margin-bottom: 18px; }
   .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: #555c66; margin-bottom: 5px; }
+  .field label { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
   .field input[type="text"], .field input[type="number"], .field select, .field textarea {
-    width: 100%; border: 1px solid var(--line); border-radius: 3px; background: #fff; padding: 10px 12px; font-size: 0.9rem;
+    width: 100%; border: 1px solid var(--field-line); border-radius: 14px; background: var(--field); padding: 11px 13px; font-size: .9rem;
   }
   .field textarea { min-height: 110px; resize: vertical; }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .radio-row { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.88rem; }
-  .radio-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.88rem; color: var(--ink); }
-  .dropzone {
-    border: 2px dashed #cfccc4; border-radius: 5px; background: #fff; padding: 22px; text-align: center;
-    color: var(--muted); font-size: 0.84rem; cursor: pointer;
-  }
-  .dropzone.drag { border-color: var(--navy); color: var(--navy); }
+  .radio-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; padding-top: 8px; }
+  .radio-row label { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: .88rem; font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--ink); margin: 0; }
+  .color-row { display: flex; align-items: center; gap: 12px; }
+  .color-row input[type="color"] { width: 52px; height: 40px; padding: 3px; border: 1px solid var(--field-line); border-radius: 12px; background: var(--field); cursor: pointer; }
+  .color-row .hint { font-size: .76rem; color: var(--muted); }
+  .dropzone { border: 1.5px dashed var(--field-line); border-radius: 18px; background: var(--field); padding: 22px; text-align: center; color: var(--muted); font-size: .85rem; cursor: pointer; transition: border-color .2s, color .2s; }
+  .dropzone.drag { border-color: hsl(var(--tone)); color: hsl(var(--tone)); }
   .img-previews { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-  .img-previews .pv { position: relative; width: 76px; height: 95px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+  .img-previews .pv { position: relative; width: 74px; height: 92px; border-radius: 12px; overflow: hidden; border: 1px solid var(--field-line); }
   .img-previews .pv img { width: 100%; height: 100%; object-fit: cover; }
-  .img-previews .pv .rm {
-    position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%;
-    background: rgba(16,24,32,0.75); color: #fff; border: none; cursor: pointer; font-size: 0.7rem; line-height: 1;
-  }
-  .img-previews .pv .tag { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(11,31,58,0.8); color:#fff; font-size: 0.55rem; text-align:center; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 0; }
-  .form-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .img-previews .pv .rm { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgb(10 16 26 / .75); color: #fff; font-size: .68rem; line-height: 1; }
+  .img-previews .pv .tag2 { position: absolute; bottom: 0; left: 0; right: 0; background: hsl(var(--tone) / .9); color: #fff; font-size: .54rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-align: center; padding: 3px 0; }
+  .form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
   .admin-list { display: grid; gap: 10px; }
-  .admin-row {
-    display: grid; grid-template-columns: 54px 1fr auto; gap: 14px; align-items: center;
-    background: #fff; border: 1px solid var(--line); border-radius: 5px; padding: 10px 14px;
-  }
-  .admin-row .thumb { width: 54px; height: 66px; border-radius: 3px; background: var(--panel); overflow: hidden; }
+  .admin-row { display: grid; grid-template-columns: 50px 1fr auto; gap: 14px; align-items: center; padding: 10px 12px; border-radius: 18px; background: var(--field); border: 1px solid var(--field-line); }
+  .admin-row .thumb { width: 50px; height: 62px; border-radius: 10px; overflow: hidden; background: hsl(var(--k, var(--tone)) / .3); }
   .admin-row .thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .admin-row .t { font-weight: 600; font-size: 0.9rem; }
-  .admin-row .m { font-size: 0.78rem; color: var(--muted); }
+  .admin-row .t { font-weight: 700; font-size: .9rem; }
+  .admin-row .m { font-size: .78rem; color: var(--muted); }
   .admin-row .acts { display: flex; gap: 6px; }
-  .datatools { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-  .datatools .hint { flex-basis: 100%; font-size: 0.74rem; color: var(--muted); }
+  .datatools { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--field-line); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .datatools .hint { flex-basis: 100%; font-size: .76rem; color: var(--muted); }
 
-  footer { border-top: 1px solid var(--line); padding: 30px 0 46px; margin-top: 20px; }
-  footer .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  footer { padding: 40px 0 46px; text-align: center; font-size: .76rem; color: var(--muted); }
 
-  /* ── Toast ─────────────────────────────────────── */
   #toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 4px;
-    font-size: 0.84rem; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 100;
+    padding: 12px 22px; border-radius: 999px; font-size: .85rem; font-weight: 600; color: #fff;
+    background: hsl(var(--tone) / .95); border: 1px solid hsl(var(--tone) / .5);
+    box-shadow: 0 20px 40px -20px rgb(0 0 0 / .6); backdrop-filter: blur(12px);
+    opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 100;
   }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ── Mobil ─────────────────────────────────────── */
-  @media (max-width: 860px) {
-    .detail, .admin-grid { grid-template-columns: 1fr; gap: 30px; }
-    .speclist .row dd { text-align: left; }
+  @media (max-width: 900px) {
+    .feature, .detail, .admin-grid { grid-template-columns: 1fr; }
+    .feature-img, .gallery { min-height: 280px; padding: 20px 20px 0; }
+    .feature-img img { max-height: 300px; }
+    .feature-body, .detail-body { padding: 24px; }
+    .gallery-main { min-height: 260px; }
   }
   @media (max-width: 720px) {
-    .burger { display: block; }
+    .burger { display: grid; }
     nav.mainnav {
-      display: none; position: absolute; top: var(--nav-h); left: 0; right: 0;
-      background: #fff; border-bottom: 1px solid var(--line);
-      flex-direction: column; align-items: stretch; padding: 10px 14px 16px; gap: 2px;
-      box-shadow: 0 16px 32px rgba(16,24,32,0.08);
+      display: none; position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+      flex-direction: column; align-items: stretch; padding: 10px; border-radius: 24px;
+      background: linear-gradient(158deg, rgb(var(--glass-tint) / .85), rgb(var(--glass-tint) / .6));
+      backdrop-filter: blur(26px) saturate(175%); border: 1px solid var(--edge); box-shadow: var(--shadow);
     }
     nav.mainnav.open { display: flex; }
-    .navdrop-menu { position: static; box-shadow: none; border: none; border-left: 2px solid var(--line); border-radius: 0; margin: 4px 0 4px 12px; }
-    .hero { min-height: 360px; }
-    .grid { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; }
-    .toolbar .result-count { flex-basis: 100%; margin-left: 0; }
+    .navdrop-menu { position: static; box-shadow: none; border: none; background: none; backdrop-filter: none; padding: 2px 0 6px 12px; }
+    .hero { padding-top: 76px; }
+    .admin-head { padding-top: 68px; }
+    .stack { padding-top: 34px; }
+    .sheet.s1 { display: none; }
+    .sheet.s2 { top: 10px; width: 94%; height: 62px; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .result-count { flex-basis: 100%; margin-left: 0; }
   }
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; scroll-behavior: auto; } }
 </style>
 </head>
 <body>
+<div class="aura"><i></i><i></i></div>
 <div id="app"></div>
 <div id="toast"></div>
 
@@ -323,7 +369,7 @@
 /* ═══════════════════════════════════════════════════════════════
    Trøjesamlingen — privat katalog over fodboldtrøjer.
    Ren visning/katalogisering: ingen priser, kurv eller betaling.
-   Data og billeder gemmes lokalt i browserens IndexedDB.
+   Glasmaterialet tones af hver trøjes klubfarve.
    ═══════════════════════════════════════════════════════════════ */
 
 /* Adgangskoden gemmes kun som SHA-256-hash. Skift kode: kør
@@ -335,19 +381,47 @@ const AUTH_KEY = 'ts_auth_v1';
 const TYPE_LABELS = { hjemme: 'Hjemme', ude: 'Ude', tredje: 'Tredje', anden: 'Anden' };
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', 'Børnestr.', 'Andet'];
 
+/* Klubfarver: tonen der farver glasset. Ukendte klubber får en
+   stabil tone udledt af navnet, og hver trøje kan overstyre med sin egen. */
+const CLUB_TONES = {
+  'arsenal': [355, 72, 42],
+  'brøndby if': [44, 92, 47],
+  'danmark': [354, 70, 45],
+  'ajax': [4, 76, 45],
+  'ac milan': [352, 45, 24],
+  'inter': [224, 68, 32],
+  'ssc napoli': [205, 76, 46],
+  'juventus': [220, 14, 22],
+  'olympique marseille': [199, 72, 45],
+  'sampdoria': [214, 62, 38],
+  'italien': [214, 70, 40],
+  'tyskland': [220, 12, 24],
+  'japan': [222, 70, 38],
+  'mexico': [152, 52, 30],
+  'rangers fc': [222, 72, 36],
+  'bradford city': [340, 52, 30],
+  'fremad amager': [214, 72, 42],
+  'fc porto': [214, 70, 40],
+  'cagliari': [214, 58, 34],
+  'as roma': [10, 58, 38],
+  'brickfield rangers': [172, 55, 34],
+  'ob': [24, 88, 48],
+  'pigeons': [206, 22, 40],
+};
+
 const PLACEHOLDER_SVG = `
   <svg class="placeholder-jersey" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M35 10 L20 18 L8 40 L22 47 L26 40 L26 90 L74 90 L74 40 L78 47 L92 40 L80 18 L65 10
              C63 17 57 21 50 21 C43 21 37 17 35 10 Z"
-          fill="none" stroke="#12181f" stroke-width="3" stroke-linejoin="round"/>
+          fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
   </svg>`;
 
 /* ── State ──────────────────────────────────────── */
 let db = null;
 let shirts = [];                 // alle trøjer i hukommelsen
-const urlCache = new Map();      // imageId -> objectURL
+const urlCache = new Map();      // imageId -> data-URL
 let filters = { q: '', klub: '', saeson: '', type: '', sort: 'nyeste' };
-let editImages = [];             // billeder i admin-formularen: {id?, blob, url}
+let editImages = [];             // billeder i admin-formularen
 let editRemoved = [];            // billed-id'er der skal slettes ved gem
 
 /* ── IndexedDB ──────────────────────────────────── */
@@ -394,12 +468,57 @@ async function loadShirts() {
   shirts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 }
 
+/* ── Farvetoner ─────────────────────────────────── */
+function hexToTone(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec((hex || '').trim());
+  if (!m) return null;
+  const n = parseInt(m[1], 16);
+  const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  let h = 0;
+  if (d) {
+    if (max === r) h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h = Math.round(h * 60);
+    if (h < 0) h += 360;
+  }
+  const l = (max + min) / 2;
+  const s = d ? d / (1 - Math.abs(2 * l - 1)) : 0;
+  // hold tonen i et leje hvor hvid tekst kan læses på glasset
+  return [h, Math.min(88, Math.max(18, Math.round(s * 100))), Math.min(52, Math.max(20, Math.round(l * 100)))];
+}
+function toneToHex([h, s, l]) {
+  const a = (s / 100) * Math.min(l / 100, 1 - l / 100);
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const v = l / 100 - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1)));
+    return Math.round(255 * v).toString(16).padStart(2, '0');
+  };
+  return '#' + f(0) + f(8) + f(4);
+}
+function toneOf(s) {
+  if (s && s.farve) {
+    const t = hexToTone(s.farve);
+    if (t) return t;
+  }
+  const k = ((s && s.klub) || '').toLocaleLowerCase('da').trim();
+  if (CLUB_TONES[k]) return CLUB_TONES[k];
+  let hash = 0;
+  for (let i = 0; i < k.length; i++) hash = (hash * 31 + k.charCodeAt(i)) % 360;
+  return [hash, 55, 36];
+}
+const toneStr = t => t[0] + ' ' + t[1] + '% ' + t[2] + '%';
+function setPageTone(s) {
+  document.documentElement.style.setProperty('--tone', toneStr(toneOf(s)));
+}
+
 /* ── Billeder ───────────────────────────────────── */
 function newId() {
   return (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
 }
 
-/* Komprimér upload til maks 1600 px JPEG, så IndexedDB ikke vokser unødigt. */
+/* Komprimér upload til maks 1600 px JPEG, så databasen ikke vokser unødigt. */
 async function compressImage(file) {
   try {
     const bmp = await createImageBitmap(file);
@@ -445,9 +564,14 @@ function toast(msg) {
   clearTimeout(toast._h);
   toast._h = setTimeout(() => t.classList.remove('show'), 2600);
 }
-function badgesHtml(s, big) {
+function badgesHtml(s) {
   // Kvalitet vises ikke som badge — den står i info-listen; kun Signeret fremhæves.
-  return s.signeret ? '<span class="badge signeret">Signeret</span>' : '';
+  return s.signeret ? '<span class="badge">Signeret</span>' : '';
+}
+function uddrag(t, maks) {
+  const s = (t || '').trim();
+  if (s.length <= maks) return s;
+  return s.slice(0, maks - 1).replace(/\s+\S*$/, '') + '…';
 }
 function subtitle(s) {
   const parts = [];
@@ -533,6 +657,24 @@ function logout() {
   location.hash = '#/login';
 }
 
+/* ── Tema ───────────────────────────────────────── */
+const THEME_KEY = 'ts_theme';
+function initTheme() {
+  try {
+    const t = localStorage.getItem(THEME_KEY);
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+}
+initTheme();
+function toggleTheme() {
+  const mørk = document.documentElement.getAttribute('data-theme') === 'dark'
+    || (!document.documentElement.hasAttribute('data-theme')
+        && matchMedia('(prefers-color-scheme: dark)').matches);
+  const ny = mørk ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', ny);
+  try { localStorage.setItem(THEME_KEY, ny); } catch (e) {}
+}
+
 /* ── Router ─────────────────────────────────────── */
 const app = document.getElementById('app');
 let pendingHash = null;
@@ -554,7 +696,7 @@ async function route() {
 }
 window.addEventListener('hashchange', route);
 
-/* ── Topbar ─────────────────────────────────────── */
+/* ── Topbjælke ──────────────────────────────────── */
 function uniqueSorted(field) {
   const map = new Map();
   for (const s of shirts) {
@@ -569,40 +711,41 @@ function navDrop(title, items) {
   if (!items.length) return '';
   return `<details class="navdrop">
     <summary>${title}</summary>
-    <div class="navdrop-menu">${items}</div>
+    <div class="navdrop-menu glass">${items}</div>
   </details>`;
 }
 function topbarHtml() {
   const klubber = uniqueSorted('klub').map(k =>
-    `<button data-filter="klub" data-value="${esc(k.label)}">${esc(k.label)} <span class="count">(${k.count})</span></button>`).join('');
+    `<button data-filter="klub" data-value="${esc(k.label)}">${esc(k.label)} <span class="count">${k.count}</span></button>`).join('');
   const saesoner = uniqueSorted('saeson')
     .sort((a, b) => seasonKey(b.label) - seasonKey(a.label))
-    .map(k => `<button data-filter="saeson" data-value="${esc(k.label)}">${esc(k.label)} <span class="count">(${k.count})</span></button>`).join('');
+    .map(k => `<button data-filter="saeson" data-value="${esc(k.label)}">${esc(k.label)} <span class="count">${k.count}</span></button>`).join('');
   const typer = Object.entries(TYPE_LABELS)
     .filter(([v]) => shirts.some(s => s.type === v))
     .map(([v, l]) => `<button data-filter="type" data-value="${v}">${l}</button>`).join('');
   return `
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="logo" href="#/">Trøje<span>·</span>Samlingen</a>
-      <button class="burger" id="burger" aria-label="Menu">☰</button>
+  <div class="wrap bar-holder">
+    <header class="glass bar">
+      <a class="brand" href="#/"><i>◆</i> Trøjesamlingen</a>
+      <button class="icon-btn burger" id="burger" aria-label="Menu">☰</button>
       <nav class="mainnav" id="mainnav">
         <a class="navlink" href="#/" data-nav="alle">Samlingen</a>
         ${navDrop('Klub', klubber)}
         ${navDrop('Sæson', saesoner)}
         ${navDrop('Type', typer)}
-        <span style="flex:1"></span>
-        <div class="nav-right">
+        <span class="nav-right">
           <a class="navlink" href="#/admin">Administrér</a>
-          <button class="navlink" id="logoutBtn" style="cursor:pointer">Log ud</button>
-        </div>
+          <button class="navlink" id="logoutBtn">Log ud</button>
+        </span>
       </nav>
-    </div>
-  </header>`;
+      <button class="icon-btn" id="themeBtn" title="Skift lyst / mørkt">◐</button>
+    </header>
+  </div>`;
 }
 function bindTopbar() {
   const nav = document.getElementById('mainnav');
   document.getElementById('burger').onclick = () => nav.classList.toggle('open');
+  document.getElementById('themeBtn').onclick = toggleTheme;
   document.getElementById('logoutBtn').onclick = logout;
   nav.querySelector('[data-nav="alle"]').onclick = () => {
     filters = { ...filters, q: '', klub: '', saeson: '', type: '' };
@@ -617,7 +760,6 @@ function bindTopbar() {
       else location.hash = '#/';
     };
   });
-  // luk dropdowns ved klik udenfor
   document.addEventListener('click', e => {
     nav.querySelectorAll('details[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; });
   }, { capture: true });
@@ -627,8 +769,8 @@ function bindTopbar() {
 function renderLogin() {
   app.innerHTML = `
   <div class="login-page">
-    <form class="login-card" id="loginForm">
-      <div class="logo">Trøje<span>·</span>Samlingen</div>
+    <form class="glass login-card" id="loginForm">
+      <div class="brand"><i>◆</i> Trøjesamlingen</div>
       <h1>Privat samling</h1>
       <p>Indtast adgangskoden for at se kataloget.</p>
       <input type="password" id="pw" placeholder="Adgangskode" autocomplete="current-password" autofocus>
@@ -683,13 +825,17 @@ async function cardHtml(s) {
     ? `<img class="primary" src="${u1}" alt="${esc(s.klub)}" loading="lazy">${u2 ? `<img class="alt" src="${u2}" alt="" loading="lazy">` : ''}`
     : PLACEHOLDER_SVG;
   return `
-  <a class="card" href="#/troje/${s.id}">
-    <div class="card-imgbox">
-      ${img}
-      <div class="card-badges">${badgesHtml(s)}</div>
+  <a class="card" href="#/troje/${s.id}" style="--tone:${toneStr(toneOf(s))}">
+    <div class="card-top">
+      <span class="tag">${esc(TYPE_LABELS[s.type] || s.type || '—')}</span>
+      <span class="meta">${esc(s.saeson || '—')}</span>
     </div>
-    <h3>${esc(s.klub) || 'Ukendt klub'}</h3>
-    <p class="meta">${esc(subtitle(s))}</p>
+    <div class="card-img">${img}</div>
+    <div>
+      <h3>${esc(s.klub) || 'Ukendt klub'}</h3>
+      <p class="meta">${esc(s.spiller ? s.spiller + (s.nummer ? ' · ' + s.nummer : '') : (s.kvalitet === 'autentisk' ? 'Autentisk' : 'Replica'))}</p>
+    </div>
+    ${s.signeret ? '<div style="position:absolute;top:22px;right:22px">' + badgesHtml(s) + '</div>' : ''}
   </a>`;
 }
 
@@ -699,12 +845,15 @@ function statsData() {
     const k = (s.klub || 'Ukendt').trim() || 'Ukendt';
     klubMap.set(k, (klubMap.get(k) || 0) + 1);
   }
+  const aar = shirts.map(s => seasonKey(s.saeson)).filter(Boolean);
   return {
     total: shirts.length,
     klubber: klubMap.size,
     saesoner: new Set(shirts.map(s => s.saeson).filter(Boolean)).size,
     autentiske: shirts.filter(s => s.kvalitet === 'autentisk').length,
     signerede: shirts.filter(s => s.signeret).length,
+    aeldst: aar.length ? Math.min(...aar) : '—',
+    nyest: aar.length ? Math.max(...aar) : '—',
     perKlub: [...klubMap.entries()].sort((a, b) => b[1] - a[1]),
   };
 }
@@ -712,20 +861,21 @@ function statsData() {
 async function renderHome() {
   const st = statsData();
   const filtered = applyFilters(shirts);
-  const heroImg = await urlFor(shirts.find(s => s.billeder?.length)?.billeder[0]);
+  const featured = filtered[0] || shirts[0] || null;
+  if (featured) setPageTone(featured);
+  const heroImg = featured ? await urlFor(featured.billeder?.[0]) : null;
   const activeFilter = filters.klub || filters.saeson || (filters.type && TYPE_LABELS[filters.type]) || '';
 
   let gridHtml;
   if (!shirts.length) {
-    gridHtml = `<div class="empty">
+    gridHtml = `<div class="glass empty">
       <h2>Samlingen er tom — endnu</h2>
       <p>Tilføj din første trøje via administrationssiden.</p>
       <a class="btn" href="#/admin">Tilføj første trøje</a>
     </div>`;
   } else if (!filtered.length) {
-    gridHtml = `<div class="empty"><h2>Ingen trøjer matcher</h2><p>Prøv at justere søgning eller filtre.</p></div>`;
+    gridHtml = `<div class="glass empty"><h2>Ingen trøjer matcher</h2><p>Prøv at justere søgning eller filtre.</p></div>`;
   } else if (filters.sort === 'klub') {
-    // Grupperede "kollektioner" pr. klub, Como-style
     const groups = new Map();
     for (const s of filtered) {
       const k = (s.klub || 'Ukendt').trim() || 'Ukendt';
@@ -743,32 +893,49 @@ async function renderHome() {
     gridHtml = sections.join('');
   } else {
     const cards = await Promise.all(filtered.map(cardHtml));
-    const heading = activeFilter ? esc(activeFilter) : 'Hele samlingen';
     gridHtml = `<section class="section">
-      <div class="section-head"><h2>${heading}</h2><span class="count">${filtered.length} ${filtered.length === 1 ? 'trøje' : 'trøjer'}</span></div>
+      <div class="section-head"><h2>${activeFilter ? esc(activeFilter) : 'Hele samlingen'}</h2><span class="count">${filtered.length} ${filtered.length === 1 ? 'trøje' : 'trøjer'}</span></div>
       <div class="grid">${cards.join('')}</div>
     </section>`;
   }
 
   app.innerHTML = `
   ${topbarHtml()}
-  <section class="hero">
-    ${heroImg ? `<img class="hero-img" src="${heroImg}" alt="">` : ''}
-    <div class="hero-content">
-      <div class="kicker">Privat katalog · Kun visning</div>
-      <h1>Min trøjesamling</h1>
-      <p class="sub">Et personligt arkiv over fodboldtrøjer — klubber, sæsoner og historierne bag dem.</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="n">${st.total}</div><div class="l">${st.total === 1 ? 'Trøje' : 'Trøjer'}</div></div>
-        <div class="hero-stat"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
-        <div class="hero-stat"><div class="n">${st.saesoner}</div><div class="l">Sæsoner</div></div>
-        <div class="hero-stat"><div class="n">${st.signerede}</div><div class="l">Signerede</div></div>
+  <main class="wrap">
+    ${featured ? `
+    <section class="hero">
+      <div class="stack">
+        <div class="glass sheet s1">
+          <span class="sheet-label">Arkiv</span>
+          <span class="pill">${st.total} ${st.total === 1 ? 'trøje' : 'trøjer'}</span>
+        </div>
+        <div class="glass sheet s2">
+          <span class="sheet-label">Samlingen</span>
+          <span class="pill">${esc(featured.klub)}</span>
+          <span class="pill">${esc(featured.saeson || 'Udateret')}</span>
+        </div>
+        <article class="glass toned feature">
+          <div class="feature-img">
+            ${heroImg ? `<img src="${heroImg}" alt="${esc(featured.klub)}">` : PLACEHOLDER_SVG}
+          </div>
+          <div class="feature-body">
+            <p class="eyebrow">Privat katalog · Kun visning</p>
+            <h1>${esc(featured.klub)}</h1>
+            <p class="sub">${esc(subtitle(featured))}</p>
+            <div><a class="btn on-tone" href="#/troje/${featured.id}">Se trøjen →</a></div>
+            ${featured.noter ? `<p class="feature-note">${esc(uddrag(featured.noter, 180))}</p>` : ''}
+            <div class="hero-stats">
+              <div class="hero-stat"><div class="n">${st.total}</div><div class="l">${st.total === 1 ? 'Trøje' : 'Trøjer'}</div></div>
+              <div class="hero-stat"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
+              <div class="hero-stat"><div class="n">${st.saesoner}</div><div class="l">Sæsoner</div></div>
+              <div class="hero-stat"><div class="n">${st.aeldst}</div><div class="l">Ældste</div></div>
+            </div>
+          </div>
+        </article>
       </div>
-      <div style="margin-top:28px"><a class="btn light" href="#collection">Se samlingen</a></div>
-    </div>
-  </section>
-  <div class="toolbar" id="collection">
-    <div class="wrap toolbar-inner">
+    </section>` : '<div style="height:84px"></div>'}
+
+    <div class="glass toolbar" id="collection">
       <input type="search" id="fQ" placeholder="Søg i klub, spiller, sæson, noter …" value="${esc(filters.q)}">
       <select id="fKlub">
         <option value="">Alle klubber</option>
@@ -789,37 +956,48 @@ async function renderHome() {
         <option value="saeson" ${filters.sort === 'saeson' ? 'selected' : ''}>Sæson, nyeste først</option>
       </select>
       ${(filters.q || filters.klub || filters.saeson || filters.type) ? '<button class="linkbtn" id="fReset">Nulstil</button>' : ''}
-      <span class="result-count">${filtered.length} af ${shirts.length} ${shirts.length === 1 ? 'trøje' : 'trøjer'}</span>
+      <span class="result-count">${filtered.length} af ${shirts.length}</span>
     </div>
-  </div>
-  <main class="wrap">${gridHtml}</main>
-  ${shirts.length ? `
-  <section class="stats-band">
-    <div class="wrap">
-      <div class="kicker">Statistik</div>
-      <div class="stats-grid">
-        <div class="stat-tile"><div class="n">${st.total}</div><div class="l">Trøjer i samlingen</div></div>
-        <div class="stat-tile"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
-        <div class="stat-tile"><div class="n">${st.autentiske}</div><div class="l">Autentiske</div></div>
-        <div class="stat-tile"><div class="n">${st.total - st.autentiske}</div><div class="l">Replica</div></div>
-        <div class="stat-tile"><div class="n">${st.signerede}</div><div class="l">Signerede</div></div>
+
+    ${gridHtml}
+
+    ${shirts.length ? `
+    <section class="section">
+      <div class="section-head"><h2>Samlingen i tal</h2></div>
+      <div class="stats">
+        <div class="glass stat"><div class="n">${st.total}</div><div class="l">Trøjer</div></div>
+        <div class="glass stat"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
+        <div class="glass stat"><div class="n">${st.autentiske}</div><div class="l">Autentiske</div></div>
+        <div class="glass stat"><div class="n">${st.signerede}</div><div class="l">Signerede</div></div>
+        <div class="glass stat"><div class="n">${st.nyest}</div><div class="l">Nyeste sæson</div></div>
       </div>
-      <div class="klub-bars">
+      <div class="glass klub-bars">
         ${st.perKlub.slice(0, 8).map(([k, n]) => `
-          <div class="klub-bar">
+          <div class="klub-bar" style="--k:${toneStr(toneOf({ klub: k }))}">
             <span>${esc(k)}</span>
             <span class="bar"><i style="width:${Math.round(n / st.total * 100)}%"></i></span>
             <span class="num">${n}</span>
           </div>`).join('')}
       </div>
-    </div>
-  </section>` : ''}
-  <footer><div class="wrap"><span>Trøjesamlingen — privat arkiv</span><span>Ingen salg · Ingen kurv · Kun kærlighed til trøjer</span></div></footer>`;
+    </section>` : ''}
+
+    <footer>Trøjesamlingen — privat arkiv · ingen priser, ingen kurv</footer>
+  </main>`;
 
   bindTopbar();
   const rerender = () => renderHome();
   const q = document.getElementById('fQ');
-  q.oninput = () => { filters.q = q.value; clearTimeout(q._t); q._t = setTimeout(() => { const pos = q.selectionStart; rerender().then(() => { const nq = document.getElementById('fQ'); nq.focus(); nq.setSelectionRange(pos, pos); }); }, 250); };
+  q.oninput = () => {
+    filters.q = q.value;
+    clearTimeout(q._t);
+    q._t = setTimeout(() => {
+      const pos = q.selectionStart;
+      rerender().then(() => {
+        const nq = document.getElementById('fQ');
+        nq.focus(); nq.setSelectionRange(pos, pos);
+      });
+    }, 250);
+  };
   document.getElementById('fKlub').onchange = e => { filters.klub = e.target.value; rerender(); };
   document.getElementById('fSaeson').onchange = e => { filters.saeson = e.target.value; rerender(); };
   document.getElementById('fType').onchange = e => { filters.type = e.target.value; rerender(); };
@@ -832,6 +1010,7 @@ async function renderHome() {
 async function renderDetail(id) {
   const s = shirts.find(x => x.id === id);
   if (!s) { location.hash = '#/'; return; }
+  setPageTone(s);
   const urls = [];
   for (const imgId of (s.billeder || [])) {
     const u = await urlFor(imgId);
@@ -839,21 +1018,26 @@ async function renderDetail(id) {
   }
   const added = s.createdAt ? new Date(s.createdAt).toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
   const spec = [
-    ['Klub', s.klub],
     ['Sæson', s.saeson],
     ['Type', TYPE_LABELS[s.type] || s.type],
-    ['Spiller', s.spiller ? s.spiller + (s.nummer ? ' · #' + s.nummer : '') : (s.nummer ? '#' + s.nummer : '')],
     ['Størrelse', s.stoerrelse],
-    ['Kvalitet', s.kvalitet === 'autentisk' ? 'Autentisk (spillerversion)' : 'Replica (fanversion)'],
-    ['Signeret', s.signeret ? 'Ja' : ''],
+    ['Spiller', s.spiller ? s.spiller + (s.nummer ? ' · ' + s.nummer : '') : (s.nummer ? '#' + s.nummer : '')],
+    ['Kvalitet', s.kvalitet === 'autentisk' ? 'Autentisk' : 'Replica'],
     ['Tilføjet', added],
   ].filter(([, v]) => v);
+  const chips = [
+    s.kvalitet === 'autentisk' ? 'Autentisk (spillerversion)' : 'Replica (fanversion)',
+    s.stoerrelse && 'Str. ' + s.stoerrelse,
+    s.signeret && 'Signeret',
+  ].filter(Boolean);
 
   app.innerHTML = `
   ${topbarHtml()}
   <main class="wrap">
-    <button class="backlink" onclick="history.length > 1 ? history.back() : location.hash='#/'">← Tilbage til samlingen</button>
-    <div class="detail">
+    <div style="padding-top:74px">
+      <button class="backlink" id="back">← Tilbage til samlingen</button>
+    </div>
+    <article class="glass toned detail">
       <div class="gallery">
         <div class="gallery-main" id="galleryMain">
           ${urls.length ? `<img src="${urls[0]}" alt="${esc(s.klub)}">` : PLACEHOLDER_SVG}
@@ -861,25 +1045,26 @@ async function renderDetail(id) {
         ${urls.length > 1 ? `<div class="thumbs">${urls.map((u, i) =>
           `<button data-i="${i}" class="${i === 0 ? 'active' : ''}"><img src="${u}" alt=""></button>`).join('')}</div>` : ''}
       </div>
-      <div class="detail-info">
-        <div class="kicker">${esc(s.saeson || '')}${s.saeson && s.type ? ' · ' : ''}${esc(TYPE_LABELS[s.type] || '')}</div>
+      <div class="detail-body">
+        <p class="eyebrow">${esc(s.saeson || '')}${s.saeson && s.type ? ' · ' : ''}${esc(TYPE_LABELS[s.type] || '')}</p>
         <h1>${esc(s.klub) || 'Ukendt klub'}</h1>
         <p class="detail-sub">${esc(s.spiller ? s.spiller + (s.nummer ? ' #' + s.nummer : '') : (TYPE_LABELS[s.type] || '') + (s.saeson ? ' ' + s.saeson : ''))}</p>
-        <div class="detail-badges">${badgesHtml(s)}</div>
-        <dl class="speclist">
-          ${spec.map(([k, v]) => `<div class="row"><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}
+        <div class="chips">${chips.map(c => `<span class="chip">${esc(c)}</span>`).join('')}</div>
+        <dl class="specs">
+          ${spec.map(([k, v]) => `<div class="spec"><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}
         </dl>
         ${s.noter ? `<div class="notes"><h2>Historie &amp; noter</h2><p>${esc(s.noter)}</p></div>` : ''}
         <div class="detail-actions">
-          <a class="btn ghost sm" href="#/admin/rediger/${s.id}">Redigér</a>
+          <a class="btn on-tone sm" href="#/admin/rediger/${s.id}">Redigér</a>
           <button class="btn danger sm" id="delBtn">Slet trøje</button>
         </div>
       </div>
-    </div>
-  </main>
-  <footer><div class="wrap"><span>Trøjesamlingen — privat arkiv</span><span>Ingen salg · Ingen kurv</span></div></footer>`;
+    </article>
+    <footer>Trøjesamlingen — privat arkiv</footer>
+  </main>`;
 
   bindTopbar();
+  document.getElementById('back').onclick = () => { if (history.length > 1) history.back(); else location.hash = '#/'; };
   document.querySelectorAll('.thumbs button').forEach(b => {
     b.onclick = () => {
       document.querySelector('#galleryMain img').src = urls[+b.dataset.i];
@@ -910,8 +1095,8 @@ async function deleteShirt(id, goHome) {
 async function renderAdmin(editId) {
   const editing = editId ? shirts.find(x => x.id === editId) : null;
   if (editId && !editing) { location.hash = '#/admin'; return; }
+  if (editing) setPageTone(editing);
 
-  // nulstil formular-billedstate
   editImages = [];
   editRemoved = [];
   if (editing) {
@@ -923,7 +1108,7 @@ async function renderAdmin(editId) {
 
   const rowsHtml = await Promise.all(shirts.map(async s => {
     const u = await urlFor(s.billeder?.[0]);
-    return `<div class="admin-row">
+    return `<div class="admin-row" style="--k:${toneStr(toneOf(s))}">
       <a class="thumb" href="#/troje/${s.id}">${u ? `<img src="${u}" alt="">` : ''}</a>
       <div><div class="t">${esc(s.klub) || 'Ukendt klub'}</div><div class="m">${esc(subtitle(s))}</div></div>
       <div class="acts">
@@ -934,15 +1119,17 @@ async function renderAdmin(editId) {
   }));
 
   const v = f => esc(editing ? (editing[f] ?? '') : '');
+  const farveVaerdi = editing ? (editing.farve || toneToHex(toneOf(editing))) : '#2a4a8a';
+
   app.innerHTML = `
   ${topbarHtml()}
   <main class="wrap">
     <div class="admin-head">
-      <div class="kicker">Administration</div>
+      <p class="eyebrow">Administration</p>
       <h1>${editing ? 'Redigér trøje' : 'Tilføj &amp; administrér'}</h1>
     </div>
     <div class="admin-grid">
-      <form class="panel" id="shirtForm">
+      <form class="glass panel" id="shirtForm">
         <h2>${editing ? `Redigér: ${esc(editing.klub || 'trøje')}` : 'Ny trøje'}</h2>
         <div class="field">
           <label for="inKlub">Klub *</label>
@@ -981,14 +1168,22 @@ async function renderAdmin(editId) {
           </div>
           <div class="field">
             <label>Kvalitet</label>
-            <div class="radio-row" style="padding-top:8px">
+            <div class="radio-row">
               <label><input type="radio" name="kvalitet" value="autentisk" ${editing?.kvalitet === 'autentisk' ? 'checked' : ''}> Autentisk</label>
               <label><input type="radio" name="kvalitet" value="replica" ${!editing || editing.kvalitet !== 'autentisk' ? 'checked' : ''}> Replica</label>
             </div>
           </div>
         </div>
         <div class="field">
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:0.88rem;color:var(--ink);font-weight:400">
+          <label>Klubfarve</label>
+          <div class="color-row">
+            <input type="color" id="inFarve" value="${farveVaerdi}">
+            <span class="hint">Farver trøjens kort og side. Tom = klubbens standardfarve.</span>
+            <button type="button" class="linkbtn" id="farveReset">Nulstil</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="radio-row" style="text-transform:none;letter-spacing:0;font-size:.88rem;color:var(--ink);font-weight:500;padding:0">
             <input type="checkbox" id="inSigneret" ${editing?.signeret ? 'checked' : ''}> Trøjen er signeret
           </label>
         </div>
@@ -1007,24 +1202,41 @@ async function renderAdmin(editId) {
           ${editing ? '<a class="btn ghost" href="#/admin">Annullér</a>' : ''}
         </div>
       </form>
-      <div>
-        <div class="panel" style="background:#fff">
-          <h2>Samlingen (${shirts.length})</h2>
-          <div class="admin-list">
-            ${shirts.length ? rowsHtml.join('') : '<p style="color:var(--muted);font-size:0.88rem">Ingen trøjer endnu — brug formularen til venstre.</p>'}
-          </div>
-          <div class="datatools">
-            <button class="btn ghost sm" id="exportBtn">Eksportér backup</button>
-            <button class="btn ghost sm" id="importBtn">Importér backup</button>
-            <input type="file" id="importFile" accept="application/json" hidden>
-            <span class="hint">Data ligger kun i denne browser. Tag en backup jævnligt, og importér den på andre enheder for at flytte samlingen med.</span>
-          </div>
+      <div class="glass panel">
+        <h2>Samlingen (${shirts.length})</h2>
+        <div class="admin-list">
+          ${shirts.length ? rowsHtml.join('') : '<p style="color:var(--muted);font-size:.88rem">Ingen trøjer endnu — brug formularen til venstre.</p>'}
+        </div>
+        <div class="datatools">
+          <button class="btn ghost sm" id="exportBtn">Eksportér backup</button>
+          <button class="btn ghost sm" id="importBtn">Importér backup</button>
+          <input type="file" id="importFile" accept="application/json" hidden>
+          <span class="hint">Data ligger kun i denne browser. Tag en backup jævnligt, og importér den på andre enheder for at flytte samlingen med.</span>
         </div>
       </div>
     </div>
+    <footer>Trøjesamlingen — privat arkiv</footer>
   </main>`;
 
   bindTopbar();
+
+  /* farve */
+  const farveInput = document.getElementById('inFarve');
+  let farveRørt = !!(editing && editing.farve);
+  farveInput.oninput = () => { farveRørt = true; document.documentElement.style.setProperty('--tone', toneStr(hexToTone(farveInput.value) || [222, 55, 32])); };
+  document.getElementById('farveReset').onclick = () => {
+    farveRørt = false;
+    const t = toneOf({ klub: document.getElementById('inKlub').value });
+    farveInput.value = toneToHex(t);
+    document.documentElement.style.setProperty('--tone', toneStr(t));
+    toast('Bruger klubbens standardfarve.');
+  };
+  document.getElementById('inKlub').oninput = e => {
+    if (farveRørt) return;
+    const t = toneOf({ klub: e.target.value });
+    farveInput.value = toneToHex(t);
+    document.documentElement.style.setProperty('--tone', toneStr(t));
+  };
 
   /* billeder i formularen */
   const dz = document.getElementById('dropzone');
@@ -1035,7 +1247,7 @@ async function renderAdmin(editId) {
     pvBox.innerHTML = editImages.map((p, i) => `
       <div class="pv">
         <img src="${p.url}" alt="">
-        ${i === 0 ? '<span class="tag">Hovedbillede</span>' : ''}
+        ${i === 0 ? '<span class="tag2">Hoved</span>' : ''}
         <button type="button" class="rm" data-i="${i}" title="Fjern">✕</button>
       </div>`).join('');
     pvBox.querySelectorAll('.rm').forEach(b => {
@@ -1091,6 +1303,7 @@ async function renderAdmin(editId) {
         stoerrelse: document.getElementById('inStr').value,
         kvalitet: document.querySelector('input[name="kvalitet"]:checked').value,
         signeret: document.getElementById('inSigneret').checked,
+        farve: farveRørt ? farveInput.value : '',
         noter: document.getElementById('inNoter').value.trim(),
         billeder: imageIds,
         createdAt: editing ? (editing.createdAt || Date.now()) : Date.now(),
@@ -1106,12 +1319,10 @@ async function renderAdmin(editId) {
     }
   };
 
-  /* slet fra listen */
   document.querySelectorAll('[data-del]').forEach(b => {
     b.onclick = () => deleteShirt(b.dataset.del, false);
   });
 
-  /* eksport / import */
   document.getElementById('exportBtn').onclick = exportBackup;
   document.getElementById('importBtn').onclick = () => document.getElementById('importFile').click();
   document.getElementById('importFile').onchange = e => importBackup(e.target.files[0]);
@@ -1165,7 +1376,6 @@ async function importBackup(file) {
       urlCache.clear();
     }
   }
-  // indlæs
   for (const im of (payload.images || [])) {
     const blob = await (await fetch(im.data)).blob();
     await idbPut('images', { id: im.id, blob });
