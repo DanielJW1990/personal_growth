@@ -142,31 +142,19 @@
   .icon-btn { width: 38px; height: 38px; border-radius: 999px; display: grid; place-items: center; background: rgb(var(--glass-tint) / .45); border: 1px solid var(--edge); font-size: .95rem; }
   .burger { display: none; }
 
-  /* ── Hero ──────────────────────────────────────────── */
-  .hero { padding: 104px 0 0; }
-  .feature-note { font-size: .92rem; line-height: 1.6; color: rgb(255 255 255 / .8); max-width: 46ch; margin-top: 22px; }
-  .stack { position: relative; padding-top: 58px; }
-  .sheet {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    border-radius: 24px 24px 0 0; height: 92px; overflow: hidden;
-    display: flex; align-items: flex-start; padding: 15px 26px 0; gap: 12px;
-  }
-  .sheet.s1 { top: 0; width: min(74%, 780px); opacity: .5; }
-  .sheet.s2 { top: 26px; width: min(86%, 940px); opacity: .78; }
-  .sheet-label { font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  /* ── Fælles smådele ────────────────────────────────── */
   .pill { font-size: .7rem; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: rgb(var(--glass-tint) / .5); border: 1px solid var(--edge); color: var(--ink); white-space: nowrap; }
-
-  .feature { position: relative; border-radius: 30px; overflow: hidden; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
-  .feature-img { position: relative; min-height: 380px; display: grid; place-items: center; padding: 26px; }
-  .feature-img::before { content: ""; position: absolute; inset: 0; background: radial-gradient(80% 60% at 50% 100%, rgb(0 0 0 / .26), transparent 70%); }
-  .feature-img img { position: relative; max-height: 430px; width: auto; border-radius: 14px; box-shadow: 0 40px 70px -30px rgb(0 0 0 / .6); }
-  .feature-body { padding: 34px; display: flex; flex-direction: column; }
   .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgb(255 255 255 / .72); margin-bottom: 12px; }
-  .feature h1 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: .96; letter-spacing: -.03em; text-wrap: balance; }
-  .feature .sub { font-size: 1rem; color: rgb(255 255 255 / .78); margin: 6px 0 20px; }
-  .hero-stats { display: flex; gap: 26px; flex-wrap: wrap; margin-top: auto; padding-top: 22px; }
-  .hero-stat .n { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; }
-  .hero-stat .l { font-size: .66rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgb(255 255 255 / .68); margin-top: 5px; }
+
+  /* ── Overblik: forsidens rolige hoved ──────────────── */
+  .overview-wrap { padding: 104px 0 0; }
+  .overview { padding: 36px 34px 32px; border-radius: 30px; }
+  .overview .eyebrow { color: var(--muted); margin-bottom: 10px; }
+  .overview h1 { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: clamp(2.1rem, 4.6vw, 3.2rem); line-height: 1; letter-spacing: -.03em; }
+  .overview .lead { color: var(--muted); font-size: .98rem; max-width: 54ch; margin-top: 12px; }
+  .overview-stats { display: flex; gap: 34px; flex-wrap: wrap; margin-top: 28px; }
+  .ov-stat .n { font-family: "Bricolage Grotesque", "Manrope", sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .ov-stat .l { font-size: .66rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
 
   .btn {
     display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border-radius: 999px;
@@ -331,10 +319,9 @@
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 900px) {
-    .feature, .detail, .admin-grid { grid-template-columns: 1fr; }
-    .feature-img, .gallery { min-height: 280px; padding: 20px 20px 0; }
-    .feature-img img { max-height: 300px; }
-    .feature-body, .detail-body { padding: 24px; }
+    .detail, .admin-grid { grid-template-columns: 1fr; }
+    .gallery { min-height: 280px; padding: 20px 20px 0; }
+    .detail-body { padding: 24px; }
     .gallery-main { min-height: 260px; }
   }
   @media (max-width: 720px) {
@@ -347,11 +334,10 @@
     }
     nav.mainnav.open { display: flex; }
     .navdrop-menu { position: static; box-shadow: none; border: none; background: none; backdrop-filter: none; padding: 2px 0 6px 12px; }
-    .hero { padding-top: 76px; }
+    .overview-wrap { padding-top: 76px; }
+    .overview { padding: 26px 22px 24px; }
+    .overview-stats { gap: 22px; }
     .admin-head { padding-top: 68px; }
-    .stack { padding-top: 34px; }
-    .sheet.s1 { display: none; }
-    .sheet.s2 { top: 10px; width: 94%; height: 62px; }
     .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .result-count { flex-basis: 100%; margin-left: 0; }
   }
@@ -509,6 +495,8 @@ function toneOf(s) {
   return [hash, 55, 36];
 }
 const toneStr = t => t[0] + ' ' + t[1] + '% ' + t[2] + '%';
+/* Forsidens grundtone — neutral, så klubfarverne i gitteret får lov at tale */
+const HOME_TONE = '215 42% 34%';
 function setPageTone(s) {
   document.documentElement.style.setProperty('--tone', toneStr(toneOf(s)));
 }
@@ -567,11 +555,6 @@ function toast(msg) {
 function badgesHtml(s) {
   // Kvalitet vises ikke som badge — den står i info-listen; kun Signeret fremhæves.
   return s.signeret ? '<span class="badge">Signeret</span>' : '';
-}
-function uddrag(t, maks) {
-  const s = (t || '').trim();
-  if (s.length <= maks) return s;
-  return s.slice(0, maks - 1).replace(/\s+\S*$/, '') + '…';
 }
 function subtitle(s) {
   const parts = [];
@@ -861,9 +844,8 @@ function statsData() {
 async function renderHome() {
   const st = statsData();
   const filtered = applyFilters(shirts);
-  const featured = filtered[0] || shirts[0] || null;
-  if (featured) setPageTone(featured);
-  const heroImg = featured ? await urlFor(featured.billeder?.[0]) : null;
+  // Forsiden er overblikket: ingen udvalgt trøje, så siden hviler i en rolig grundtone
+  document.documentElement.style.setProperty('--tone', HOME_TONE);
   const activeFilter = filters.klub || filters.saeson || (filters.type && TYPE_LABELS[filters.type]) || '';
 
   let gridHtml;
@@ -902,38 +884,20 @@ async function renderHome() {
   app.innerHTML = `
   ${topbarHtml()}
   <main class="wrap">
-    ${featured ? `
-    <section class="hero">
-      <div class="stack">
-        <div class="glass sheet s1">
-          <span class="sheet-label">Arkiv</span>
-          <span class="pill">${st.total} ${st.total === 1 ? 'trøje' : 'trøjer'}</span>
+    <section class="overview-wrap">
+      <div class="glass overview">
+        <p class="eyebrow">Privat katalog · Kun visning</p>
+        <h1>Min trøjesamling</h1>
+        <p class="lead">Et personligt arkiv over fodboldtrøjer — klubber, sæsoner og historierne bag dem. Vælg en trøje for at se den.</p>
+        <div class="overview-stats">
+          <div class="ov-stat"><div class="n">${st.total}</div><div class="l">${st.total === 1 ? 'Trøje' : 'Trøjer'}</div></div>
+          <div class="ov-stat"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
+          <div class="ov-stat"><div class="n">${st.saesoner}</div><div class="l">Sæsoner</div></div>
+          <div class="ov-stat"><div class="n">${st.aeldst}</div><div class="l">Ældste</div></div>
+          <div class="ov-stat"><div class="n">${st.nyest}</div><div class="l">Nyeste</div></div>
         </div>
-        <div class="glass sheet s2">
-          <span class="sheet-label">Samlingen</span>
-          <span class="pill">${esc(featured.klub)}</span>
-          <span class="pill">${esc(featured.saeson || 'Udateret')}</span>
-        </div>
-        <article class="glass toned feature">
-          <div class="feature-img">
-            ${heroImg ? `<img src="${heroImg}" alt="${esc(featured.klub)}">` : PLACEHOLDER_SVG}
-          </div>
-          <div class="feature-body">
-            <p class="eyebrow">Privat katalog · Kun visning</p>
-            <h1>${esc(featured.klub)}</h1>
-            <p class="sub">${esc(subtitle(featured))}</p>
-            <div><a class="btn on-tone" href="#/troje/${featured.id}">Se trøjen →</a></div>
-            ${featured.noter ? `<p class="feature-note">${esc(uddrag(featured.noter, 180))}</p>` : ''}
-            <div class="hero-stats">
-              <div class="hero-stat"><div class="n">${st.total}</div><div class="l">${st.total === 1 ? 'Trøje' : 'Trøjer'}</div></div>
-              <div class="hero-stat"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
-              <div class="hero-stat"><div class="n">${st.saesoner}</div><div class="l">Sæsoner</div></div>
-              <div class="hero-stat"><div class="n">${st.aeldst}</div><div class="l">Ældste</div></div>
-            </div>
-          </div>
-        </article>
       </div>
-    </section>` : '<div style="height:84px"></div>'}
+    </section>
 
     <div class="glass toolbar" id="collection">
       <input type="search" id="fQ" placeholder="Søg i klub, spiller, sæson, noter …" value="${esc(filters.q)}">
@@ -963,14 +927,7 @@ async function renderHome() {
 
     ${shirts.length ? `
     <section class="section">
-      <div class="section-head"><h2>Samlingen i tal</h2></div>
-      <div class="stats">
-        <div class="glass stat"><div class="n">${st.total}</div><div class="l">Trøjer</div></div>
-        <div class="glass stat"><div class="n">${st.klubber}</div><div class="l">Klubber</div></div>
-        <div class="glass stat"><div class="n">${st.autentiske}</div><div class="l">Autentiske</div></div>
-        <div class="glass stat"><div class="n">${st.signerede}</div><div class="l">Signerede</div></div>
-        <div class="glass stat"><div class="n">${st.nyest}</div><div class="l">Nyeste sæson</div></div>
-      </div>
+      <div class="section-head"><h2>Fordeling pr. klub</h2><span class="count">${st.autentiske} autentiske · ${st.signerede} signerede</span></div>
       <div class="glass klub-bars">
         ${st.perKlub.slice(0, 8).map(([k, n]) => `
           <div class="klub-bar" style="--k:${toneStr(toneOf({ klub: k }))}">
