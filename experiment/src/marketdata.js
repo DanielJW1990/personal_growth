@@ -7,17 +7,28 @@
 // of levels and is therefore currency-neutral, so no FX is needed there.
 
 import { BENCHMARKS } from './config.js';
+import { withRetry } from './net.js';
 
 const CHART = (symbol) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`;
 
 async function fetchJson(url) {
-  const res = await fetch(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (index-beating-experiment)' },
-    signal: AbortSignal.timeout(30_000), // fail fast; callers tolerate a missing quote
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.json();
+  return withRetry(
+    async () => {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (index-beating-experiment)' },
+        signal: AbortSignal.timeout(30_000), // fail fast; callers tolerate a missing quote
+      });
+      if (res.status === 429 || res.status >= 500) {
+        const err = new Error(`HTTP ${res.status} for ${url}`);
+        err.transient = true; // Yahoo throttling/outage — retry rather than drop the quote
+        throw err;
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      return res.json();
+    },
+    { label: 'market data' },
+  );
 }
 
 /**

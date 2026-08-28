@@ -8,6 +8,7 @@ import { loadLedger, saveLedger, appendFill } from './ledger.js';
 import { getUpdates, answerCallback, annotateMessage, sendMessage } from './telegram.js';
 import { parseFill } from './fills-parse.js';
 import { getPricesDkk } from './marketdata.js';
+import { isTransientNetworkError } from './net.js';
 
 function findPendingByMessageId(led, messageId) {
   for (const [id, entry] of Object.entries(led.telegram_state.pending)) {
@@ -144,6 +145,18 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   handleUpdates()
     .then((r) => console.log('handle-updates:', JSON.stringify(r)))
     .catch((err) => {
+      // A transient network failure means Telegram or the network had a bad
+      // minute. Nothing was processed, the ledger is untouched and the update
+      // offset has not moved, so the next scheduled poll picks up every message
+      // that was waiting. Failing the job here would only email the operator
+      // about a non-event — and an alert that cries wolf is worse than none.
+      // Real errors (bad token, rejected request, bad ledger) still exit 1.
+      if (isTransientNetworkError(err)) {
+        console.warn(
+          `handle-updates: transient network failure (${err.message}) — skipping this poll; the next run catches up.`,
+        );
+        return;
+      }
       console.error(err);
       process.exit(1);
     });

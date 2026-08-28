@@ -4,32 +4,35 @@
 // the human can, by hand, in Pluto/Nordnet.
 
 import { config } from './config.js';
+import { withRetry } from './net.js';
 
 const API = (method) => `https://api.telegram.org/bot${config.telegramBotToken}/${method}`;
 
 async function call(method, body) {
   if (!config.telegramBotToken) throw new Error('TELEGRAM_BOT_TOKEN is not set');
-  // 30s timeout + one retry: a stalled Telegram API must fail the run fast
-  // (the next scheduled poll picks up where the offset left off), not hang
-  // until the job's 15-minute kill switch.
-  let lastErr;
-  for (let attempt = 0; attempt < 2; attempt++) {
-    if (attempt > 0) await new Promise((r) => setTimeout(r, 5000));
-    try {
+  // 30s timeout per attempt, three attempts with backoff: a stalled Telegram
+  // API must never hang the run until the job's 15-minute kill switch.
+  return withRetry(
+    async () => {
       const res = await fetch(API(method), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(30_000),
       });
+      // Telegram being overloaded or rate-limiting is a bad minute, not a bad
+      // request — tag it so it retries and stays tolerable to the poller.
+      if (res.status === 429 || res.status >= 500) {
+        const err = new Error(`Telegram ${method}: HTTP ${res.status}`);
+        err.transient = true;
+        throw err;
+      }
       const data = await res.json();
       if (!data.ok) throw new Error(`Telegram ${method} failed: ${data.description}`);
       return data.result;
-    } catch (err) {
-      lastErr = err;
-    }
-  }
-  throw lastErr;
+    },
+    { label: `telegram ${method}` },
+  );
 }
 
 export async function sendMessage(text, extra = {}) {
