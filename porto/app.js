@@ -5,8 +5,6 @@
   const TZ_TRIP = 'Europe/Lisbon';
   const TZ_HOME = 'Europe/Copenhagen';
   const KEY_PW = 'porto-kode';
-  const KEY_BOOK = 'porto-booking';
-  const KEY_PACK = 'porto-pakning';
   const KEY_KASSE = 'porto-kasse';
   const KEY_SECRET = 'porto-hemmelig';
   const KEY_SCROLL = 'porto-scroll';
@@ -144,7 +142,6 @@
     const m = trip.meta, b = trip.base;
     const p = trip.photos[m.heroPhoto];
     $('#hero').innerHTML = `
-      <p class="label">${esc(m.kicker)}</p>
       <h1 class="hero-title">${esc(m.title)}</h1>
       <p class="hero-sub">${esc(m.subtitle)}</p>
       <p class="hero-dates">${esc(m.dates)}</p>
@@ -162,19 +159,10 @@
         <p class="addr">${esc(b.address)}</p>
         <p class="muted" style="margin:0">${esc(b.arrival)} · ${esc(b.departure)}</p>
         <div class="btn-row"><a class="btn btn-primary" href="${esc(b.maps)}" target="_blank" rel="noopener">${esc(b.mapsLabel)}</a></div>
-      </div>
-      <div class="grid grid-3 daycards">
-        ${trip.dayCards.map((d) => `
-          <a class="card daycard" href="#program" data-goto-day="${esc(d.day)}">
-            <p class="label">${esc(d.label)}</p>
-            <h3>${esc(d.title)}</h3>
-            <p>${esc(d.text)}</p>
-          </a>`).join('')}
-      </div>
-      <div class="hero-notes">${m.notes.map((n) => `<p class="caveat">${esc(n)}</p>`).join('')}</div>`;
+      </div>`;
   }
 
-  // ---------- I dag ----------
+  // ---------- Tidslinje: nu / næste ----------
   function dayState(day, minutes) {
     const items = day.items.map((it, i) => {
       const start = toMin(it.start);
@@ -186,59 +174,6 @@
     const upcoming = items.find((x) => x.start > minutes) || null;
     return { items, current, upcoming };
   }
-
-  function renderToday() {
-    const t = now();
-    const lp = localParts(t, TZ_TRIP);
-    const days = trip.days;
-    const day = days.find((d) => d.date === lp.date);
-    const el = $('#idag');
-    let body;
-
-    if (day) {
-      const { current, upcoming } = dayState(day, lp.minutes);
-      const row = (x, pill, pillCls) => x ? `
-        <div class="today-now" style="margin-top:12px">
-          <span class="pill ${pillCls}">${pill}</span>
-          <div>
-            <p style="margin:0"><b>${esc(x.it.time)} · ${esc(x.it.title)}</b></p>
-            <p class="muted small" style="margin:0">${esc(x.it.text)}</p>
-            <div class="tl-foot">${x.it.price ? `<span class="price">${esc(x.it.price)}</span>` : ''}${mapsLink(x.it.maps)}</div>
-          </div>
-        </div>` : '';
-      const nextStart = upcoming ? dateAt(day.date, upcoming.it.start) : null;
-      body = `
-        <div class="card today-card">
-          <p class="label">${esc(day.kicker)} · Porto-tid ${fmtHM(lp.minutes)}</p>
-          <h3>${esc(day.title)}</h3>
-          ${row(current, 'Nu', 'pill-now')}
-          ${row(upcoming, 'Næste', '')}
-          ${upcoming ? `<p class="small muted" style="margin:.6rem 0 0">Næste punkt ${esc(humanUntil(nextStart - t))}.</p>` : ''}
-          ${!current && !upcoming ? '<p class="muted" style="margin-top:.6rem">Dagens program er slut. Godnat!</p>' : ''}
-          <div class="btn-row"><a class="btn btn-sm" href="#program" data-goto-day="${esc(day.id)}">Se hele dagen</a></div>
-        </div>`;
-    } else if (lp.date < days[0].date) {
-      const first = days[0];
-      body = `
-        <div class="card today-card">
-          <p class="label">Før afrejse</p>
-          <h3>Dagens program vises her under turen</h3>
-          <p class="muted" style="margin-top:.4rem">Fra torsdag 8. oktober vælger siden automatisk dagens program og fremhæver det næste punkt ud fra klokken i Porto.</p>
-          <p style="margin:0"><b>Først:</b> ${esc(first.kicker)}: ${esc(first.title)}. Fly fra CPH kl. 07.00 dansk tid.</p>
-          <div class="btn-row"><a class="btn btn-sm" href="#fly">Se flyet</a><a class="btn btn-sm" href="#program" data-goto-day="${esc(first.id)}">Se torsdag</a></div>
-        </div>`;
-    } else {
-      body = `<div class="card today-card"><p class="label">Efter turen</p><h3>Tak for turen</h3><p class="muted" style="margin-top:.4rem">Programmet ligger stadig nedenfor.</p></div>`;
-    }
-
-    el.innerHTML = `
-      <div class="section-head"><p class="label">I dag</p><h2>Hvad sker der nu?</h2></div>
-      ${body}`;
-    markTimeline();
-  }
-  const fmtHM = (min) => `${String(Math.floor(min / 60)).padStart(2, '0')}.${String(min % 60).padStart(2, '0')}`;
-  // Porto-tid er UTC+1 (WEST) under hele opholdet.
-  const dateAt = (date, hm) => new Date(`${date}T${hm}:00+01:00`);
 
   // ---------- Fly ----------
   function renderFlights() {
@@ -460,54 +395,6 @@
       </div>`;
   }
 
-  // ---------- Tjeklister ----------
-  function checklist(key, items, withNum) {
-    const done = store.get(key, {});
-    return `<ul class="checklist" data-store="${esc(key)}">
-      ${items.map((it, i) => `
-        <li><label class="check">
-          <input type="checkbox" data-id="${esc(it.id)}" ${done[it.id] ? 'checked' : ''}>
-          ${withNum ? `<span class="num">${i + 1}</span>` : ''}
-          <div>${it.title ? `<b>${esc(it.title)}</b>` : ''}<span class="t">${esc(it.text)}</span></div>
-        </label></li>`).join('')}
-    </ul>`;
-  }
-  function wireChecklists(root) {
-    root.addEventListener('change', (e) => {
-      const cb = e.target.closest('.checklist input[type=checkbox]');
-      if (!cb) return;
-      const key = cb.closest('.checklist').dataset.store;
-      const done = store.get(key, {});
-      done[cb.dataset.id] = cb.checked;
-      store.set(key, done);
-      updateProgress(root);
-    });
-    updateProgress(root);
-  }
-  function updateProgress(root) {
-    root.querySelectorAll('[data-progress]').forEach((bar) => {
-      const boxes = root.querySelectorAll(`.checklist[data-store="${bar.dataset.progress}"] input`);
-      const n = [...boxes].filter((b) => b.checked).length;
-      bar.querySelector('i').style.width = `${boxes.length ? (n / boxes.length) * 100 : 0}%`;
-      const lbl = root.querySelector(`[data-progress-label="${bar.dataset.progress}"]`);
-      if (lbl) lbl.textContent = `${n} af ${boxes.length} klaret`;
-    });
-  }
-
-  function renderBooking() {
-    const b = trip.bookingOrder;
-    const el = $('#booking');
-    el.innerHTML = `
-      <div class="section-head"><p class="label">Bookingtjekliste</p><h2>${esc(b.title)}</h2><p class="intro">Afkrydsningen gemmes kun i din egen browser.</p></div>
-      <div class="card">
-        <p class="small muted" data-progress-label="${KEY_BOOK}" style="margin:0"></p>
-        <div class="progress" data-progress="${KEY_BOOK}"><i></i></div>
-        ${checklist(KEY_BOOK, b.items, true)}
-        <p class="caveat" style="margin:.6rem 0 0">${esc(b.note)}</p>
-      </div>`;
-    wireChecklists(el);
-  }
-
   // ---------- Kort ----------
   function renderMap() {
     const m = trip.map;
@@ -563,45 +450,6 @@
         g.setAttribute('aria-pressed', String(!on));
       }
     });
-  }
-
-  // ---------- Praktisk ----------
-  function renderPractical() {
-    const p = trip.practical;
-    const groups = [...new Set(p.packing.map((x) => x.group))];
-    const el = $('#praktisk');
-    el.innerHTML = `
-      <div class="section-head"><p class="label">Praktisk</p><h2>Det skal være nemt undervejs</h2></div>
-      <div class="grid grid-2">
-        ${p.shopping.map((s) => `
-          <div class="card">
-            <p class="label">Indkøb</p>
-            <h3>${esc(s.name)}</h3>
-            <p class="muted" style="margin:.2rem 0 .5rem">${esc(s.address)}</p>
-            <p>${esc(s.text)}</p>
-            <a class="btn btn-sm" href="${esc(s.maps)}" target="_blank" rel="noopener">Åbn ${esc(s.name)} i Maps</a>
-          </div>`).join('')}
-      </div>
-      <p class="caveat" style="margin-top:.6rem">${esc(p.shoppingNote)}</p>
-      <div class="grid grid-2" style="margin-top:14px">
-        <div class="card">
-          <p class="label">Samlet budget</p>
-          <p class="budget-num">${esc(p.budget.headline)}</p>
-          <p>${esc(p.budget.text)}</p>
-          <p class="caveat" style="margin:0">${esc(p.budget.note)}</p>
-        </div>
-        <div class="card">
-          <p class="label">Transport for fem</p>
-          <ul class="plain">${p.transport.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
-        </div>
-      </div>
-      <div class="card" style="margin-top:14px">
-        <p class="label">Pakkeliste</p>
-        <p class="small muted" data-progress-label="${KEY_PACK}" style="margin:0"></p>
-        <div class="progress" data-progress="${KEY_PACK}"><i></i></div>
-        ${groups.map((g) => `<p class="group-label">${esc(g)}</p>${checklist(KEY_PACK, p.packing.filter((x) => x.group === g), false)}`).join('')}
-      </div>`;
-    wireChecklists(el);
   }
 
   // ---------- Alternativer + links ----------
@@ -789,12 +637,10 @@
     renderHero();
     renderFlights();
     renderProgram();
-    renderToday();
+    markTimeline();
     renderStories();
     renderMatch();
-    renderBooking();
     renderMap();
-    renderPractical();
     renderAlternatives();
     renderLinks();
     renderKasse();
@@ -803,7 +649,7 @@
     initMap();
     tickCountdowns();
     setInterval(tickCountdowns, 1000);
-    setInterval(renderToday, 30000);
+    setInterval(markTimeline, 30000);
     let saved = null;
     try { saved = JSON.parse(sessionStorage.getItem(KEY_SCROLL)); } catch { /* ignorer */ }
     const hashTarget = location.hash && document.getElementById(location.hash.slice(1));
