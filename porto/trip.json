@@ -1,6 +1,5 @@
 {
   "meta": {
-    "kicker": "Fem venner · Mad, vin, byliv og fodbold",
     "title": "PORTO",
     "subtitle": "+ en hel dag i Braga",
     "dates": "Torsdag 8. – søndag 11. oktober 2026",
@@ -9,11 +8,7 @@
     "timezoneHome": "Europe/Copenhagen",
     "countdownTo": "2026-10-08T07:00:00+02:00",
     "countdownLabel": "Afgang fra CPH torsdag kl. 07.00 (dansk tid)",
-    "heroPhoto": "ribeira",
-    "notes": [
-      "Alle tider er lokale. Kampstart fredag kl. 20.15 er bekræftet. Øvrige tider er planforslag; nye reservationer er ikke foretaget.",
-      "Oplysninger undersøgt 18.–19. september 2026. Priser, åbningstider og køreplaner kan ændres."
-    ]
+    "heroPhoto": "ribeira"
   },
   "base": {
     "label": "Jeres base",
@@ -23,26 +18,6 @@
     "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto",
     "mapsLabel": "Åbn boligen i Maps"
   },
-  "dayCards": [
-    {
-      "day": "tor",
-      "label": "Torsdag",
-      "title": "Porto, vin og MUU",
-      "text": "Byen i roligt tempo og en stor middag."
-    },
-    {
-      "day": "fre",
-      "label": "Fredag",
-      "title": "Braga + Sporting",
-      "text": "Francesinha, Bom Jesus og kamp."
-    },
-    {
-      "day": "lor",
-      "label": "Lørdag",
-      "title": "Douro og portvin",
-      "text": "Den gamle by, smagning og afslutning."
-    }
-  ],
   "travelers": [
     "Claus",
     "Anders",
@@ -644,32 +619,6 @@
     "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga",
     "url": "https://scbraga.pt/en/stadium"
   },
-  "bookingOrder": {
-    "title": "Book i denne rækkefølge",
-    "items": [
-      {
-        "id": "braga-retur",
-        "title": "Braga-retur",
-        "text": "Fredag efter kampen: minivan-afhentning kl. 22.45. Bekræft mødested og ventetid."
-      },
-      {
-        "id": "muu-tonico",
-        "title": "MUU + Casa Tónico",
-        "text": "Torsdag kl. 20.00 og lørdag kl. 20.45. Ét bord til fem."
-      },
-      {
-        "id": "bira-capela",
-        "title": "Bira + Capela Incomum",
-        "text": "Fredag kl. 17.15 og torsdag kl. 18.00. Få tiderne bekræftet."
-      },
-      {
-        "id": "taylors-transfer",
-        "title": "Taylor’s + lufthavnstransfers",
-        "text": "Lørdag ca. 16.30 samt torsdag ved landing og søndag kl. 07.15."
-      }
-    ],
-    "note": "Der er ikke foretaget nye restaurant-, aktivitets- eller transportreservationer som del af guiden."
-  },
   "map": {
     "note": "Markørerne er placeret omtrentligt. Brug Maps-linket i hver markør for den præcise adresse.",
     "colors": {
@@ -793,80 +742,6 @@
         "lat": 41.2481,
         "lng": -8.6814,
         "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO"
-      }
-    ]
-  },
-  "practical": {
-    "shopping": [
-      {
-        "name": "My Auchan",
-        "address": "Rua Miguel Bombarda 313",
-        "text": "Vores praktiske valg til morgenmad, snacks og drikkevarer. Anslået 5–7 minutters gang. Adressen er bekræftet af Auchan; åbningstiden er ikke bekræftet.",
-        "maps": "https://www.google.com/maps/search/?api=1&query=My+Auchan+Rua+Miguel+Bombarda+313+Porto"
-      },
-      {
-        "name": "Pingo Doce",
-        "address": "Rua de Cedofeita 435",
-        "text": "Alternativ til et samlet indkøb. Anslået 10–12 minutters gang. Angivet åbent kl. 08–21 alle dage i butiksoversigter.",
-        "maps": "https://www.google.com/maps/search/?api=1&query=Pingo+Doce+Rua+de+Cedofeita+435+Porto"
-      }
-    ],
-    "shoppingNote": "Gangtider er overslag.",
-    "budget": {
-      "headline": "Ca. €400–550 pr. mand",
-      "text": "Til mad, vin, transport og seværdigheder. Fly, bolig og kampbilletter er ikke med.",
-      "note": "Beløbene er planlægningsoverslag, ikke tilbud; vinvalg og transferpris gør størst forskel."
-    },
-    "transport": [
-      "Fem personer: bestil en bil med mindst fem passagerpladser eller to almindelige biler.",
-      "Lufthavnstransfer torsdag og søndag: ca. €45–70 samlet pr. tur.",
-      "Minivan Braga → Porto fredag aften: ca. €150–250 samlet."
-    ],
-    "packing": [
-      {
-        "id": "bag-10kg",
-        "text": "Håndbagage max 10 kg i alt",
-        "group": "Bagage (Norwegian)"
-      },
-      {
-        "id": "bag-small",
-        "text": "Lille taske under sædet: 30 × 40 × 20 cm",
-        "group": "Bagage (Norwegian)"
-      },
-      {
-        "id": "bag-cabin",
-        "text": "Kabinekuffert: 55 × 40 × 23 cm",
-        "group": "Bagage (Norwegian)"
-      },
-      {
-        "id": "checkin",
-        "text": "Online check-in gennemført (påkrævet før gate)",
-        "group": "Rejse"
-      },
-      {
-        "id": "id",
-        "text": "Gyldig legitimation (krav fra Norwegian)",
-        "group": "Rejse"
-      },
-      {
-        "id": "tickets",
-        "text": "Kampbilletter (port og tribune)",
-        "group": "Rejse"
-      },
-      {
-        "id": "shoes",
-        "text": "Gode sko til bakkerne",
-        "group": "Fra guiden"
-      },
-      {
-        "id": "rain",
-        "text": "Let regnjakke",
-        "group": "Fra guiden"
-      },
-      {
-        "id": "power",
-        "text": "Powerbank til billetter og kort",
-        "group": "Fra guiden"
       }
     ]
   },
