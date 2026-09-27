@@ -336,3 +336,17 @@ main { max-width: 1080px; margin: 0 auto; padding: 0 16px 48px; }
 .receipt-view::backdrop { background: rgba(10, 25, 33, .75); }
 .receipt-view img { max-width: 100%; max-height: calc(92vh - 90px); object-fit: contain; margin: 0 auto 10px; border-radius: 8px; }
 .receipt-view form { text-align: center; }
+
+/* Kvitteringsscanner */
+.ocr-status { margin: .5rem 0 0; font-weight: 600; color: var(--ink-2); }
+.ocr-status.ok { color: var(--ok); }
+.ocr-status.warn { color: var(--copper); }
+.scanner { position: fixed; inset: 0; z-index: 3000; background: #000; display: flex; flex-direction: column; }
+.scanner video { flex: 1; width: 100%; min-height: 0; object-fit: cover; }
+.scan-frame { position: absolute; left: 10%; right: 10%; top: 8%; bottom: 150px; border: 3px solid rgba(255,255,255,.9); border-radius: 18px; box-shadow: 0 0 0 100vmax rgba(0,0,0,.35); pointer-events: none; }
+.scan-bar { background: var(--petrol); color: #fff; padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); }
+.scan-status { margin: 0 0 10px; font-weight: 600; min-height: 1.5em; }
+.scan-btns { display: flex; gap: 10px; }
+.scan-btns .btn { flex: 1; }
+.scan-btns .btn:not(.btn-primary) { border-color: #fff; color: #fff; }
+.scan-btns .btn-primary { background: #fff; color: var(--petrol); border-color: #fff; }
