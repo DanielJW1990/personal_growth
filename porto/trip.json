@@ -15,7 +15,6 @@
       "Oplysninger undersøgt 18.–19. september 2026. Priser, åbningstider og køreplaner kan ændres."
     ]
   },
-
   "base": {
     "label": "Jeres base",
     "address": "Rua da Maternidade 153 · 4050-370 Porto",
@@ -24,22 +23,39 @@
     "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto",
     "mapsLabel": "Åbn boligen i Maps"
   },
-
   "dayCards": [
-    { "day": "tor", "label": "Torsdag", "title": "Porto, vin og MUU", "text": "Byen i roligt tempo og en stor middag." },
-    { "day": "fre", "label": "Fredag", "title": "Braga + Sporting", "text": "Francesinha, Bom Jesus og kamp." },
-    { "day": "lor", "label": "Lørdag", "title": "Douro og portvin", "text": "Den gamle by, smagning og afslutning." }
+    {
+      "day": "tor",
+      "label": "Torsdag",
+      "title": "Porto, vin og MUU",
+      "text": "Byen i roligt tempo og en stor middag."
+    },
+    {
+      "day": "fre",
+      "label": "Fredag",
+      "title": "Braga + Sporting",
+      "text": "Francesinha, Bom Jesus og kamp."
+    },
+    {
+      "day": "lor",
+      "label": "Lørdag",
+      "title": "Douro og portvin",
+      "text": "Den gamle by, smagning og afslutning."
+    }
   ],
-
-  "travelers": ["Claus", "Anders", "Patrick", "Alexander", "Daniel"],
-
+  "travelers": [
+    "Claus",
+    "Anders",
+    "Patrick",
+    "Alexander",
+    "Daniel"
+  ],
   "secret": {
     "note": "Fulde navne og bookingreference ligger krypteret her (AES-GCM, nøgle afledt af adgangskoden). Opdateres med tools/encrypt-secret.mjs – se README.",
-    "salt": "",
-    "iv": "",
-    "data": ""
+    "salt": "/TlwJLY7EK1q/cA6VDzTQg==",
+    "iv": "2i3LoXNt+KHnyVhS",
+    "data": "PwAppHL/YD3MPIj6ilbcrNYRnqKA4BcDT+fNSc90qiJawG6oY3hHUEsnX9ee9gC6FJygfGmVkIR52XesQRz45T4zrWbWcpxCRB3olWOwO/qH1mphqKqaaWRiNZHriPyzWZzMH/5N7CTqP7PuvZJ4SCqW67REoCMfgKMnMz3xNB8mutLEleSWKquH2fDvMYOVSEQk2kbsCTcZ0ejk58nD82A37iHKKXSA9eR2bZRiyJmArBTUiNF1bHlcf7b98m1AWWyvHNxPOIotuMO5kKcDUIu6t2MUW8+NMHS5aU1vzkeAKRsx4S91d+AQ093HbP+3cMFpZOqXkJz9yuOzwDz6TmMJ7jfTHv9n3pg="
   },
-
   "flights": {
     "airline": "Norwegian",
     "bookingNote": "Alle fem er på samme booking og samme fly.",
@@ -51,8 +67,22 @@
         "label": "Udrejse",
         "date": "Torsdag 8. oktober 2026",
         "flight": "D83612",
-        "from": { "code": "CPH", "city": "København", "terminal": "Terminal 2", "time": "07:00", "tz": "Europe/Copenhagen", "iso": "2026-10-08T07:00:00+02:00" },
-        "to":   { "code": "OPO", "city": "Porto", "terminal": "", "time": "09:30", "tz": "Europe/Lisbon", "iso": "2026-10-08T09:30:00+01:00" },
+        "from": {
+          "code": "CPH",
+          "city": "København",
+          "terminal": "Terminal 2",
+          "time": "07:00",
+          "tz": "Europe/Copenhagen",
+          "iso": "2026-10-08T07:00:00+02:00"
+        },
+        "to": {
+          "code": "OPO",
+          "city": "Porto",
+          "terminal": "",
+          "time": "09:30",
+          "tz": "Europe/Lisbon",
+          "iso": "2026-10-08T09:30:00+01:00"
+        },
         "duration": "3t 30m",
         "reminder": "Vær i CPH ca. kl. 05.30 torsdag (dansk tid)."
       },
@@ -61,8 +91,22 @@
         "label": "Hjemrejse",
         "date": "Søndag 11. oktober 2026",
         "flight": "D83613",
-        "from": { "code": "OPO", "city": "Porto", "terminal": "", "time": "10:10", "tz": "Europe/Lisbon", "iso": "2026-10-11T10:10:00+01:00" },
-        "to":   { "code": "CPH", "city": "København", "terminal": "Terminal 3", "time": "14:20", "tz": "Europe/Copenhagen", "iso": "2026-10-11T14:20:00+02:00" },
+        "from": {
+          "code": "OPO",
+          "city": "Porto",
+          "terminal": "",
+          "time": "10:10",
+          "tz": "Europe/Lisbon",
+          "iso": "2026-10-11T10:10:00+01:00"
+        },
+        "to": {
+          "code": "CPH",
+          "city": "København",
+          "terminal": "Terminal 3",
+          "time": "14:20",
+          "tz": "Europe/Copenhagen",
+          "iso": "2026-10-11T14:20:00+02:00"
+        },
         "duration": "3t 10m",
         "reminder": "Hjemrejsen lander i Terminal 3, ikke 2. Minivan fra boligen kl. 07.15."
       }
@@ -77,7 +121,6 @@
       "Online check-in er påkrævet før gate"
     ]
   },
-
   "days": [
     {
       "id": "tor",
@@ -87,22 +130,98 @@
       "title": "Første smag af Porto",
       "intro": "Fra kvarterets caféer til fliser, udsigt, vin i et kapel og bøffer på MUU.",
       "items": [
-        { "time": "09.30–11.00", "start": "09:30", "end": "11:00", "title": "Landing og bagage ved boligen", "text": "Forudbestilt minivan til fem + bagage. Aftal bagageaflevering med værten; tidlig indtjekning er ikke givet.", "price": "Ca. €45–70 samlet", "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto" },
-        { "time": "11.15", "start": "11:15", "title": "Rosi. Café & more", "text": "Kaffe og lidt morgenmad på Rua do Rosário 281. Gå bagefter gennem Miguel Bombarda mod Carlos Alberto.", "price": "Ca. €8–15 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Rosi+Cafe+Rua+do+Rosario+281+Porto" },
-        { "time": "12.45", "start": "12:45", "title": "Frokost på Casa Expresso", "text": "Traditionelle retter og portugisisk vin til bordet. Hold god tid til frokosten.", "price": "Ca. €15–25 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Expresso+Porto" },
-        { "time": "14.00", "start": "14:00", "title": "Igreja do Carmo + Torre dos Clérigos", "text": "Se Carmos flisefacade. Tag tårnet, hvis vejret er klart.", "price": "Tårn + museum aktuelt €10", "maps": "https://www.google.com/maps/search/?api=1&query=Torre+dos+Clerigos+Porto" },
-        { "time": "15.15", "start": "15:15", "title": "Manteigaria + McDonald’s Imperial", "text": "Nata og kaffe på Rua dos Clérigos 37. Derefter et kort kig på den historiske indretning i McDonald’s ved Aliados.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Manteigaria+Rua+dos+Clerigos+37+Porto" },
-        { "time": "16.00–17.45", "start": "16:00", "end": "17:45", "title": "Indkøb, indtjekning og pause", "text": "My Auchan på Miguel Bombarda 313 passer på hjemvejen. Køb morgenmad til fredag, og få et bad og lidt ro.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=My+Auchan+Rua+Miguel+Bombarda+313+Porto" },
-        { "time": "18.00", "start": "18:00", "title": "Capela Incomum", "text": "Vin og lidt til deling i et tidligere kapel. Reservér til fem, gerne indenfor.", "price": "Ca. €15–25 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Capela+Incomum+Porto", "booking": true },
-        { "time": "20.00", "start": "20:00", "title": "MUU Steakhouse", "text": "Aftenens hovedstop. Bestil forskellige udskæringer til deling og Douro-rødvin.", "price": "Ca. €75–110 pr. mand med vin", "maps": "https://www.google.com/maps/search/?api=1&query=MUU+Steakhouse+Porto", "booking": true },
-        { "time": "22.15", "start": "22:15", "title": "BOSCO og eventuelt mere byliv", "text": "En cocktail på BOSCO. Fortsæt eventuelt omkring Galerias de Paris, hvis der er energi efter rejsedagen.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=BOSCO+Porto" }
+        {
+          "time": "09.30–11.00",
+          "start": "09:30",
+          "end": "11:00",
+          "title": "Landing og bagage ved boligen",
+          "text": "Forudbestilt minivan til fem + bagage. Aftal bagageaflevering med værten; tidlig indtjekning er ikke givet.",
+          "price": "Ca. €45–70 samlet",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto"
+        },
+        {
+          "time": "11.15",
+          "start": "11:15",
+          "title": "Rosi. Café & more",
+          "text": "Kaffe og lidt morgenmad på Rua do Rosário 281. Gå bagefter gennem Miguel Bombarda mod Carlos Alberto.",
+          "price": "Ca. €8–15 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Rosi+Cafe+Rua+do+Rosario+281+Porto"
+        },
+        {
+          "time": "12.45",
+          "start": "12:45",
+          "title": "Frokost på Casa Expresso",
+          "text": "Traditionelle retter og portugisisk vin til bordet. Hold god tid til frokosten.",
+          "price": "Ca. €15–25 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Expresso+Porto"
+        },
+        {
+          "time": "14.00",
+          "start": "14:00",
+          "title": "Igreja do Carmo + Torre dos Clérigos",
+          "text": "Se Carmos flisefacade. Tag tårnet, hvis vejret er klart.",
+          "price": "Tårn + museum aktuelt €10",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Torre+dos+Clerigos+Porto"
+        },
+        {
+          "time": "15.15",
+          "start": "15:15",
+          "title": "Manteigaria + McDonald’s Imperial",
+          "text": "Nata og kaffe på Rua dos Clérigos 37. Derefter et kort kig på den historiske indretning i McDonald’s ved Aliados.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Manteigaria+Rua+dos+Clerigos+37+Porto"
+        },
+        {
+          "time": "16.00–17.45",
+          "start": "16:00",
+          "end": "17:45",
+          "title": "Indkøb, indtjekning og pause",
+          "text": "My Auchan på Miguel Bombarda 313 passer på hjemvejen. Køb morgenmad til fredag, og få et bad og lidt ro.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=My+Auchan+Rua+Miguel+Bombarda+313+Porto"
+        },
+        {
+          "time": "18.00",
+          "start": "18:00",
+          "title": "Capela Incomum",
+          "text": "Vin og lidt til deling i et tidligere kapel. Reservér til fem, gerne indenfor.",
+          "price": "Ca. €15–25 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Capela+Incomum+Porto",
+          "booking": true
+        },
+        {
+          "time": "20.00",
+          "start": "20:00",
+          "title": "MUU Steakhouse",
+          "text": "Aftenens hovedstop. Bestil forskellige udskæringer til deling og Douro-rødvin.",
+          "price": "Ca. €75–110 pr. mand med vin",
+          "maps": "https://www.google.com/maps/search/?api=1&query=MUU+Steakhouse+Porto",
+          "booking": true
+        },
+        {
+          "time": "22.15",
+          "start": "22:15",
+          "title": "BOSCO og eventuelt mere byliv",
+          "text": "En cocktail på BOSCO. Fortsæt eventuelt omkring Galerias de Paris, hvis der er energi efter rejsedagen.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=BOSCO+Porto"
+        }
       ],
       "notes": [
-        { "label": "Dagens rytme", "text": "Det meste klares til fods. Behold pausen før aftensmaden, og lad en ekstra drink være valgfri. Sagardi er første alternativ, hvis MUU er fuldt booket." }
+        {
+          "label": "Dagens rytme",
+          "text": "Det meste klares til fods. Behold pausen før aftensmaden, og lad en ekstra drink være valgfri. Sagardi er første alternativ, hvis MUU er fuldt booket."
+        }
       ],
       "links": [
-        { "label": "MUU: menu og booking", "url": "https://muusteakhouse.com/pt/" },
-        { "label": "Capela Incomum: kontakt og tider", "url": "https://capelaincomum.eatbu.com/?lang=en" }
+        {
+          "label": "MUU: menu og booking",
+          "url": "https://muusteakhouse.com/pt/"
+        },
+        {
+          "label": "Capela Incomum: kontakt og tider",
+          "url": "https://capelaincomum.eatbu.com/?lang=en"
+        }
       ]
     },
     {
@@ -113,25 +232,135 @@
       "title": "En hel dag i Braga",
       "intro": "Tog ud, oplevelser hele dagen og forudbestilt minivan hjem efter kampen.",
       "items": [
-        { "time": "08.15", "start": "08:15", "title": "Morgenmad i lejligheden", "text": "Spis det, I købte torsdag. Gå mod São Bento omkring kl. 08.50.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto" },
-        { "time": "09.20", "start": "09:20", "title": "São Bento og billetkøb", "text": "Se stationshallens fliser, køb billet og find perronen.", "price": "Ca. €5 pr. mand til enkeltbillet og eventuelt kort", "maps": "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Bento+station+Porto" },
-        { "time": "09.50–11.03", "start": "09:50", "end": "11:03", "title": "Tog til Braga", "text": "Planlagt efter CP’s nuværende køreplan. Tjek afgangen igen tæt på rejsen.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Estacao+de+Braga" },
-        { "time": "11.15", "start": "11:15", "title": "Arco da Porta Nova", "text": "En lille introduktion til den gamle by. Tag derefter en større bil eller to taxaer til Taberna Belga.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Arco+da+Porta+Nova+Braga" },
-        { "time": "Ca. 12.00", "start": "12:00", "title": "Francesinha på Taberna Belga", "text": "Kom omkring åbning; fredag er uden bordreservation. Ved lang kø: vælg en enkel frokost i centrum.", "price": "Ca. €20–30 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Taberna+Belga+Rua+Conego+Luciano+Afonso+dos+Santos+Braga" },
-        { "time": "13.30–15.30", "start": "13:30", "end": "15:30", "title": "Bom Jesus do Monte", "text": "Kør ud til helligdommen. Kabelbane op fra cirka kl. 14, kig på udsigten og gå ned ad trappen.", "price": "Kabelbane enkeltbillet aktuelt €2,50", "maps": "https://www.google.com/maps/search/?api=1&query=Bom+Jesus+do+Monte+Braga" },
-        { "time": "15.45–16.45", "start": "15:45", "end": "16:45", "title": "Bragas gamle by", "text": "Sé de Braga, Jardim de Santa Bárbara og Praça da República.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Se+de+Braga", "changed": true },
-        { "time": "16.45", "start": "16:45", "title": "En øl og en pause", "text": "En øl og en pause i centrum.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Praca+da+Republica+Braga", "changed": true },
-        { "time": "17.15–18.15", "start": "17:15", "end": "18:15", "title": "Bira dos Namorados", "text": "Reservér til fem kl. 17.15. Petiscos til deling.", "price": "Ca. €20–30 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Bira+dos+Namorados+Braga", "booking": true, "changed": true },
-        { "time": "18.30–19.15", "start": "18:30", "end": "19:15", "title": "Mod stadion", "text": "Ca. 35–45 min gang eller taxa. Find port og tribune i god tid.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga", "changed": true },
-        { "time": "20.15", "start": "20:15", "end": "22:15", "title": "SC Braga vs Sporting CP", "text": "Estádio Municipal de Braga. Forventet slut ca. kl. 22.15.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga", "highlight": true, "changed": true },
-        { "time": "22.45–23.00", "start": "22:45", "end": "23:00", "title": "Minivan hjem til Porto", "text": "Fra aftalt mødested. Forventet hjemme ca. kl. 00.00.", "price": "Ca. €150–250 samlet", "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga", "booking": true, "changed": true }
+        {
+          "time": "08.15",
+          "start": "08:15",
+          "title": "Morgenmad i lejligheden",
+          "text": "Spis det, I købte torsdag. Gå mod São Bento omkring kl. 08.50.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto"
+        },
+        {
+          "time": "09.20",
+          "start": "09:20",
+          "title": "São Bento og billetkøb",
+          "text": "Se stationshallens fliser, køb billet og find perronen.",
+          "price": "Ca. €5 pr. mand til enkeltbillet og eventuelt kort",
+          "maps": "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Bento+station+Porto"
+        },
+        {
+          "time": "09.50–11.03",
+          "start": "09:50",
+          "end": "11:03",
+          "title": "Tog til Braga",
+          "text": "Planlagt efter CP’s nuværende køreplan. Tjek afgangen igen tæt på rejsen.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Estacao+de+Braga"
+        },
+        {
+          "time": "11.15",
+          "start": "11:15",
+          "title": "Arco da Porta Nova",
+          "text": "En lille introduktion til den gamle by. Tag derefter en større bil eller to taxaer til Taberna Belga.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Arco+da+Porta+Nova+Braga"
+        },
+        {
+          "time": "Ca. 12.00",
+          "start": "12:00",
+          "title": "Francesinha på Taberna Belga",
+          "text": "Kom omkring åbning; fredag er uden bordreservation. Ved lang kø: vælg en enkel frokost i centrum.",
+          "price": "Ca. €20–30 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Taberna+Belga+Rua+Conego+Luciano+Afonso+dos+Santos+Braga"
+        },
+        {
+          "time": "13.30–15.30",
+          "start": "13:30",
+          "end": "15:30",
+          "title": "Bom Jesus do Monte",
+          "text": "Kør ud til helligdommen. Kabelbane op fra cirka kl. 14, kig på udsigten og gå ned ad trappen.",
+          "price": "Kabelbane enkeltbillet aktuelt €2,50",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Bom+Jesus+do+Monte+Braga"
+        },
+        {
+          "time": "15.45–16.45",
+          "start": "15:45",
+          "end": "16:45",
+          "title": "Bragas gamle by",
+          "text": "Sé de Braga, Jardim de Santa Bárbara og Praça da República.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Se+de+Braga",
+          "changed": true
+        },
+        {
+          "time": "16.45",
+          "start": "16:45",
+          "title": "En øl og en pause",
+          "text": "En øl og en pause i centrum.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Praca+da+Republica+Braga",
+          "changed": true
+        },
+        {
+          "time": "17.15–18.15",
+          "start": "17:15",
+          "end": "18:15",
+          "title": "Bira dos Namorados",
+          "text": "Reservér til fem kl. 17.15. Petiscos til deling.",
+          "price": "Ca. €20–30 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Bira+dos+Namorados+Braga",
+          "booking": true,
+          "changed": true
+        },
+        {
+          "time": "18.30–19.15",
+          "start": "18:30",
+          "end": "19:15",
+          "title": "Mod stadion",
+          "text": "Ca. 35–45 min gang eller taxa. Find port og tribune i god tid.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga",
+          "changed": true
+        },
+        {
+          "time": "20.15",
+          "start": "20:15",
+          "end": "22:15",
+          "title": "SC Braga vs Sporting CP",
+          "text": "Estádio Municipal de Braga. Forventet slut ca. kl. 22.15.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga",
+          "highlight": true,
+          "changed": true
+        },
+        {
+          "time": "22.45–23.00",
+          "start": "22:45",
+          "end": "23:00",
+          "title": "Minivan hjem til Porto",
+          "text": "Fra aftalt mødested. Forventet hjemme ca. kl. 00.00.",
+          "price": "Ca. €150–250 samlet",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga",
+          "booking": true,
+          "changed": true
+        }
       ],
       "notes": [
-        { "label": "Den vigtigste reservation", "text": "Minivan hjem er anbefalet for fem personer (ca. €150–250 samlet, få et konkret tilbud). Sidste tog kl. 23.30 er realistisk med taxa fra stadion til Braga station og kan bruges som backup.", "changed": true }
+        {
+          "label": "Den vigtigste reservation",
+          "text": "Minivan hjem er anbefalet for fem personer (ca. €150–250 samlet, få et konkret tilbud). Sidste tog kl. 23.30 er realistisk med taxa fra stadion til Braga station og kan bruges som backup.",
+          "changed": true
+        }
       ],
       "links": [
-        { "label": "CP: Braga-køreplan", "url": "https://www.cp.pt/info/documents/20117/595715/comboios-urbanos-porto-braga.pdf/fc951ea8-bbfd-2e74-34e1-d9a481db824d?download=true&t=1769420440838&version=4.0" },
-        { "label": "Bira: reservation og åbningstid", "url": "https://biradosnamorados.pt/bnbraga/" }
+        {
+          "label": "CP: Braga-køreplan",
+          "url": "https://www.cp.pt/info/documents/20117/595715/comboios-urbanos-porto-braga.pdf/fc951ea8-bbfd-2e74-34e1-d9a481db824d?download=true&t=1769420440838&version=4.0"
+        },
+        {
+          "label": "Bira: reservation og åbningstid",
+          "url": "https://biradosnamorados.pt/bnbraga/"
+        }
       ]
     },
     {
@@ -142,24 +371,115 @@
       "title": "Det gamle Porto og portvin",
       "intro": "En rolig morgen, små gader, Douro og en sidste god middag.",
       "items": [
-        { "time": "10.00", "start": "10:00", "title": "Bicho Porto", "text": "Morgenmad på Rua do Breiner 72. Kaffe, brød, æg eller rabanada.", "price": "Ca. €12–20 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Bicho+Porto+Rua+do+Breiner+72+Porto" },
-        { "time": "11.00", "start": "11:00", "title": "Gå mod centrum og Batalha", "text": "Tid til butikker og billeder. Hold morgenmaden moderat, så der er plads til en lille frokost.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Praca+da+Batalha+Porto" },
-        { "time": "12.00", "start": "12:00", "title": "Gazela", "text": "Cachorrinhos og en øl: sprødt brød med pølse, ost og stærk sauce. Fremmøde uden reservation.", "price": "Ca. €10–18 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Gazela+Travessa+Cimo+de+Vila+Porto" },
-        { "time": "13.00", "start": "13:00", "title": "Sé, Pena Ventosa og Rua das Flores", "text": "Udsigt ved katedralen og derefter ned gennem den gamle by. Giv de små gader tid.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Se+do+Porto" },
-        { "time": "Ca. 14.00", "start": "14:00", "title": "Palácio da Bolsa", "text": "Guidet rundvisning på cirka 30 minutter. Sæt en time af med ventetid. Tid og sprog aftales ved billetskranken.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Palacio+da+Bolsa+Porto" },
-        { "time": "15.00", "start": "15:00", "title": "São Francisco og Ribeira", "text": "Gå ind i kirken, hvis tiden tillader det; ellers en pause ved floden. Bolsa og kirken kan byttes rundt.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Igreja+de+Sao+Francisco+Porto" },
-        { "time": "16.00", "start": "16:00", "title": "Over til Gaia", "text": "Gå over broens nederste niveau og op mod Taylor’s. Beregn cirka 30 minutter; der er en bakke på Gaia-siden.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Ponte+Luis+I+Porto" },
-        { "time": "16.30–18.00", "start": "16:30", "end": "18:00", "title": "Taylor’s: kælderbesøg og smagning", "text": "Reserveret tidsrum anbefales. Standardbesøget omfatter tre portvine.", "price": "Ca. €25–40 pr. mand efter valgt oplevelse", "maps": "https://www.google.com/maps/search/?api=1&query=Taylors+Rua+do+Choupelo+250+Gaia", "booking": true },
-        { "time": "18.15–19.10", "start": "18:15", "end": "19:10", "title": "Jardim do Morro", "text": "Udsigt og solnedgang i godt vejr. Solen går ned omkring kl. 19.01 denne lørdag.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Jardim+do+Morro+Gaia" },
-        { "time": "19.15–20.15", "start": "19:15", "end": "20:15", "title": "Hjem, bad og pakning", "text": "Tag en bil tilbage. Pak det meste nu, så søndag morgen bliver enkel.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto" },
-        { "time": "20.45", "start": "20:45", "title": "Casa Tónico og eventuelt en sidste drink", "text": "Afslutningsmiddag med dele-retter og vin. Bagefter kan I tage en drink omkring Almada.", "price": "Ca. €40–65 pr. mand", "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Tonico+Rua+do+Almada+176+Porto", "booking": true }
+        {
+          "time": "10.00",
+          "start": "10:00",
+          "title": "Bicho Porto",
+          "text": "Morgenmad på Rua do Breiner 72. Kaffe, brød, æg eller rabanada.",
+          "price": "Ca. €12–20 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Bicho+Porto+Rua+do+Breiner+72+Porto"
+        },
+        {
+          "time": "11.00",
+          "start": "11:00",
+          "title": "Gå mod centrum og Batalha",
+          "text": "Tid til butikker og billeder. Hold morgenmaden moderat, så der er plads til en lille frokost.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Praca+da+Batalha+Porto"
+        },
+        {
+          "time": "12.00",
+          "start": "12:00",
+          "title": "Gazela",
+          "text": "Cachorrinhos og en øl: sprødt brød med pølse, ost og stærk sauce. Fremmøde uden reservation.",
+          "price": "Ca. €10–18 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Gazela+Travessa+Cimo+de+Vila+Porto"
+        },
+        {
+          "time": "13.00",
+          "start": "13:00",
+          "title": "Sé, Pena Ventosa og Rua das Flores",
+          "text": "Udsigt ved katedralen og derefter ned gennem den gamle by. Giv de små gader tid.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Se+do+Porto"
+        },
+        {
+          "time": "Ca. 14.00",
+          "start": "14:00",
+          "title": "Palácio da Bolsa",
+          "text": "Guidet rundvisning på cirka 30 minutter. Sæt en time af med ventetid. Tid og sprog aftales ved billetskranken.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Palacio+da+Bolsa+Porto"
+        },
+        {
+          "time": "15.00",
+          "start": "15:00",
+          "title": "São Francisco og Ribeira",
+          "text": "Gå ind i kirken, hvis tiden tillader det; ellers en pause ved floden. Bolsa og kirken kan byttes rundt.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Igreja+de+Sao+Francisco+Porto"
+        },
+        {
+          "time": "16.00",
+          "start": "16:00",
+          "title": "Over til Gaia",
+          "text": "Gå over broens nederste niveau og op mod Taylor’s. Beregn cirka 30 minutter; der er en bakke på Gaia-siden.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Ponte+Luis+I+Porto"
+        },
+        {
+          "time": "16.30–18.00",
+          "start": "16:30",
+          "end": "18:00",
+          "title": "Taylor’s: kælderbesøg og smagning",
+          "text": "Reserveret tidsrum anbefales. Standardbesøget omfatter tre portvine.",
+          "price": "Ca. €25–40 pr. mand efter valgt oplevelse",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Taylors+Rua+do+Choupelo+250+Gaia",
+          "booking": true
+        },
+        {
+          "time": "18.15–19.10",
+          "start": "18:15",
+          "end": "19:10",
+          "title": "Jardim do Morro",
+          "text": "Udsigt og solnedgang i godt vejr. Solen går ned omkring kl. 19.01 denne lørdag.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Jardim+do+Morro+Gaia"
+        },
+        {
+          "time": "19.15–20.15",
+          "start": "19:15",
+          "end": "20:15",
+          "title": "Hjem, bad og pakning",
+          "text": "Tag en bil tilbage. Pak det meste nu, så søndag morgen bliver enkel.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto"
+        },
+        {
+          "time": "20.45",
+          "start": "20:45",
+          "title": "Casa Tónico og eventuelt en sidste drink",
+          "text": "Afslutningsmiddag med dele-retter og vin. Bagefter kan I tage en drink omkring Almada.",
+          "price": "Ca. €40–65 pr. mand",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Tonico+Rua+do+Almada+176+Porto",
+          "booking": true
+        }
       ],
       "notes": [
-        { "label": "Hvis dagen skrider", "text": "Beskyt tiden til Taylor’s og middagen. Gør São Francisco til et kort stop, eller byt Bolsa ud med kirken ved lang ventetid. I regnvejr forkortes pauserne ved floden." }
+        {
+          "label": "Hvis dagen skrider",
+          "text": "Beskyt tiden til Taylor’s og middagen. Gør São Francisco til et kort stop, eller byt Bolsa ud med kirken ved lang ventetid. I regnvejr forkortes pauserne ved floden."
+        }
       ],
       "links": [
-        { "label": "Taylor’s: besøg og smagning", "url": "https://www.taylor.pt/en/visit-taylors/port-cellars?category=port-cellars&lang=us&placeholder=visit-taylor-fladgate" },
-        { "label": "Casa Tónico: reservation", "url": "https://reservation.umai.io/pt/widget/casa-tonico" }
+        {
+          "label": "Taylor’s: besøg og smagning",
+          "url": "https://www.taylor.pt/en/visit-taylors/port-cellars?category=port-cellars&lang=us&placeholder=visit-taylor-fladgate"
+        },
+        {
+          "label": "Casa Tónico: reservation",
+          "url": "https://reservation.umai.io/pt/widget/casa-tonico"
+        }
       ]
     },
     {
@@ -170,17 +490,43 @@
       "title": "Hjemrejse",
       "intro": "Tidlig start, morgenmad i lufthavnen og hjem til København.",
       "items": [
-        { "time": "07.15", "start": "07:15", "title": "Minivan fra boligen", "text": "Transfer til lufthavnen.", "price": "Ca. €45–70 samlet", "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto", "booking": true },
-        { "time": "07.45–08.00", "start": "07:45", "end": "08:00", "title": "Forventet ankomst i lufthavnen", "text": "Køb morgenmad i lufthavnen.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO" },
-        { "time": "10.10", "start": "10:10", "title": "Fly hjem: D83613", "text": "Porto (OPO) kl. 10.10 → København (CPH) Terminal 3 kl. 14.20 dansk tid.", "price": "", "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO", "highlight": true }
+        {
+          "time": "07.15",
+          "start": "07:15",
+          "title": "Minivan fra boligen",
+          "text": "Transfer til lufthavnen.",
+          "price": "Ca. €45–70 samlet",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto",
+          "booking": true
+        },
+        {
+          "time": "07.45–08.00",
+          "start": "07:45",
+          "end": "08:00",
+          "title": "Forventet ankomst i lufthavnen",
+          "text": "Køb morgenmad i lufthavnen.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO"
+        },
+        {
+          "time": "10.10",
+          "start": "10:10",
+          "title": "Fly hjem: D83613",
+          "text": "Porto (OPO) kl. 10.10 → København (CPH) Terminal 3 kl. 14.20 dansk tid.",
+          "price": "",
+          "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO",
+          "highlight": true
+        }
       ],
       "notes": [
-        { "label": "Husk", "text": "Online check-in er påkrævet før gate. Hjemrejsen lander i Terminal 3, ikke 2." }
+        {
+          "label": "Husk",
+          "text": "Online check-in er påkrævet før gate. Hjemrejsen lander i Terminal 3, ikke 2."
+        }
       ],
       "links": []
     }
   ],
-
   "stories": [
     {
       "day": "tor",
@@ -188,12 +534,35 @@
       "title": "Fliser, tårne og et glas vin",
       "intro": "Små ting at kigge efter, når I går gennem byen.",
       "items": [
-        { "title": "Carmo: kig på siden", "photo": "carmo", "text": "Kirkens store blå-hvide flisefacade er et af turens oplagte fotostop. De portugisiske azulejos gør væggen til et fortællende billede. Gå lidt væk fra facaden, så både granitten og hele flisefeltet kommer med.", "url": "" },
-        { "title": "Clérigos: få styr på byen", "photo": "", "text": "Det barokke tårn er tegnet af Nicolau Nasoni og fungerer som et pejlemærke i centrum. Turen op ad trappen belønnes med et overblik over tagene og bakkerne, som I snart skal gå mellem.", "url": "https://www.torredosclerigos.pt/en/clerigos-architectural-complex/" },
-        { "title": "Capela Incomum", "photo": "", "text": "Det lille vinbarbesøg er et godt sted at sænke tempoet. Baren ligger i et kapel i en bygning fra 1800-tallet. Bed om to forskellige portugisiske vine, og brug smagningen til at finde jeres favorit til resten af turen.", "url": "https://capelaincomum.eatbu.com/?lang=en" },
-        { "title": "MUU: aftenens samlingspunkt", "photo": "", "text": "Her er der plads til den lange bøfmiddag, I allerede har talt om. Del flere udskæringer og tilbehør, så I kan smage forskellene. Lad personalet foreslå vin ud fra den stil og det prisniveau, I har lyst til.", "url": "https://muusteakhouse.com/pt/" }
+        {
+          "title": "Carmo: kig på siden",
+          "photo": "carmo",
+          "text": "Kirkens store blå-hvide flisefacade er et af turens oplagte fotostop. De portugisiske azulejos gør væggen til et fortællende billede. Gå lidt væk fra facaden, så både granitten og hele flisefeltet kommer med.",
+          "url": ""
+        },
+        {
+          "title": "Clérigos: få styr på byen",
+          "photo": "",
+          "text": "Det barokke tårn er tegnet af Nicolau Nasoni og fungerer som et pejlemærke i centrum. Turen op ad trappen belønnes med et overblik over tagene og bakkerne, som I snart skal gå mellem.",
+          "url": "https://www.torredosclerigos.pt/en/clerigos-architectural-complex/"
+        },
+        {
+          "title": "Capela Incomum",
+          "photo": "",
+          "text": "Det lille vinbarbesøg er et godt sted at sænke tempoet. Baren ligger i et kapel i en bygning fra 1800-tallet. Bed om to forskellige portugisiske vine, og brug smagningen til at finde jeres favorit til resten af turen.",
+          "url": "https://capelaincomum.eatbu.com/?lang=en"
+        },
+        {
+          "title": "MUU: aftenens samlingspunkt",
+          "photo": "",
+          "text": "Her er der plads til den lange bøfmiddag, I allerede har talt om. Del flere udskæringer og tilbehør, så I kan smage forskellene. Lad personalet foreslå vin ud fra den stil og det prisniveau, I har lyst til.",
+          "url": "https://muusteakhouse.com/pt/"
+        }
       ],
-      "extra": { "label": "Det lille ekstra", "text": "Manteigaria giver jer en varm pastel de nata undervejs. McDonald’s Imperial er et kort arkitekturstop; gem appetitten til aftenens middag." }
+      "extra": {
+        "label": "Det lille ekstra",
+        "text": "Manteigaria giver jer en varm pastel de nata undervejs. McDonald’s Imperial er et kort arkitekturstop; gem appetitten til aftenens middag."
+      }
     },
     {
       "day": "fre",
@@ -201,11 +570,29 @@
       "title": "Trapper, granit og fodbold",
       "intro": "Braga er både en historisk by og en stor stadionoplevelse.",
       "items": [
-        { "title": "Bom Jesus do Monte", "photo": "bom-jesus", "text": "Den hvide trappe slynger sig op gennem grønne omgivelser mod kirken. Anlægget er UNESCO-verdensarv, og trapper, fontæner og kapeller er tænkt som en samlet religiøs fortælling. Tag kabelbanen op og gå ned, så I får både udsigten og detaljerne med.", "url": "https://whc.unesco.org/en/list/1590" },
-        { "title": "Francesinha: en frokost med tyngde", "photo": "", "text": "Brød, kød, pølser, ost og sauce gør francesinha til et helt måltid. Taberna Belga er kendt for sin egen sauce og sit store øludvalg. Derfor passer den tunge frokost godt før gåturen ved Bom Jesus – og derfor er aftensmaden lagt i den lettere ende.", "url": "https://www.tabernabelga.pt/sobre-nos.php" },
-        { "title": "A Pedreira: stadion i et stenbrud", "photo": "braga-stadion", "text": "Estádio Municipal de Braga blev bygget til EM 2004 i et tidligere stenbrud. Eduardo Souto de Mouras stadion har kun to tribuner, og klippevæggen er en del af oplevelsen. Kom tidligt og kig også på konstruktionen over jer.", "url": "https://scbraga.pt/en/stadium" }
+        {
+          "title": "Bom Jesus do Monte",
+          "photo": "bom-jesus",
+          "text": "Den hvide trappe slynger sig op gennem grønne omgivelser mod kirken. Anlægget er UNESCO-verdensarv, og trapper, fontæner og kapeller er tænkt som en samlet religiøs fortælling. Tag kabelbanen op og gå ned, så I får både udsigten og detaljerne med.",
+          "url": "https://whc.unesco.org/en/list/1590"
+        },
+        {
+          "title": "Francesinha: en frokost med tyngde",
+          "photo": "",
+          "text": "Brød, kød, pølser, ost og sauce gør francesinha til et helt måltid. Taberna Belga er kendt for sin egen sauce og sit store øludvalg. Derfor passer den tunge frokost godt før gåturen ved Bom Jesus – og derfor er aftensmaden lagt i den lettere ende.",
+          "url": "https://www.tabernabelga.pt/sobre-nos.php"
+        },
+        {
+          "title": "A Pedreira: stadion i et stenbrud",
+          "photo": "braga-stadion",
+          "text": "Estádio Municipal de Braga blev bygget til EM 2004 i et tidligere stenbrud. Eduardo Souto de Mouras stadion har kun to tribuner, og klippevæggen er en del af oplevelsen. Kom tidligt og kig også på konstruktionen over jer.",
+          "url": "https://scbraga.pt/en/stadium"
+        }
       ],
-      "extra": { "label": "Inden I tager afsted", "text": "Aftal afhentningssted efter jeres tribune, plads til fem og ventetid ved forsinket kampafslutning." }
+      "extra": {
+        "label": "Inden I tager afsted",
+        "text": "Aftal afhentningssted efter jeres tribune, plads til fem og ventetid ved forsinket kampafslutning."
+      }
     },
     {
       "day": "lor",
@@ -215,15 +602,37 @@
       "photo": "ribeira",
       "photoCaption": "Portos tætte taglandskab og kajen ved Ribeira.",
       "items": [
-        { "title": "Gazela: et Bourdain-stop", "photo": "", "text": "Anthony Bourdain spiste Gazelas cachorrinhos i Porto-afsnittet af Parts Unknown. Her er ideen enkel: varmt, sprødt brød, fyld, stærk sauce og en kold øl. Det er et godt lille frokoststop mellem morgenmad og sightseeing.", "url": "https://tasteporto.com/anthony-bourdain-in-porto/" },
-        { "title": "Sé og Largo da Pena Ventosa", "photo": "", "text": "Ved katedralen mærker I byens højde og ser ned over den gamle by. Gå derefter mod Pena Ventosa, hvor husene står tæt omkring den lille plads. Det er et sted at sætte tempoet ned og kigge op på facaderne.", "url": "" },
-        { "title": "Bolsa og São Francisco", "photo": "", "text": "Palácio da Bolsa fortæller om byens handelsliv. Den guidede tur viser de repræsentative rum, hvor Salão Árabe er højdepunktet. São Francisco ligger tæt ved og giver en anden slags overdådighed med sit rigt udsmykkede kirkerum.", "url": "https://booking.visitportoandnorth.travel/en/experiences/palacio-da-bolsa/guided-tour-of-the-palacio-da-bolsa/" },
-        { "title": "Taylor’s og Gaia", "photo": "", "text": "På den anden side af Douro får I både udsigten tilbage mod Porto og historien om portvin. Taylor’s besøg foregår med audioguide og slutter med smagning af hvid portvin, LBV og 10-års tawny. Sammenlign især frugt, sødme og fadpræg.", "url": "https://www.taylor.pt/en/visit-taylors/port-cellars?category=port-cellars&lang=us&placeholder=visit-taylor-fladgate" }
+        {
+          "title": "Gazela: et Bourdain-stop",
+          "photo": "",
+          "text": "Anthony Bourdain spiste Gazelas cachorrinhos i Porto-afsnittet af Parts Unknown. Her er ideen enkel: varmt, sprødt brød, fyld, stærk sauce og en kold øl. Det er et godt lille frokoststop mellem morgenmad og sightseeing.",
+          "url": "https://tasteporto.com/anthony-bourdain-in-porto/"
+        },
+        {
+          "title": "Sé og Largo da Pena Ventosa",
+          "photo": "",
+          "text": "Ved katedralen mærker I byens højde og ser ned over den gamle by. Gå derefter mod Pena Ventosa, hvor husene står tæt omkring den lille plads. Det er et sted at sætte tempoet ned og kigge op på facaderne.",
+          "url": ""
+        },
+        {
+          "title": "Bolsa og São Francisco",
+          "photo": "",
+          "text": "Palácio da Bolsa fortæller om byens handelsliv. Den guidede tur viser de repræsentative rum, hvor Salão Árabe er højdepunktet. São Francisco ligger tæt ved og giver en anden slags overdådighed med sit rigt udsmykkede kirkerum.",
+          "url": "https://booking.visitportoandnorth.travel/en/experiences/palacio-da-bolsa/guided-tour-of-the-palacio-da-bolsa/"
+        },
+        {
+          "title": "Taylor’s og Gaia",
+          "photo": "",
+          "text": "På den anden side af Douro får I både udsigten tilbage mod Porto og historien om portvin. Taylor’s besøg foregår med audioguide og slutter med smagning af hvid portvin, LBV og 10-års tawny. Sammenlign især frugt, sødme og fadpræg.",
+          "url": "https://www.taylor.pt/en/visit-taylors/port-cellars?category=port-cellars&lang=us&placeholder=visit-taylor-fladgate"
+        }
       ],
-      "extra": { "label": "Det sidste lys", "text": "Jardim do Morro giver jer udsigten til Porto i aftensolen. Hvis det regner, så bliv lidt længere ved smagningen og kør hjem til pausen før Casa Tónico." }
+      "extra": {
+        "label": "Det sidste lys",
+        "text": "Jardim do Morro giver jer udsigten til Porto i aftensolen. Hvis det regner, så bliv lidt længere ved smagningen og kør hjem til pausen før Casa Tónico."
+      }
     }
   ],
-
   "matchday": {
     "title": "SC Braga vs Sporting CP",
     "venue": "Estádio Municipal de Braga",
@@ -235,45 +644,172 @@
     "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga",
     "url": "https://scbraga.pt/en/stadium"
   },
-
   "bookingOrder": {
     "title": "Book i denne rækkefølge",
     "items": [
-      { "id": "braga-retur", "title": "Braga-retur", "text": "Fredag efter kampen: minivan-afhentning kl. 22.45. Bekræft mødested og ventetid." },
-      { "id": "muu-tonico", "title": "MUU + Casa Tónico", "text": "Torsdag kl. 20.00 og lørdag kl. 20.45. Ét bord til fem." },
-      { "id": "bira-capela", "title": "Bira + Capela Incomum", "text": "Fredag kl. 17.15 og torsdag kl. 18.00. Få tiderne bekræftet." },
-      { "id": "taylors-transfer", "title": "Taylor’s + lufthavnstransfers", "text": "Lørdag ca. 16.30 samt torsdag ved landing og søndag kl. 07.15." }
+      {
+        "id": "braga-retur",
+        "title": "Braga-retur",
+        "text": "Fredag efter kampen: minivan-afhentning kl. 22.45. Bekræft mødested og ventetid."
+      },
+      {
+        "id": "muu-tonico",
+        "title": "MUU + Casa Tónico",
+        "text": "Torsdag kl. 20.00 og lørdag kl. 20.45. Ét bord til fem."
+      },
+      {
+        "id": "bira-capela",
+        "title": "Bira + Capela Incomum",
+        "text": "Fredag kl. 17.15 og torsdag kl. 18.00. Få tiderne bekræftet."
+      },
+      {
+        "id": "taylors-transfer",
+        "title": "Taylor’s + lufthavnstransfers",
+        "text": "Lørdag ca. 16.30 samt torsdag ved landing og søndag kl. 07.15."
+      }
     ],
     "note": "Der er ikke foretaget nye restaurant-, aktivitets- eller transportreservationer som del af guiden."
   },
-
   "map": {
     "note": "Markørerne er placeret omtrentligt. Brug Maps-linket i hver markør for den præcise adresse.",
-    "colors": { "base": "#17394a", "tor": "#c0662b", "fre": "#2f7d6d", "lor": "#8a3b5a", "shop": "#6b7a88", "airport": "#3b5b99" },
-    "legend": { "base": "Bolig", "tor": "Torsdag", "fre": "Fredag", "lor": "Lørdag", "shop": "Indkøb", "airport": "Lufthavn" },
+    "colors": {
+      "base": "#17394a",
+      "tor": "#c0662b",
+      "fre": "#2f7d6d",
+      "lor": "#8a3b5a",
+      "shop": "#6b7a88",
+      "airport": "#3b5b99"
+    },
+    "legend": {
+      "base": "Bolig",
+      "tor": "Torsdag",
+      "fre": "Fredag",
+      "lor": "Lørdag",
+      "shop": "Indkøb",
+      "airport": "Lufthavn"
+    },
     "points": [
-      { "name": "Boligen", "group": "base", "lat": 41.1509, "lng": -8.6189, "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto" },
-      { "name": "Casa Expresso", "group": "tor", "lat": 41.1480, "lng": -8.6150, "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Expresso+Porto" },
-      { "name": "Capela Incomum", "group": "tor", "lat": 41.1497, "lng": -8.6183, "maps": "https://www.google.com/maps/search/?api=1&query=Capela+Incomum+Porto" },
-      { "name": "MUU Steakhouse", "group": "tor", "lat": 41.1466, "lng": -8.6093, "maps": "https://www.google.com/maps/search/?api=1&query=MUU+Steakhouse+Porto" },
-      { "name": "São Bento station", "group": "fre", "lat": 41.1456, "lng": -8.6105, "maps": "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Bento+station+Porto" },
-      { "name": "Taberna Belga", "group": "fre", "lat": 41.5511, "lng": -8.4229, "maps": "https://www.google.com/maps/search/?api=1&query=Taberna+Belga+Rua+Conego+Luciano+Afonso+dos+Santos+Braga" },
-      { "name": "Bom Jesus do Monte", "group": "fre", "lat": 41.5547, "lng": -8.3775, "maps": "https://www.google.com/maps/search/?api=1&query=Bom+Jesus+do+Monte+Braga" },
-      { "name": "Bira dos Namorados", "group": "fre", "lat": 41.5500, "lng": -8.4245, "maps": "https://www.google.com/maps/search/?api=1&query=Bira+dos+Namorados+Braga" },
-      { "name": "Braga stadion", "group": "fre", "lat": 41.5625, "lng": -8.4297, "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga" },
-      { "name": "Gazela ved Batalha", "group": "lor", "lat": 41.1456, "lng": -8.6077, "maps": "https://www.google.com/maps/search/?api=1&query=Gazela+Travessa+Cimo+de+Vila+Porto" },
-      { "name": "Taylor’s kældre", "group": "lor", "lat": 41.1352, "lng": -8.6158, "maps": "https://www.google.com/maps/search/?api=1&query=Taylors+Rua+do+Choupelo+250+Gaia" },
-      { "name": "Casa Tónico", "group": "lor", "lat": 41.1488, "lng": -8.6118, "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Tonico+Rua+do+Almada+176+Porto" },
-      { "name": "My Auchan", "group": "shop", "lat": 41.1512, "lng": -8.6202, "maps": "https://www.google.com/maps/search/?api=1&query=My+Auchan+Rua+Miguel+Bombarda+313+Porto" },
-      { "name": "Pingo Doce", "group": "shop", "lat": 41.1538, "lng": -8.6186, "maps": "https://www.google.com/maps/search/?api=1&query=Pingo+Doce+Rua+de+Cedofeita+435+Porto" },
-      { "name": "Porto lufthavn (OPO)", "group": "airport", "lat": 41.2481, "lng": -8.6814, "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO" }
+      {
+        "name": "Boligen",
+        "group": "base",
+        "lat": 41.1509,
+        "lng": -8.6189,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto"
+      },
+      {
+        "name": "Casa Expresso",
+        "group": "tor",
+        "lat": 41.148,
+        "lng": -8.615,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Expresso+Porto"
+      },
+      {
+        "name": "Capela Incomum",
+        "group": "tor",
+        "lat": 41.1497,
+        "lng": -8.6183,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Capela+Incomum+Porto"
+      },
+      {
+        "name": "MUU Steakhouse",
+        "group": "tor",
+        "lat": 41.1466,
+        "lng": -8.6093,
+        "maps": "https://www.google.com/maps/search/?api=1&query=MUU+Steakhouse+Porto"
+      },
+      {
+        "name": "São Bento station",
+        "group": "fre",
+        "lat": 41.1456,
+        "lng": -8.6105,
+        "maps": "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Bento+station+Porto"
+      },
+      {
+        "name": "Taberna Belga",
+        "group": "fre",
+        "lat": 41.5511,
+        "lng": -8.4229,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Taberna+Belga+Rua+Conego+Luciano+Afonso+dos+Santos+Braga"
+      },
+      {
+        "name": "Bom Jesus do Monte",
+        "group": "fre",
+        "lat": 41.5547,
+        "lng": -8.3775,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Bom+Jesus+do+Monte+Braga"
+      },
+      {
+        "name": "Bira dos Namorados",
+        "group": "fre",
+        "lat": 41.55,
+        "lng": -8.4245,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Bira+dos+Namorados+Braga"
+      },
+      {
+        "name": "Braga stadion",
+        "group": "fre",
+        "lat": 41.5625,
+        "lng": -8.4297,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga"
+      },
+      {
+        "name": "Gazela ved Batalha",
+        "group": "lor",
+        "lat": 41.1456,
+        "lng": -8.6077,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Gazela+Travessa+Cimo+de+Vila+Porto"
+      },
+      {
+        "name": "Taylor’s kældre",
+        "group": "lor",
+        "lat": 41.1352,
+        "lng": -8.6158,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Taylors+Rua+do+Choupelo+250+Gaia"
+      },
+      {
+        "name": "Casa Tónico",
+        "group": "lor",
+        "lat": 41.1488,
+        "lng": -8.6118,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Casa+Tonico+Rua+do+Almada+176+Porto"
+      },
+      {
+        "name": "My Auchan",
+        "group": "shop",
+        "lat": 41.1512,
+        "lng": -8.6202,
+        "maps": "https://www.google.com/maps/search/?api=1&query=My+Auchan+Rua+Miguel+Bombarda+313+Porto"
+      },
+      {
+        "name": "Pingo Doce",
+        "group": "shop",
+        "lat": 41.1538,
+        "lng": -8.6186,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Pingo+Doce+Rua+de+Cedofeita+435+Porto"
+      },
+      {
+        "name": "Porto lufthavn (OPO)",
+        "group": "airport",
+        "lat": 41.2481,
+        "lng": -8.6814,
+        "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO"
+      }
     ]
   },
-
   "practical": {
     "shopping": [
-      { "name": "My Auchan", "address": "Rua Miguel Bombarda 313", "text": "Vores praktiske valg til morgenmad, snacks og drikkevarer. Anslået 5–7 minutters gang. Adressen er bekræftet af Auchan; åbningstiden er ikke bekræftet.", "maps": "https://www.google.com/maps/search/?api=1&query=My+Auchan+Rua+Miguel+Bombarda+313+Porto" },
-      { "name": "Pingo Doce", "address": "Rua de Cedofeita 435", "text": "Alternativ til et samlet indkøb. Anslået 10–12 minutters gang. Angivet åbent kl. 08–21 alle dage i butiksoversigter.", "maps": "https://www.google.com/maps/search/?api=1&query=Pingo+Doce+Rua+de+Cedofeita+435+Porto" }
+      {
+        "name": "My Auchan",
+        "address": "Rua Miguel Bombarda 313",
+        "text": "Vores praktiske valg til morgenmad, snacks og drikkevarer. Anslået 5–7 minutters gang. Adressen er bekræftet af Auchan; åbningstiden er ikke bekræftet.",
+        "maps": "https://www.google.com/maps/search/?api=1&query=My+Auchan+Rua+Miguel+Bombarda+313+Porto"
+      },
+      {
+        "name": "Pingo Doce",
+        "address": "Rua de Cedofeita 435",
+        "text": "Alternativ til et samlet indkøb. Anslået 10–12 minutters gang. Angivet åbent kl. 08–21 alle dage i butiksoversigter.",
+        "maps": "https://www.google.com/maps/search/?api=1&query=Pingo+Doce+Rua+de+Cedofeita+435+Porto"
+      }
     ],
     "shoppingNote": "Gangtider er overslag.",
     "budget": {
@@ -287,80 +823,247 @@
       "Minivan Braga → Porto fredag aften: ca. €150–250 samlet."
     ],
     "packing": [
-      { "id": "bag-10kg", "text": "Håndbagage max 10 kg i alt", "group": "Bagage (Norwegian)" },
-      { "id": "bag-small", "text": "Lille taske under sædet: 30 × 40 × 20 cm", "group": "Bagage (Norwegian)" },
-      { "id": "bag-cabin", "text": "Kabinekuffert: 55 × 40 × 23 cm", "group": "Bagage (Norwegian)" },
-      { "id": "checkin", "text": "Online check-in gennemført (påkrævet før gate)", "group": "Rejse" },
-      { "id": "id", "text": "Gyldig legitimation (krav fra Norwegian)", "group": "Rejse" },
-      { "id": "tickets", "text": "Kampbilletter (port og tribune)", "group": "Rejse" },
-      { "id": "shoes", "text": "Gode sko til bakkerne", "group": "Fra guiden" },
-      { "id": "rain", "text": "Let regnjakke", "group": "Fra guiden" },
-      { "id": "power", "text": "Powerbank til billetter og kort", "group": "Fra guiden" }
+      {
+        "id": "bag-10kg",
+        "text": "Håndbagage max 10 kg i alt",
+        "group": "Bagage (Norwegian)"
+      },
+      {
+        "id": "bag-small",
+        "text": "Lille taske under sædet: 30 × 40 × 20 cm",
+        "group": "Bagage (Norwegian)"
+      },
+      {
+        "id": "bag-cabin",
+        "text": "Kabinekuffert: 55 × 40 × 23 cm",
+        "group": "Bagage (Norwegian)"
+      },
+      {
+        "id": "checkin",
+        "text": "Online check-in gennemført (påkrævet før gate)",
+        "group": "Rejse"
+      },
+      {
+        "id": "id",
+        "text": "Gyldig legitimation (krav fra Norwegian)",
+        "group": "Rejse"
+      },
+      {
+        "id": "tickets",
+        "text": "Kampbilletter (port og tribune)",
+        "group": "Rejse"
+      },
+      {
+        "id": "shoes",
+        "text": "Gode sko til bakkerne",
+        "group": "Fra guiden"
+      },
+      {
+        "id": "rain",
+        "text": "Let regnjakke",
+        "group": "Fra guiden"
+      },
+      {
+        "id": "power",
+        "text": "Powerbank til billetter og kort",
+        "group": "Fra guiden"
+      }
     ]
   },
-
   "alternatives": {
     "title": "Gode alternativer fra jeres liste",
     "items": [
-      { "name": "Sagardi", "text": "Alternativ til MUU, hvis I vil have baskisk grill.", "maps": "https://www.google.com/maps/search/?api=1&query=Sagardi+Porto" },
-      { "name": "VietView", "text": "Et vietnamesisk alternativ til lørdagens middag.", "maps": "https://www.google.com/maps/search/?api=1&query=VietView+Porto" },
-      { "name": "Alto Porto", "text": "Valgfrit café- og snackstop, når appetitten passer.", "maps": "https://www.google.com/maps/search/?api=1&query=Alto+Porto" },
-      { "name": "Cookie Club", "text": "Valgfrit café- og snackstop, når appetitten passer.", "maps": "https://www.google.com/maps/search/?api=1&query=Cookie+Club+Porto" },
-      { "name": "Barca Açaí", "text": "Valgfrit café- og snackstop, når appetitten passer.", "maps": "https://www.google.com/maps/search/?api=1&query=Barca+Acai+Porto" }
+      {
+        "name": "Sagardi",
+        "text": "Alternativ til MUU, hvis I vil have baskisk grill.",
+        "maps": "https://www.google.com/maps/search/?api=1&query=Sagardi+Porto"
+      },
+      {
+        "name": "VietView",
+        "text": "Et vietnamesisk alternativ til lørdagens middag.",
+        "maps": "https://www.google.com/maps/search/?api=1&query=VietView+Porto"
+      },
+      {
+        "name": "Alto Porto",
+        "text": "Valgfrit café- og snackstop, når appetitten passer.",
+        "maps": "https://www.google.com/maps/search/?api=1&query=Alto+Porto"
+      },
+      {
+        "name": "Cookie Club",
+        "text": "Valgfrit café- og snackstop, når appetitten passer.",
+        "maps": "https://www.google.com/maps/search/?api=1&query=Cookie+Club+Porto"
+      },
+      {
+        "name": "Barca Açaí",
+        "text": "Valgfrit café- og snackstop, når appetitten passer.",
+        "maps": "https://www.google.com/maps/search/?api=1&query=Barca+Acai+Porto"
+      }
     ],
     "note": "Café Tony, Norden og de afkortede navne på billederne er ikke lagt ind, fordi de ikke kunne identificeres sikkert. De tre São Bento-navne på listen er samme station."
   },
-
   "links": [
     {
       "group": "Kort til de vigtigste stop",
       "items": [
-        { "label": "Boligen", "url": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto" },
-        { "label": "Casa Expresso", "url": "https://www.google.com/maps/search/?api=1&query=Casa+Expresso+Porto" },
-        { "label": "Capela Incomum", "url": "https://www.google.com/maps/search/?api=1&query=Capela+Incomum+Porto" },
-        { "label": "MUU Steakhouse", "url": "https://www.google.com/maps/search/?api=1&query=MUU+Steakhouse+Porto" },
-        { "label": "São Bento station", "url": "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Bento+station+Porto" },
-        { "label": "Taberna Belga", "url": "https://www.google.com/maps/search/?api=1&query=Taberna+Belga+Rua+Conego+Luciano+Afonso+dos+Santos+Braga" },
-        { "label": "Bom Jesus do Monte", "url": "https://www.google.com/maps/search/?api=1&query=Bom+Jesus+do+Monte+Braga" },
-        { "label": "Bira dos Namorados", "url": "https://www.google.com/maps/search/?api=1&query=Bira+dos+Namorados+Braga" },
-        { "label": "Braga stadion", "url": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga" },
-        { "label": "Gazela ved Batalha", "url": "https://www.google.com/maps/search/?api=1&query=Gazela+Travessa+Cimo+de+Vila+Porto" },
-        { "label": "Taylor’s kældre", "url": "https://www.google.com/maps/search/?api=1&query=Taylors+Rua+do+Choupelo+250+Gaia" },
-        { "label": "Casa Tónico", "url": "https://www.google.com/maps/search/?api=1&query=Casa+Tonico+Rua+do+Almada+176+Porto" }
+        {
+          "label": "Boligen",
+          "url": "https://www.google.com/maps/search/?api=1&query=Rua+da+Maternidade+153+Porto"
+        },
+        {
+          "label": "Casa Expresso",
+          "url": "https://www.google.com/maps/search/?api=1&query=Casa+Expresso+Porto"
+        },
+        {
+          "label": "Capela Incomum",
+          "url": "https://www.google.com/maps/search/?api=1&query=Capela+Incomum+Porto"
+        },
+        {
+          "label": "MUU Steakhouse",
+          "url": "https://www.google.com/maps/search/?api=1&query=MUU+Steakhouse+Porto"
+        },
+        {
+          "label": "São Bento station",
+          "url": "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Bento+station+Porto"
+        },
+        {
+          "label": "Taberna Belga",
+          "url": "https://www.google.com/maps/search/?api=1&query=Taberna+Belga+Rua+Conego+Luciano+Afonso+dos+Santos+Braga"
+        },
+        {
+          "label": "Bom Jesus do Monte",
+          "url": "https://www.google.com/maps/search/?api=1&query=Bom+Jesus+do+Monte+Braga"
+        },
+        {
+          "label": "Bira dos Namorados",
+          "url": "https://www.google.com/maps/search/?api=1&query=Bira+dos+Namorados+Braga"
+        },
+        {
+          "label": "Braga stadion",
+          "url": "https://www.google.com/maps/search/?api=1&query=Estadio+Municipal+de+Braga"
+        },
+        {
+          "label": "Gazela ved Batalha",
+          "url": "https://www.google.com/maps/search/?api=1&query=Gazela+Travessa+Cimo+de+Vila+Porto"
+        },
+        {
+          "label": "Taylor’s kældre",
+          "url": "https://www.google.com/maps/search/?api=1&query=Taylors+Rua+do+Choupelo+250+Gaia"
+        },
+        {
+          "label": "Casa Tónico",
+          "url": "https://www.google.com/maps/search/?api=1&query=Casa+Tonico+Rua+do+Almada+176+Porto"
+        }
       ]
     },
     {
       "group": "Booking og praktiske kilder",
       "items": [
-        { "label": "MUU: menu og reservation", "url": "https://muusteakhouse.com/pt/" },
-        { "label": "Capela Incomum: tider og kontakt", "url": "https://capelaincomum.eatbu.com/?lang=en" },
-        { "label": "Clérigos: billetter", "url": "https://www.torredosclerigos.pt/en/ticket-office/" },
-        { "label": "CP: Braga-køreplan", "url": "https://www.cp.pt/info/documents/20117/595715/comboios-urbanos-porto-braga.pdf/fc951ea8-bbfd-2e74-34e1-d9a481db824d?download=true&t=1769420440838&version=4.0" },
-        { "label": "Taberna Belga: reservationsregler", "url": "https://www.tabernabelga.pt/sobre-nos.php" },
-        { "label": "Bom Jesus: kabelbane og priser", "url": "https://bomjesus.pt/informacoes/" },
-        { "label": "Bira: reservation og åbningstid", "url": "https://biradosnamorados.pt/bnbraga/" },
-        { "label": "Palácio da Bolsa: besøgsinformation", "url": "https://booking.visitportoandnorth.travel/en/experiences/palacio-da-bolsa/guided-tour-of-the-palacio-da-bolsa/" },
-        { "label": "Taylor’s: besøg og smagning", "url": "https://www.taylor.pt/en/visit-taylors/port-cellars?category=port-cellars&lang=us&placeholder=visit-taylor-fladgate" },
-        { "label": "Casa Tónico: reservation", "url": "https://reservation.umai.io/pt/widget/casa-tonico" },
-        { "label": "My Auchan: officiel butiksside", "url": "https://www.auchan.pt/pt/loja?StoreID=D13" },
-        { "label": "Pingo Doce: butiksoversigt", "url": "https://www.todosnegocio.com/pingo-doce_122u-938-875-624" }
+        {
+          "label": "MUU: menu og reservation",
+          "url": "https://muusteakhouse.com/pt/"
+        },
+        {
+          "label": "Capela Incomum: tider og kontakt",
+          "url": "https://capelaincomum.eatbu.com/?lang=en"
+        },
+        {
+          "label": "Clérigos: billetter",
+          "url": "https://www.torredosclerigos.pt/en/ticket-office/"
+        },
+        {
+          "label": "CP: Braga-køreplan",
+          "url": "https://www.cp.pt/info/documents/20117/595715/comboios-urbanos-porto-braga.pdf/fc951ea8-bbfd-2e74-34e1-d9a481db824d?download=true&t=1769420440838&version=4.0"
+        },
+        {
+          "label": "Taberna Belga: reservationsregler",
+          "url": "https://www.tabernabelga.pt/sobre-nos.php"
+        },
+        {
+          "label": "Bom Jesus: kabelbane og priser",
+          "url": "https://bomjesus.pt/informacoes/"
+        },
+        {
+          "label": "Bira: reservation og åbningstid",
+          "url": "https://biradosnamorados.pt/bnbraga/"
+        },
+        {
+          "label": "Palácio da Bolsa: besøgsinformation",
+          "url": "https://booking.visitportoandnorth.travel/en/experiences/palacio-da-bolsa/guided-tour-of-the-palacio-da-bolsa/"
+        },
+        {
+          "label": "Taylor’s: besøg og smagning",
+          "url": "https://www.taylor.pt/en/visit-taylors/port-cellars?category=port-cellars&lang=us&placeholder=visit-taylor-fladgate"
+        },
+        {
+          "label": "Casa Tónico: reservation",
+          "url": "https://reservation.umai.io/pt/widget/casa-tonico"
+        },
+        {
+          "label": "My Auchan: officiel butiksside",
+          "url": "https://www.auchan.pt/pt/loja?StoreID=D13"
+        },
+        {
+          "label": "Pingo Doce: butiksoversigt",
+          "url": "https://www.todosnegocio.com/pingo-doce_122u-938-875-624"
+        }
       ]
     },
     {
       "group": "Fly",
       "items": [
-        { "label": "Norwegian: online check-in", "url": "https://www.norwegian.com/dk/" }
+        {
+          "label": "Norwegian: online check-in",
+          "url": "https://www.norwegian.com/dk/"
+        }
       ]
     }
   ],
-
   "photos": {
-    "ribeira":       { "alt": "Ribeira og Douro set fra oven", "caption": "Ribeira og Douro", "author": "Paula Santos", "license": "CC BY-SA 3.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/", "source": "https://commons.wikimedia.org/wiki/File:Porto_Ribeira.jpg", "src": "assets/img/ribeira-800.jpg", "srcLarge": "assets/img/ribeira-1600.jpg" },
-    "carmo":         { "alt": "Igreja do Carmos blå-hvide flisefacade", "caption": "Igreja do Carmo", "author": "GualdimG", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/", "source": "https://commons.wikimedia.org/wiki/File:Igreja_do_Carmo_(Porto)_01.jpg", "src": "assets/img/carmo-800.jpg", "srcLarge": "assets/img/carmo-1600.jpg" },
-    "bom-jesus":     { "alt": "Den barokke trappe op til Bom Jesus do Monte", "caption": "Bom Jesus do Monte", "author": "Scott Crowe", "license": "CC BY-SA 3.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/", "source": "https://commons.wikimedia.org/wiki/File:Baroque_stairway_of_Bom_Jesus_do_Monte_-_panoramio_-_Scott_Crowe_(1).jpg", "src": "assets/img/bom-jesus-800.jpg", "srcLarge": "assets/img/bom-jesus-1600.jpg" },
-    "braga-stadion": { "alt": "Estádio Municipal de Braga set udefra", "caption": "Estádio Municipal de Braga, set udefra", "author": "Manuel Anastácio", "license": "CC BY-SA 3.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/", "source": "https://commons.wikimedia.org/wiki/File:Estadio_Braga.JPG", "src": "assets/img/braga-stadion-800.jpg", "srcLarge": "assets/img/braga-stadion-800.jpg" }
+    "ribeira": {
+      "alt": "Ribeira og Douro set fra oven",
+      "caption": "Ribeira og Douro",
+      "author": "Paula Santos",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "https://commons.wikimedia.org/wiki/File:Porto_Ribeira.jpg",
+      "src": "assets/img/ribeira-800.jpg",
+      "srcLarge": "assets/img/ribeira-1600.jpg",
+      "thumb": "assets/img/ribeira-thumb.jpg"
+    },
+    "carmo": {
+      "alt": "Igreja do Carmos blå-hvide flisefacade",
+      "caption": "Igreja do Carmo",
+      "author": "GualdimG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "source": "https://commons.wikimedia.org/wiki/File:Igreja_do_Carmo_(Porto)_01.jpg",
+      "src": "assets/img/carmo-800.jpg",
+      "srcLarge": "assets/img/carmo-1600.jpg",
+      "thumb": "assets/img/carmo-thumb.jpg"
+    },
+    "bom-jesus": {
+      "alt": "Den barokke trappe op til Bom Jesus do Monte",
+      "caption": "Bom Jesus do Monte",
+      "author": "Scott Crowe",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "https://commons.wikimedia.org/wiki/File:Baroque_stairway_of_Bom_Jesus_do_Monte_-_panoramio_-_Scott_Crowe_(1).jpg",
+      "src": "assets/img/bom-jesus-800.jpg",
+      "srcLarge": "assets/img/bom-jesus-1600.jpg",
+      "thumb": "assets/img/bom-jesus-thumb.jpg"
+    },
+    "braga-stadion": {
+      "alt": "Estádio Municipal de Braga set udefra",
+      "caption": "Estádio Municipal de Braga, set udefra",
+      "author": "Manuel Anastácio",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "https://commons.wikimedia.org/wiki/File:Estadio_Braga.JPG",
+      "src": "assets/img/braga-stadion-800.jpg",
+      "srcLarge": "assets/img/braga-stadion-800.jpg",
+      "thumb": "assets/img/braga-stadion-thumb.jpg"
+    }
   },
-
   "sources": {
     "researched": "Oplysninger undersøgt 18.–19. september 2026. Priser, åbningstider og køreplaner kan ændres. De historiske fotos viser stederne, ikke nødvendigvis deres præcise udseende ved besøget.",
     "photoNote": "Fotos er skaleret og enkelte beskåret til layout; billedtilpasninger følger samme CC BY-SA-licens som originalen. De øvrige tekstkilder er linket ved de relevante afsnit.",

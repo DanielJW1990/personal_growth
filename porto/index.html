@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Porto + Braga · 8.–11. oktober 2026</title>
+  <meta name="description" content="Rejseguide for fem venner: Porto og en hel dag i Braga, 8.–11. oktober 2026.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f6f1e7">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317394a'/%3E%3Cpath d='M16 5l4 7 7 4-7 4-4 7-4-7-7-4 7-4z' fill='%23f6f1e7'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23c0662b'/%3E%3C/svg%3E">
+  <link rel="preload" href="assets/fonts/fraunces-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Adgangskode-skærm: holder tilfældige besøgende ude. Ikke rigtig sikkerhed. -->
+  <div id="gate" class="gate" hidden>
+    <form id="gate-form" class="gate-card" autocomplete="off">
+      <p class="label">Fem venner · Porto + Braga</p>
+      <h1 class="gate-title">PORTO</h1>
+      <p class="gate-sub">Skriv koden, I har fået tilsendt.</p>
+      <label class="sr-only" for="gate-input">Adgangskode</label>
+      <input id="gate-input" type="password" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="Kode" required>
+      <button type="submit" class="btn btn-primary">Lås op</button>
+      <p id="gate-error" class="gate-error" role="alert" hidden>Forkert kode. Prøv igen.</p>
+    </form>
+  </div>
+
+  <div id="app" hidden>
+    <nav class="topnav" aria-label="Sektioner">
+      <div class="topnav-inner">
+        <a href="#top" class="brand">PORTO</a>
+        <div class="chips" id="navchips">
+          <a href="#idag">I dag</a>
+          <a href="#fly">Fly</a>
+          <a href="#program">Program</a>
+          <a href="#historier">Historier</a>
+          <a href="#kamp">Kampdag</a>
+          <a href="#booking">Booking</a>
+          <a href="#kort">Kort</a>
+          <a href="#praktisk">Praktisk</a>
+          <a href="#alternativer">Alternativer</a>
+          <a href="#links">Links</a>
+          <a href="#kasse">Fælleskasse</a>
+          <a href="#kilder">Kilder</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="top">
+      <header class="hero" id="hero"></header>
+      <section id="idag" class="section"></section>
+      <section id="fly" class="section"></section>
+      <section id="program" class="section"></section>
+      <section id="historier" class="section"></section>
+      <section id="kamp" class="section"></section>
+      <section id="booking" class="section"></section>
+      <section id="kort" class="section"></section>
+      <section id="praktisk" class="section"></section>
+      <section id="alternativer" class="section"></section>
+      <section id="links" class="section"></section>
+      <section id="kasse" class="section"></section>
+      <footer id="kilder" class="section footer"></footer>
+    </main>
+  </div>
+
+  <noscript><p style="padding:24px">Siden kræver JavaScript.</p></noscript>
+  <script src="assets/vendor/leaflet/leaflet.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
