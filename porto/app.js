@@ -545,11 +545,70 @@
     }
   }
 
+  // ---------- Tekstgenkendelse af kvitteringer ----------
+  // Tesseract (ca. 7 MB) hentes først, når nogen bruger fælleskassen, og
+  // caches derefter af browseren. Resten af siden påvirkes ikke.
+  const ocr = (() => {
+    const base = new URL('assets/vendor/tesseract/', location.href).href;
+    let workerP = null;
+    const loadScript = (src) => new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = src; s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+    const worker = () => workerP ||= (async () => {
+      if (!window.Tesseract) await loadScript(base + 'tesseract.min.js');
+      return Tesseract.createWorker('eng', 1, {
+        workerPath: base + 'worker.min.js',
+        corePath: base + 'core',
+        langPath: base + 'lang',
+        workerBlobURL: false,
+      });
+    })().catch((e) => { workerP = null; throw e; });
+    return {
+      warm: () => { worker().catch(() => {}); },
+      read: async (image) => (await (await worker()).recognize(image)).data.text,
+    };
+  })();
+
+  // Find totalbeløbet i den genkendte tekst. Linjer med "total", "a pagar" o.l.
+  // vægtes højest; subtotal, moms, byttepenge og kontant ignoreres.
+  function parseReceiptTotal(text) {
+    const amountRe = /(\d{1,3}(?:[ .]\d{3})+|\d{1,5})\s?[,.]\s?(\d{2})(?!\d)/g;
+    const good = /t[o0]ta[l1]|a\s*pagar|pagar|montante|valor|importe|amount|sum|i\s*alt|to\s*pay/i;
+    const bad = /sub\s*-?\s*t[o0]ta[l1]|iva|vat|taxa|tax|troco|change|entregue|dinheiro|cash|desconto|nif|contrib|tel|tip/i;
+    const amounts = (line) => [...line.matchAll(amountRe)].map((m) => Number(m[1].replace(/[ .]/g, '')) * 100 + Number(m[2]))
+      .filter((c) => c > 0 && c < 500000);
+    const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+    const keyed = [];
+    lines.forEach((l, i) => {
+      if (!good.test(l) || bad.test(l)) return;
+      const here = amounts(l);
+      keyed.push(...(here.length ? here : amounts(lines[i + 1] || '')));
+    });
+    if (keyed.length) return { cents: Math.max(...keyed), sure: true };
+    const all = lines.filter((l) => !bad.test(l)).flatMap(amounts);
+    return all.length ? { cents: Math.max(...all), sure: false } : null;
+  }
+  const fmtAmount = (cents) => (cents / 100).toFixed(2).replace('.', ',');
+
+  // Tegn et billede/videobillede på et lærred, max 1600 px, gråtoner og lidt
+  // ekstra kontrast (hjælper genkendelsen af termoprint).
+  function frameCanvas(src, w, h, forOcr) {
+    const scale = Math.min(1, 1600 / Math.max(w, h));
+    const c = document.createElement('canvas');
+    c.width = Math.round(w * scale); c.height = Math.round(h * scale);
+    const ctx = c.getContext('2d');
+    if (forOcr) ctx.filter = 'grayscale(1) contrast(1.5)';
+    ctx.drawImage(src, 0, 0, c.width, c.height);
+    return c;
+  }
+
   function renderKasse() {
     const people = trip.travelers;
     const el = $('#kasse');
     el.innerHTML = `
-      <div class="section-head"><p class="label">Fælleskasse</p><h2>Hvem skylder hvem?</h2><p class="intro">Skriv udlæg ind, efterhånden som de sker, og tag gerne et billede af kvitteringen. Alt gemmes kun på denne telefon, så lad én person føre kassen.</p></div>
+      <div class="section-head"><p class="label">Fælleskasse</p><h2>Hvem skylder hvem?</h2><p class="intro">Skriv udlæg ind, efterhånden som de sker. Scan kvitteringen, så læses beløbet automatisk. Alt gemmes kun på denne telefon, så lad én person føre kassen.</p></div>
       <div class="grid grid-2">
         <form class="card" id="kasse-form" autocomplete="off">
           <p class="label">Nyt udlæg</p>
@@ -563,9 +622,11 @@
             <div class="who">${people.map((p) => `<label><input type="checkbox" name="split" value="${esc(p)}" checked>${esc(p)}</label>`).join('')}</div></div>
           <div class="field" style="margin-top:10px"><label>Kvittering (valgfri)</label>
             <div class="receipt-pick" id="k-pick">
-              <label class="btn btn-sm btn-copper">📷 Tag billede<input type="file" accept="image/*" capture="environment" hidden data-receipt></label>
+              <button type="button" class="btn btn-sm btn-copper" id="k-scan">📷 Scan kvittering</button>
               <label class="btn btn-sm">Vælg billede<input type="file" accept="image/*" hidden data-receipt></label>
+              <input type="file" accept="image/*" capture="environment" hidden data-receipt id="k-capture">
             </div>
+            <p id="k-ocr" class="small ocr-status" hidden></p>
             <div class="receipt-preview" id="k-preview" hidden>
               <img alt="Kvittering, forhåndsvisning"><button type="button" class="btn btn-sm" id="k-unpick">Fjern billede</button>
             </div></div>
@@ -575,6 +636,17 @@
         <div class="card" id="kasse-result"></div>
       </div>
       <div class="card" style="margin-top:14px" id="kasse-list"></div>
+      <div class="scanner" id="k-scanner" role="dialog" aria-modal="true" aria-label="Scan kvittering" hidden>
+        <video playsinline muted autoplay></video>
+        <div class="scan-frame" aria-hidden="true"></div>
+        <div class="scan-bar">
+          <p class="scan-status" aria-live="polite">Starter kamera…</p>
+          <div class="scan-btns">
+            <button type="button" class="btn" id="k-scan-close">Luk</button>
+            <button type="button" class="btn btn-primary" id="k-scan-shot">Brug billede</button>
+          </div>
+        </div>
+      </div>
       <dialog class="receipt-view" id="k-view"><img alt="Kvittering"><form method="dialog"><button class="btn btn-primary">Luk</button></form></dialog>`;
 
     let pending = null;
@@ -587,14 +659,107 @@
       $('#k-preview').hidden = !blob;
       $('#k-pick').hidden = !!blob;
     };
+    const status = (text, kind = '') => {
+      const s = $('#k-ocr');
+      s.textContent = text || '';
+      s.hidden = !text;
+      s.className = `small ocr-status ${kind}`;
+    };
+    const applyAmount = (found) => {
+      if (!found) { status('Kunne ikke finde beløbet. Skriv det selv.', 'warn'); return; }
+      $('#k-amt').value = fmtAmount(found.cents);
+      status(found.sure
+        ? `Beløb læst automatisk: ${fmtAmount(found.cents)} €. Tjek at det passer.`
+        : `Bedste gæt: ${fmtAmount(found.cents)} €. Tjek beløbet.`, found.sure ? 'ok' : 'warn');
+    };
+
+    // Uploadet billede: gem det og læs beløbet.
     el.querySelectorAll('[data-receipt]').forEach((input) => input.addEventListener('change', async () => {
       const file = input.files && input.files[0];
       input.value = '';
       if (!file) return;
-      try { setPending(await shrinkImage(file)); }
-      catch { const err = $('#k-err'); err.textContent = 'Billedet kunne ikke læses. Prøv et andet.'; err.hidden = false; }
+      let blob;
+      try { blob = await shrinkImage(file); setPending(blob); }
+      catch { const err = $('#k-err'); err.textContent = 'Billedet kunne ikke læses. Prøv et andet.'; err.hidden = false; return; }
+      status('Læser beløbet på kvitteringen…');
+      try {
+        const bmp = await createImageBitmap(blob);
+        applyAmount(parseReceiptTotal(await ocr.read(frameCanvas(bmp, bmp.width, bmp.height, true))));
+      } catch { status('Tekstgenkendelsen kunne ikke starte. Skriv beløbet selv.', 'warn'); }
     }));
-    $('#k-unpick').addEventListener('click', () => setPending(null));
+
+    // Hent tekstgenkendelsen i baggrunden, så snart nogen rører formularen.
+    $('#kasse-form').addEventListener('pointerdown', ocr.warm, { once: true });
+
+    // Live-scanning: kameraet kører, og hvert billede læses, indtil det
+    // samme totalbeløb er fundet to gange i træk.
+    const scanner = $('#k-scanner');
+    const video = scanner.querySelector('video');
+    const scanStatus = scanner.querySelector('.scan-status');
+    let stream = null, scanning = false, lastCents = null;
+
+    const stopScan = () => {
+      scanning = false;
+      if (stream) stream.getTracks().forEach((t) => t.stop());
+      stream = null;
+      video.srcObject = null;
+      scanner.hidden = true;
+      document.body.style.overflow = '';
+    };
+    const finish = async (found) => {
+      const shot = frameCanvas(video, video.videoWidth, video.videoHeight, false);
+      const blob = await new Promise((r) => shot.toBlob(r, 'image/jpeg', 0.75));
+      stopScan();
+      if (blob) setPending(blob);
+      applyAmount(found);
+    };
+    const loop = async () => {
+      let tries = 0;
+      while (scanning) {
+        if (!video.videoWidth) { await new Promise((r) => setTimeout(r, 200)); continue; }
+        let found = null;
+        try { found = parseReceiptTotal(await ocr.read(frameCanvas(video, video.videoWidth, video.videoHeight, true))); }
+        catch { scanStatus.textContent = 'Tekstgenkendelsen kunne ikke starte. Tryk "Brug billede" og skriv beløbet selv.'; return; }
+        if (!scanning) return;
+        tries++;
+        if (found && found.sure && found.cents === lastCents) { await finish(found); return; }
+        lastCents = found && found.sure ? found.cents : null;
+        scanStatus.textContent = found && found.sure
+          ? `Fandt ${fmtAmount(found.cents)} €, bekræfter…`
+          : tries > 3 ? 'Hold kvitteringen stille og tæt på, med totalbeløbet synligt.' : 'Leder efter totalbeløbet…';
+      }
+    };
+
+    $('#k-scan').addEventListener('click', async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { $('#k-capture').click(); return; }
+      ocr.warm();
+      scanner.hidden = false;
+      document.body.style.overflow = 'hidden';
+      scanStatus.textContent = 'Starter kamera…';
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+      } catch {
+        stopScan();
+        $('#k-capture').click(); // ingen kameraadgang: brug telefonens almindelige kamera
+        return;
+      }
+      video.srcObject = stream;
+      await video.play().catch(() => {});
+      scanning = true; lastCents = null;
+      scanStatus.textContent = 'Indlæser tekstgenkendelse…';
+      loop();
+    });
+    $('#k-scan-close').addEventListener('click', stopScan);
+    $('#k-scan-shot').addEventListener('click', async () => {
+      if (!video.videoWidth) return;
+      scanning = false;
+      scanStatus.textContent = 'Læser beløbet…';
+      const c = frameCanvas(video, video.videoWidth, video.videoHeight, true);
+      let found = null;
+      try { found = parseReceiptTotal(await ocr.read(c)); } catch { /* skriv selv */ }
+      await finish(found);
+    });
+    $('#k-unpick').addEventListener('click', () => { setPending(null); status(''); });
 
     const draw = () => {
       const exps = store.get(KEY_KASSE, []);
@@ -636,6 +801,7 @@
       store.set(KEY_KASSE, exps);
       $('#k-desc').value = ''; $('#k-amt').value = '';
       setPending(null);
+      status('');
       draw();
     });
     $('#kasse-list').addEventListener('click', (e) => {
@@ -667,7 +833,7 @@
           <p class="label">Kildegrundlag</p>
           <p>${esc(s.researched)}</p>
           <p>${esc(s.overrides)}</p>
-          <p class="small muted" style="margin:0">Kort: © OpenStreetMap-bidragydere, vist med Leaflet. Skrifttyper: Fraunces og Inter (SIL Open Font License).</p>
+          <p class="small muted" style="margin:0">Kort: © OpenStreetMap-bidragydere, vist med Leaflet. Skrifttyper: Fraunces og Inter (SIL Open Font License). Tekstgenkendelse af kvitteringer: Tesseract.js (Apache 2.0).</p>
         </div>
       </div>
       <div class="footer-mark"><div class="tiles"></div>${esc(trip.meta.footer)}

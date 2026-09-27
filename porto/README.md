@@ -10,7 +10,7 @@ porto/
   trip.json         ALT indhold – ret her, ikke i koden
   assets/img/       de fire Wikimedia Commons-fotos (CC BY-SA)
   assets/fonts/     Fraunces + Inter (SIL OFL), selvhostet
-  assets/vendor/    Leaflet 1.9.4
+  assets/vendor/    Leaflet 1.9.4 + Tesseract.js 6 (kvitteringsscanner, hentes kun ved brug)
   tools/encrypt-secret.mjs   krypterer navne + bookingreference
 ```
 
@@ -61,3 +61,4 @@ Test "I dag" med en falsk tid: `http://localhost:8000/?now=2026-10-09T16:00:00+0
 - Fotos: Wikimedia Commons, CC BY-SA 3.0/4.0, kreditering vises ved hvert foto og i bunden af siden.
 - Kort: © OpenStreetMap-bidragydere. Leaflet: BSD-2 (`assets/vendor/leaflet/LICENSE`).
 - Skrifttyper: SIL Open Font License (`assets/fonts/`).
+- Tesseract.js og tesseract.js-core: Apache 2.0 (`assets/vendor/tesseract/`). Engelsk sprogdata fra `@tesseract.js-data/eng`.
