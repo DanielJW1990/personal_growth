@@ -741,18 +741,36 @@
 
   // ---------- Navigation ----------
   function wireNav() {
+    const nav = $('.topnav');
+    const chipsEl = $('#navchips');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Egen håndtering af interne links: scroller præcist under den faste menu
+    // og kan ikke afbrydes af menu-markeringen nedenfor.
     document.addEventListener('click', (e) => {
-      const a = e.target.closest('[data-goto-day]');
-      if (a) selectDay(a.dataset.gotoDay);
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      if (a.dataset.gotoDay) selectDay(a.dataset.gotoDay);
+      const id = a.getAttribute('href').slice(1);
+      const target = id === 'top' ? document.body : document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      const y = id === 'top' ? 0 : target.getBoundingClientRect().top + scrollY - nav.offsetHeight - 8;
+      scrollTo({ top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth' });
+      history.replaceState(null, '', id === 'top' ? location.pathname + location.search : `#${id}`);
     });
-    const chips = [...document.querySelectorAll('#navchips a')];
+
+    // Markér aktiv sektion. Rul kun selve menubjælken vandret, aldrig siden.
+    const chips = [...chipsEl.querySelectorAll('a')];
     const byId = Object.fromEntries(chips.map((c) => [c.getAttribute('href').slice(1), c]));
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
         if (!en.isIntersecting) return;
-        chips.forEach((c) => c.classList.remove('active'));
         const c = byId[en.target.id];
-        if (c) { c.classList.add('active'); c.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' }); }
+        if (!c || c.classList.contains('active')) return;
+        chips.forEach((x) => x.classList.remove('active'));
+        c.classList.add('active');
+        chipsEl.scrollLeft = c.offsetLeft - chipsEl.offsetLeft - (chipsEl.clientWidth - c.offsetWidth) / 2;
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     document.querySelectorAll('main > section, main > footer').forEach((s) => io.observe(s));
@@ -779,7 +797,7 @@
     tickCountdowns();
     setInterval(tickCountdowns, 1000);
     setInterval(renderToday, 30000);
-    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) scrollTo(0, t.getBoundingClientRect().top + scrollY - $('.topnav').offsetHeight - 8); }
   }
 
   async function boot() {

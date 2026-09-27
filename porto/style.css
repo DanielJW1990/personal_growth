@@ -28,7 +28,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 64px; -webkit-text-size-adjust: 100%; }
+html { scroll-padding-top: 64px; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--cream); color: var(--ink);
   font: 400 17px/1.55 var(--sans);
@@ -350,6 +350,6 @@ ul.plain li { margin: .3em 0; }
 .footer-mark { margin-top: 30px; text-align: center; font: 700 .76rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--petrol-2); }
 .footer-mark .tiles { height: 22px; background: var(--azulejo) center / 22px; opacity: .35; margin-bottom: 14px; }
 
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 @media print { .topnav, .gate, #map, .btn-row, #kasse { display: none !important; } body { background: #fff; } }
 @media (min-width: 720px) { .day-photo img { aspect-ratio: auto; height: 380px; } }
