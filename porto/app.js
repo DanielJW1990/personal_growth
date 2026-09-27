@@ -221,7 +221,7 @@
       </article>`;
 
     $('#fly').innerHTML = `
-      <div class="section-head"><p class="label">Fly · ${esc(f.airline)}</p><h2>Afgang og hjemrejse</h2><p class="intro">${esc(f.bookingNote)}</p></div>
+      <div class="section-head"><p class="label">Fly · ${esc(f.airline)}</p><h2>Afgang og hjemrejse</h2></div>
       <div class="grid grid-2">${f.legs.map(pass).join('')}</div>
       <div class="grid grid-2" style="margin-top:14px">
         <div class="card">
@@ -317,6 +317,20 @@
     selectedDay = id;
     document.querySelectorAll('#program .tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.day === id)));
     document.querySelectorAll('#program .day-panel').forEach((p) => { p.hidden = p.id !== `panel-${id}`; });
+    syncStories();
+  }
+
+  // Historierne følger den dag, der er valgt i programmet. Dage uden
+  // historier (søndag) skjuler sektionen og dens menuknap.
+  function syncStories() {
+    let any = false;
+    document.querySelectorAll('#historier .storyday').forEach((s) => {
+      s.hidden = s.dataset.day !== selectedDay;
+      any ||= !s.hidden;
+    });
+    $('#historier').hidden = !any;
+    const chip = $('#navchips a[href="#historier"]');
+    if (chip) chip.hidden = !any;
   }
 
   function markTimeline() {
@@ -338,9 +352,9 @@
   function renderStories() {
     const dayName = Object.fromEntries(trip.days.map((d) => [d.id, d.tab]));
     $('#historier').innerHTML = `
-      <div class="section-head"><p class="label">Historier</p><h2>Det, I skal kigge efter</h2><p class="intro">Tryk på et kort for at folde historien ud.</p></div>
+      <div class="section-head"><p class="label">Historier</p><h2>Det, I skal kigge efter</h2><p class="intro">Historierne til den dag, du har valgt i programmet. Tryk på et kort for at folde historien ud.</p></div>
       ${trip.stories.map((sd) => `
-        <div class="storyday">
+        <div class="storyday" data-day="${esc(sd.day)}">
           <p class="label">${esc(sd.kicker || dayName[sd.day])}</p>
           <h3>${esc(sd.title)}</h3>
           <p class="muted">${esc(sd.intro)}</p>
@@ -447,17 +461,7 @@
     });
   }
 
-  // ---------- Alternativer + links ----------
-  function renderAlternatives() {
-    const a = trip.alternatives;
-    $('#alternativer').innerHTML = `
-      <div class="section-head"><p class="label">Alternativer</p><h2>${esc(a.title)}</h2></div>
-      <div class="grid grid-3">
-        ${a.items.map((x) => `<div class="card"><h3>${esc(x.name)}</h3><p class="muted" style="margin:.3rem 0 .5rem">${esc(x.text)}</p>${mapsLink(x.maps)}</div>`).join('')}
-      </div>
-      <p class="caveat" style="margin-top:.8rem">${esc(a.note)}</p>`;
-  }
-
+  // ---------- Links ----------
   function renderLinks() {
     $('#links').innerHTML = `
       <div class="section-head"><p class="label">Links</p><h2>Kort, booking og kilder</h2></div>
@@ -717,9 +721,9 @@
     renderProgram();
     markTimeline();
     renderStories();
+    syncStories();
     renderMatch();
     renderMap();
-    renderAlternatives();
     renderLinks();
     renderKasse();
     renderFooter();

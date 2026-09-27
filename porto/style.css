@@ -226,7 +226,6 @@ main { max-width: 1080px; margin: 0 auto; padding: 0 16px 48px; }
 @media (min-width: 720px) { .tl-item { grid-template-columns: 110px 1fr; } .tl-item.is-highlight, .tl-item.is-next, .tl-item.is-now { margin: 0; } }
 
 /* ---------- Historier ---------- */
-.storyday + .storyday { margin-top: 30px; }
 .storyday > h3 { font-size: 1.45rem; margin-bottom: .25rem; }
 .story { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
 .story summary {
