@@ -283,28 +283,6 @@ main { max-width: 1080px; margin: 0 auto; padding: 0 16px 48px; }
 .linklist a::after { content: "↗"; color: var(--copper); }
 @media (min-width: 720px) { .linklist { columns: 2; column-gap: 28px; } }
 
-/* ---------- Fælleskasse ---------- */
-.form-row { display: grid; gap: 10px; }
-@media (min-width: 560px) { .form-row { grid-template-columns: 1fr 1fr; } }
-.field label { display: block; font: 700 .72rem var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.field input, .field select {
-  width: 100%; font: 400 1rem var(--sans); padding: .7em .8em; border: 1.5px solid var(--line); border-radius: 10px; background: var(--cream); color: var(--ink); min-height: 46px;
-}
-.field input:focus, .field select:focus { outline: 3px solid rgba(180,90,31,.3); border-color: var(--copper); }
-.who { display: flex; flex-wrap: wrap; gap: 6px; }
-.who label { display: inline-flex; align-items: center; gap: 6px; padding: .45em .75em; border: 1.5px solid var(--line); border-radius: 999px; font-weight: 600; font-size: .9rem; cursor: pointer; background: var(--cream); text-transform: none; letter-spacing: 0; color: var(--ink); margin: 0; }
-.field .who input { accent-color: var(--petrol); width: 18px; height: 18px; min-height: 0; padding: 0; margin: 0; }
-.who label:has(input:checked) { border-color: var(--petrol); background: #fff; }
-.exp-list { list-style: none; padding: 0; margin: 10px 0 0; }
-.exp-list li { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: .94rem; }
-.exp-list .amt { font-weight: 700; font-variant-numeric: tabular-nums; }
-.exp-list button { border: 0; background: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; min-width: 36px; min-height: 36px; }
-.balances { list-style: none; padding: 0; margin: 0; }
-.balances li { display: flex; justify-content: space-between; padding: 7px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
-.pos { color: var(--ok); font-weight: 700; } .neg { color: #a3261b; font-weight: 700; }
-.settle li { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: var(--note); margin-top: 6px; font-weight: 600; }
-.settle li b { margin-left: auto; font-variant-numeric: tabular-nums; }
-
 /* ---------- Footer ---------- */
 .footer { font-size: .9rem; }
 .credits { list-style: none; padding: 0; margin: 0; }
@@ -313,7 +291,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 0 16px 48px; }
 .footer-mark .tiles { height: 22px; background: var(--azulejo) center / 22px; opacity: .35; margin-bottom: 14px; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-@media print { .topnav, .gate, #map, .btn-row, #kasse { display: none !important; } body { background: #fff; } }
+@media print { .topnav, .gate, #map, .btn-row { display: none !important; } body { background: #fff; } }
 @media (min-width: 720px) { .day-photo img { aspect-ratio: auto; height: 380px; } }
 
 /* Kort opstartsskærm, mens trip.json hentes */
@@ -321,32 +299,3 @@ main { max-width: 1080px; margin: 0 auto; padding: 0 16px 48px; }
 .boot span { font: 400 3.2rem/1 var(--serif); color: var(--petrol); letter-spacing: .04em; background: var(--cream); padding: .2em .4em; border-radius: 12px; animation: boot-pulse 1.2s ease-in-out infinite alternate; }
 @keyframes boot-pulse { from { opacity: .45; } to { opacity: 1; } }
 
-/* Kvitteringer i fælleskassen */
-.receipt-pick { display: flex; flex-wrap: wrap; gap: 8px; }
-.field .receipt-pick label.btn { display: inline-flex; font: 600 .86rem/1 var(--sans); text-transform: none; letter-spacing: 0; color: var(--petrol); margin: 0; }
-.field .receipt-pick label.btn-copper { color: var(--copper); }
-.field .receipt-pick label.btn:hover { color: #fff; }
-.receipt-preview { display: flex; align-items: center; gap: 12px; }
-.receipt-preview img { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; border: 1.5px solid var(--line); }
-.exp-list li { grid-template-columns: 44px 1fr auto auto; }
-.receipt-thumb { width: 44px; height: 44px; padding: 0; border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--cream-2); cursor: zoom-in; display: block; }
-.receipt-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.receipt-none { cursor: default; background: var(--azulejo) center / 22px, var(--cream); opacity: .5; }
-.receipt-view { border: 0; padding: 12px; border-radius: 16px; max-width: min(92vw, 700px); max-height: 92vh; background: var(--card); }
-.receipt-view::backdrop { background: rgba(10, 25, 33, .75); }
-.receipt-view img { max-width: 100%; max-height: calc(92vh - 90px); object-fit: contain; margin: 0 auto 10px; border-radius: 8px; }
-.receipt-view form { text-align: center; }
-
-/* Kvitteringsscanner */
-.ocr-status { margin: .5rem 0 0; font-weight: 600; color: var(--ink-2); }
-.ocr-status.ok { color: var(--ok); }
-.ocr-status.warn { color: var(--copper); }
-.scanner { position: fixed; inset: 0; z-index: 3000; background: #000; display: flex; flex-direction: column; }
-.scanner video { flex: 1; width: 100%; min-height: 0; object-fit: cover; }
-.scan-frame { position: absolute; left: 10%; right: 10%; top: 8%; bottom: 150px; border: 3px solid rgba(255,255,255,.9); border-radius: 18px; box-shadow: 0 0 0 100vmax rgba(0,0,0,.35); pointer-events: none; }
-.scan-bar { background: var(--petrol); color: #fff; padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); }
-.scan-status { margin: 0 0 10px; font-weight: 600; min-height: 1.5em; }
-.scan-btns { display: flex; gap: 10px; }
-.scan-btns .btn { flex: 1; }
-.scan-btns .btn:not(.btn-primary) { border-color: #fff; color: #fff; }
-.scan-btns .btn-primary { background: #fff; color: var(--petrol); border-color: #fff; }
