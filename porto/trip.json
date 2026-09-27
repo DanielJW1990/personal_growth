@@ -33,7 +33,6 @@
   },
   "flights": {
     "airline": "Norwegian",
-    "bookingNote": "Alle fem er på samme booking og samme fly.",
     "checkinUrl": "https://www.norwegian.com/dk/",
     "checkinLabel": "Online check-in hos Norwegian",
     "legs": [
@@ -638,37 +637,6 @@
         "maps": "https://www.google.com/maps/search/?api=1&query=Porto+Airport+OPO"
       }
     ]
-  },
-  "alternatives": {
-    "title": "Gode alternativer fra jeres liste",
-    "items": [
-      {
-        "name": "Sagardi",
-        "text": "Alternativ til MUU, hvis I vil have baskisk grill.",
-        "maps": "https://www.google.com/maps/search/?api=1&query=Sagardi+Porto"
-      },
-      {
-        "name": "VietView",
-        "text": "Et vietnamesisk alternativ til lørdagens middag.",
-        "maps": "https://www.google.com/maps/search/?api=1&query=VietView+Porto"
-      },
-      {
-        "name": "Alto Porto",
-        "text": "Valgfrit café- og snackstop, når appetitten passer.",
-        "maps": "https://www.google.com/maps/search/?api=1&query=Alto+Porto"
-      },
-      {
-        "name": "Cookie Club",
-        "text": "Valgfrit café- og snackstop, når appetitten passer.",
-        "maps": "https://www.google.com/maps/search/?api=1&query=Cookie+Club+Porto"
-      },
-      {
-        "name": "Barca Açaí",
-        "text": "Valgfrit café- og snackstop, når appetitten passer.",
-        "maps": "https://www.google.com/maps/search/?api=1&query=Barca+Acai+Porto"
-      }
-    ],
-    "note": "Café Tony, Norden og de afkortede navne på billederne er ikke lagt ind, fordi de ikke kunne identificeres sikkert. De tre São Bento-navne på listen er samme station."
   },
   "links": [
     {

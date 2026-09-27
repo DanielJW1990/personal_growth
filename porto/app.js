@@ -221,7 +221,7 @@
       </article>`;
 
     $('#fly').innerHTML = `
-      <div class="section-head"><p class="label">Fly · ${esc(f.airline)}</p><h2>Afgang og hjemrejse</h2><p class="intro">${esc(f.bookingNote)}</p></div>
+      <div class="section-head"><p class="label">Fly · ${esc(f.airline)}</p><h2>Afgang og hjemrejse</h2></div>
       <div class="grid grid-2">${f.legs.map(pass).join('')}</div>
       <div class="grid grid-2" style="margin-top:14px">
         <div class="card">
@@ -447,17 +447,7 @@
     });
   }
 
-  // ---------- Alternativer + links ----------
-  function renderAlternatives() {
-    const a = trip.alternatives;
-    $('#alternativer').innerHTML = `
-      <div class="section-head"><p class="label">Alternativer</p><h2>${esc(a.title)}</h2></div>
-      <div class="grid grid-3">
-        ${a.items.map((x) => `<div class="card"><h3>${esc(x.name)}</h3><p class="muted" style="margin:.3rem 0 .5rem">${esc(x.text)}</p>${mapsLink(x.maps)}</div>`).join('')}
-      </div>
-      <p class="caveat" style="margin-top:.8rem">${esc(a.note)}</p>`;
-  }
-
+  // ---------- Links ----------
   function renderLinks() {
     $('#links').innerHTML = `
       <div class="section-head"><p class="label">Links</p><h2>Kort, booking og kilder</h2></div>
@@ -719,7 +709,6 @@
     renderStories();
     renderMatch();
     renderMap();
-    renderAlternatives();
     renderLinks();
     renderKasse();
     renderFooter();
