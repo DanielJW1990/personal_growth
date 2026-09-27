@@ -317,6 +317,20 @@
     selectedDay = id;
     document.querySelectorAll('#program .tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.day === id)));
     document.querySelectorAll('#program .day-panel').forEach((p) => { p.hidden = p.id !== `panel-${id}`; });
+    syncStories();
+  }
+
+  // Historierne følger den dag, der er valgt i programmet. Dage uden
+  // historier (søndag) skjuler sektionen og dens menuknap.
+  function syncStories() {
+    let any = false;
+    document.querySelectorAll('#historier .storyday').forEach((s) => {
+      s.hidden = s.dataset.day !== selectedDay;
+      any ||= !s.hidden;
+    });
+    $('#historier').hidden = !any;
+    const chip = $('#navchips a[href="#historier"]');
+    if (chip) chip.hidden = !any;
   }
 
   function markTimeline() {
@@ -338,9 +352,9 @@
   function renderStories() {
     const dayName = Object.fromEntries(trip.days.map((d) => [d.id, d.tab]));
     $('#historier').innerHTML = `
-      <div class="section-head"><p class="label">Historier</p><h2>Det, I skal kigge efter</h2><p class="intro">Tryk på et kort for at folde historien ud.</p></div>
+      <div class="section-head"><p class="label">Historier</p><h2>Det, I skal kigge efter</h2><p class="intro">Historierne til den dag, du har valgt i programmet. Tryk på et kort for at folde historien ud.</p></div>
       ${trip.stories.map((sd) => `
-        <div class="storyday">
+        <div class="storyday" data-day="${esc(sd.day)}">
           <p class="label">${esc(sd.kicker || dayName[sd.day])}</p>
           <h3>${esc(sd.title)}</h3>
           <p class="muted">${esc(sd.intro)}</p>
@@ -707,6 +721,7 @@
     renderProgram();
     markTimeline();
     renderStories();
+    syncStories();
     renderMatch();
     renderMap();
     renderLinks();
