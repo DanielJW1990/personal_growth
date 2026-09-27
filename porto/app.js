@@ -213,7 +213,6 @@
         </div>
         <div class="pass-foot">
           <p class="pass-count" data-until="${esc(leg.from.iso)}" data-done="Flyet er lettet">&nbsp;</p>
-          ${note('Husk', leg.reminder, true)}
           <div class="btn-row">
             <button class="btn btn-sm btn-primary" data-ics="${esc(leg.id)}">Tilføj til kalender</button>
             <a class="btn btn-sm" href="${esc(f.checkinUrl)}" target="_blank" rel="noopener">${esc(f.checkinLabel)}</a>
@@ -256,7 +255,7 @@
       `DTEND:${z(leg.to.iso)}`,
       `SUMMARY:${icsEsc(`${leg.flight} ${leg.from.city} → ${leg.to.city}`)}`,
       `LOCATION:${icsEsc(`${leg.from.city} (${leg.from.code})${leg.from.terminal ? ' ' + leg.from.terminal : ''}`)}`,
-      `DESCRIPTION:${icsEsc(`${trip.flights.airline} ${leg.flight}. ${ref}Ankomst ${leg.to.code}${leg.to.terminal ? ' ' + leg.to.terminal : ''} kl. ${leg.to.time}. Kun håndbagage (max 10 kg). Online check-in er påkrævet før gate. ${leg.reminder}`)}`,
+      `DESCRIPTION:${icsEsc(`${trip.flights.airline} ${leg.flight}. ${ref}Ankomst ${leg.to.code}${leg.to.terminal ? ' ' + leg.to.terminal : ''} kl. ${leg.to.time}. Kun håndbagage (max 10 kg). Online check-in er påkrævet før gate.`)}`,
       'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Fly i dag', 'TRIGGER:-PT3H', 'END:VALARM',
       'END:VEVENT', 'END:VCALENDAR',
     ];
@@ -298,8 +297,6 @@
                 </div>
               </li>`).join('')}
           </ol>
-          ${d.notes.map((n) => note(n.label, n.text, /vigtigste|skrider/i.test(n.label))).join('')}
-          ${d.links.length ? `<div class="day-links">${d.links.map((l) => ext(l.url, l.label)).join('')}</div>` : ''}
         </div>`).join('')}`;
 
     $('#program').addEventListener('click', (e) => {
@@ -366,7 +363,6 @@
               </details>`;
             }).join('')}
           </div>
-          ${sd.extra ? note(sd.extra.label, sd.extra.text) : ''}
         </div>`).join('')}`;
   }
 
@@ -383,7 +379,6 @@
             <p class="label" style="margin-top:6px">Nedtælling til kickoff</p>
             ${countdownHTML(m.kickoff, 'Kampen er i gang, eller spillet. Forza!')}
             ${note('Hjem efter kampen', m.note)}
-            <p class="small" style="margin-top:12px;opacity:.9">${esc(m.tickets)}</p>
             <div class="btn-row">
               <a class="btn btn-sm" href="${esc(m.maps)}" target="_blank" rel="noopener">Stadion i Maps</a>
               <a class="btn btn-sm" href="${esc(m.url)}" target="_blank" rel="noopener">Om stadion</a>
