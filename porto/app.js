@@ -8,6 +8,12 @@
   const KEY_BOOK = 'porto-booking';
   const KEY_PACK = 'porto-pakning';
   const KEY_KASSE = 'porto-kasse';
+  const KEY_SECRET = 'porto-hemmelig';
+  const KEY_SCROLL = 'porto-scroll';
+
+  // Vi genskaber selv scroll-positionen, når indholdet er tegnet. Ellers
+  // hopper browseren til toppen og tilbage, fordi siden bygges af JS.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   let trip = null;
   let secret = null;
@@ -85,6 +91,7 @@
       btn.disabled = false;
       if (ok) {
         store.set(KEY_PW, normPw(input.value));
+        store.set(KEY_SECRET, { iv: trip.secret.iv, secret });
         gate.hidden = true;
         startApp();
       } else {
@@ -736,7 +743,7 @@
       <div class="footer-mark"><div class="tiles"></div>${esc(trip.meta.footer)}
         <div class="btn-row" style="justify-content:center"><button class="btn btn-sm" id="lock">Lås siden igen</button></div>
       </div>`;
-    $('#lock').addEventListener('click', () => { store.del(KEY_PW); location.reload(); });
+    $('#lock').addEventListener('click', () => { store.del(KEY_PW); store.del(KEY_SECRET); location.reload(); });
   }
 
   // ---------- Navigation ----------
@@ -797,7 +804,15 @@
     tickCountdowns();
     setInterval(tickCountdowns, 1000);
     setInterval(renderToday, 30000);
-    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) scrollTo(0, t.getBoundingClientRect().top + scrollY - $('.topnav').offsetHeight - 8); }
+    let saved = null;
+    try { saved = JSON.parse(sessionStorage.getItem(KEY_SCROLL)); } catch { /* ignorer */ }
+    const hashTarget = location.hash && document.getElementById(location.hash.slice(1));
+    if (saved && saved.path === location.pathname + location.search + location.hash) scrollTo(0, saved.y);
+    else if (hashTarget) scrollTo(0, hashTarget.getBoundingClientRect().top + scrollY - $('.topnav').offsetHeight - 8);
+    addEventListener('pagehide', () => {
+      try { sessionStorage.setItem(KEY_SCROLL, JSON.stringify({ path: location.pathname + location.search + location.hash, y: scrollY })); } catch { /* ignorer */ }
+    });
+    $('#boot')?.remove();
   }
 
   async function boot() {
@@ -808,9 +823,14 @@
       document.body.innerHTML = '<p style="padding:24px;font-family:sans-serif">Kunne ikke indlæse trip.json. Åbn siden via en webserver (se README).</p>';
       return;
     }
+    // Genbesøg: brug den gemte, dekrypterede version, så vi slipper for
+    // den langsomme nøgleudledning. Ny kryptering (ny iv) kræver ny kode.
+    const cached = store.get(KEY_SECRET, null);
     const saved = store.get(KEY_PW, null);
-    if (saved && await tryUnlock(saved)) startApp();
-    else showGate();
+    if (saved && cached && cached.iv === trip.secret.iv) { secret = cached.secret; startApp(); return; }
+    if (saved && await tryUnlock(saved)) { store.set(KEY_SECRET, { iv: trip.secret.iv, secret }); startApp(); return; }
+    $('#boot')?.remove();
+    showGate();
   }
 
   boot();

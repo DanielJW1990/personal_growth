@@ -353,3 +353,8 @@ ul.plain li { margin: .3em 0; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 @media print { .topnav, .gate, #map, .btn-row, #kasse { display: none !important; } body { background: #fff; } }
 @media (min-width: 720px) { .day-photo img { aspect-ratio: auto; height: 380px; } }
+
+/* Kort opstartsskærm, mens trip.json hentes */
+.boot { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; background: var(--azulejo) var(--cream); background-size: 48px; }
+.boot span { font: 400 3.2rem/1 var(--serif); color: var(--petrol); letter-spacing: .04em; background: var(--cream); padding: .2em .4em; border-radius: 12px; animation: boot-pulse 1.2s ease-in-out infinite alternate; }
+@keyframes boot-pulse { from { opacity: .45; } to { opacity: 1; } }
