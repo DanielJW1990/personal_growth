@@ -502,11 +502,50 @@
     return { bal, moves };
   }
 
+  // Kvitteringsbilleder ligger i IndexedDB (localStorage er for lille til billeder).
+  const receipts = (() => {
+    let dbp = null;
+    const db = () => dbp ||= new Promise((res, rej) => {
+      const r = indexedDB.open('porto-kvitteringer', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('kvitteringer');
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    });
+    const run = (mode, fn) => db().then((d) => new Promise((res, rej) => {
+      const tx = d.transaction('kvitteringer', mode);
+      const req = fn(tx.objectStore('kvitteringer'));
+      tx.oncomplete = () => res(req && req.result);
+      tx.onerror = () => rej(tx.error);
+    }));
+    return {
+      put: (id, blob) => run('readwrite', (s) => s.put(blob, id)),
+      get: (id) => run('readonly', (s) => s.get(id)),
+      del: (id) => run('readwrite', (s) => s.delete(id)),
+      clear: () => run('readwrite', (s) => s.clear()),
+    };
+  })();
+
+  // Skalér kvitteringen ned til max 1600 px og gem som JPEG (typisk 150–300 kB).
+  async function shrinkImage(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+      const scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.naturalWidth * scale);
+      c.height = Math.round(img.naturalHeight * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      return await new Promise((res) => c.toBlob(res, 'image/jpeg', 0.75));
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
   function renderKasse() {
     const people = trip.travelers;
     const el = $('#kasse');
     el.innerHTML = `
-      <div class="section-head"><p class="label">Fælleskasse</p><h2>Hvem skylder hvem?</h2><p class="intro">Skriv udlæg ind, efterhånden som de sker. Alt gemmes kun i denne browser, så lad én person føre kassen.</p></div>
+      <div class="section-head"><p class="label">Fælleskasse</p><h2>Hvem skylder hvem?</h2><p class="intro">Skriv udlæg ind, efterhånden som de sker, og tag gerne et billede af kvitteringen. Alt gemmes kun på denne telefon, så lad én person føre kassen.</p></div>
       <div class="grid grid-2">
         <form class="card" id="kasse-form" autocomplete="off">
           <p class="label">Nyt udlæg</p>
@@ -518,12 +557,40 @@
             <select id="k-payer">${people.map((p) => `<option>${esc(p)}</option>`).join('')}</select></div>
           <div class="field" style="margin-top:10px"><label>Deles mellem</label>
             <div class="who">${people.map((p) => `<label><input type="checkbox" name="split" value="${esc(p)}" checked>${esc(p)}</label>`).join('')}</div></div>
+          <div class="field" style="margin-top:10px"><label>Kvittering (valgfri)</label>
+            <div class="receipt-pick" id="k-pick">
+              <label class="btn btn-sm btn-copper">📷 Tag billede<input type="file" accept="image/*" capture="environment" hidden data-receipt></label>
+              <label class="btn btn-sm">Vælg billede<input type="file" accept="image/*" hidden data-receipt></label>
+            </div>
+            <div class="receipt-preview" id="k-preview" hidden>
+              <img alt="Kvittering, forhåndsvisning"><button type="button" class="btn btn-sm" id="k-unpick">Fjern billede</button>
+            </div></div>
           <div class="btn-row"><button class="btn btn-primary" type="submit">Tilføj udlæg</button></div>
           <p id="k-err" class="small" style="color:#a3261b;margin:.5rem 0 0" hidden></p>
         </form>
         <div class="card" id="kasse-result"></div>
       </div>
-      <div class="card" style="margin-top:14px" id="kasse-list"></div>`;
+      <div class="card" style="margin-top:14px" id="kasse-list"></div>
+      <dialog class="receipt-view" id="k-view"><img alt="Kvittering"><form method="dialog"><button class="btn btn-primary">Luk</button></form></dialog>`;
+
+    let pending = null;
+    let previewUrl = null;
+    const setPending = (blob) => {
+      pending = blob;
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = blob ? URL.createObjectURL(blob) : null;
+      $('#k-preview img').src = previewUrl || '';
+      $('#k-preview').hidden = !blob;
+      $('#k-pick').hidden = !!blob;
+    };
+    el.querySelectorAll('[data-receipt]').forEach((input) => input.addEventListener('change', async () => {
+      const file = input.files && input.files[0];
+      input.value = '';
+      if (!file) return;
+      try { setPending(await shrinkImage(file)); }
+      catch { const err = $('#k-err'); err.textContent = 'Billedet kunne ikke læses. Prøv et andet.'; err.hidden = false; }
+    }));
+    $('#k-unpick').addEventListener('click', () => setPending(null));
 
     const draw = () => {
       const exps = store.get(KEY_KASSE, []);
@@ -537,13 +604,16 @@
       $('#kasse-list').innerHTML = `
         <p class="label">Udlæg (${exps.length})</p>
         ${exps.length ? `<ul class="exp-list">${exps.map((e) => `
-          <li><span><b>${esc(e.desc || 'Udlæg')}</b><br><span class="small muted">${esc(e.payer)} betalte · deles af ${e.split.length === people.length ? 'alle fem' : esc(e.split.join(', '))}</span></span>
+          <li>${e.receipt ? `<button type="button" class="receipt-thumb" data-receipt-view="${esc(e.id)}" aria-label="Vis kvittering"><img alt="" data-receipt-img="${esc(e.id)}"></button>` : '<span class="receipt-thumb receipt-none" aria-hidden="true"></span>'}<span><b>${esc(e.desc || 'Udlæg')}</b><br><span class="small muted">${esc(e.payer)} betalte · deles af ${e.split.length === people.length ? 'alle fem' : esc(e.split.join(', '))}</span></span>
           <span class="amt">${eur.format(e.cents / 100)}</span>
           <button type="button" data-del="${esc(e.id)}" aria-label="Slet udlæg">×</button></li>`).join('')}</ul>
           <div class="btn-row"><button type="button" class="btn btn-sm" id="k-clear">Nulstil kassen</button></div>` : '<p class="muted" style="margin:0">Ingen udlæg endnu.</p>'}`;
+      el.querySelectorAll('[data-receipt-img]').forEach(async (img) => {
+        try { const b = await receipts.get(img.dataset.receiptImg); if (b) img.src = URL.createObjectURL(b); } catch { /* ignorer */ }
+      });
     };
 
-    $('#kasse-form').addEventListener('submit', (e) => {
+    $('#kasse-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const cents = parseAmount($('#k-amt').value);
       const split = [...el.querySelectorAll('input[name=split]:checked')].map((x) => x.value);
@@ -552,15 +622,28 @@
       if (!split.length) { err.textContent = 'Vælg mindst én at dele med.'; err.hidden = false; return; }
       err.hidden = true;
       const exps = store.get(KEY_KASSE, []);
-      exps.unshift({ id: String(Date.now()), desc: $('#k-desc').value.trim(), cents, payer: $('#k-payer').value, split });
+      const id = String(Date.now());
+      let receipt = false;
+      if (pending) {
+        try { await receipts.put(id, pending); receipt = true; }
+        catch { err.textContent = 'Kvitteringen kunne ikke gemmes i denne browser. Udlægget er gemt uden billede.'; err.hidden = false; }
+      }
+      exps.unshift({ id, desc: $('#k-desc').value.trim(), cents, payer: $('#k-payer').value, split, receipt });
       store.set(KEY_KASSE, exps);
       $('#k-desc').value = ''; $('#k-amt').value = '';
+      setPending(null);
       draw();
     });
     $('#kasse-list').addEventListener('click', (e) => {
       const del = e.target.closest('[data-del]');
-      if (del) { store.set(KEY_KASSE, store.get(KEY_KASSE, []).filter((x) => x.id !== del.dataset.del)); draw(); }
-      if (e.target.closest('#k-clear') && confirm('Slet alle udlæg i denne browser?')) { store.del(KEY_KASSE); draw(); }
+      if (del) { store.set(KEY_KASSE, store.get(KEY_KASSE, []).filter((x) => x.id !== del.dataset.del)); receipts.del(del.dataset.del).catch(() => {}); draw(); }
+      if (e.target.closest('#k-clear') && confirm('Slet alle udlæg og kvitteringer i denne browser?')) { store.del(KEY_KASSE); receipts.clear().catch(() => {}); draw(); }
+      const view = e.target.closest('[data-receipt-view]');
+      if (view) {
+        const dlg = $('#k-view');
+        dlg.querySelector('img').src = view.querySelector('img').src;
+        dlg.showModal();
+      }
     });
     draw();
   }
