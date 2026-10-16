@@ -9,6 +9,7 @@ import { gatherState } from './state.js';
 import { runAnalyst } from './analyst.js';
 import { validateProposals } from './guardrails.js';
 import { sendMessage, sendProposal, formatProposal } from './telegram.js';
+import { isTransientNetworkError } from './net.js';
 
 function shortId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
@@ -85,6 +86,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   runCycle()
     .then((r) => console.log('cycle:', JSON.stringify(r)))
     .catch((err) => {
+      // The screen starts from "do nothing", so a skipped day costs nothing;
+      // an API that is rate-limited or overloaded is not worth an alert.
+      // Anything else is a real defect and must still fail loudly.
+      if (isTransientNetworkError(err)) {
+        console.warn(
+          `cycle: transient failure (${err.message}) — skipping today's screen; the next run continues.`,
+        );
+        return;
+      }
       console.error(err);
       process.exit(1);
     });

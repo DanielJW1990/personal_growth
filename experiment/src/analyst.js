@@ -49,6 +49,47 @@ If holding is right, return an empty proposals array and say why in cycle_note. 
 // Live news access for the screen — capped so a run can't spiral.
 const WEB_SEARCH_TOOL = { type: 'web_search_20260209', name: 'web_search', max_uses: 8 };
 
+// The decision contract, enforced by the schema on the formatting pass below.
+// It cannot be enforced on the research pass: server-side search citations and
+// a strict output format can't be requested in the same call, which is exactly
+// how a cycle once died on a prose answer.
+const PROPOSAL_SCHEMA = {
+  type: 'object',
+  properties: {
+    action: { type: 'string', enum: ['buy', 'sell', 'trim', 'add'] },
+    instrument: { type: 'string' },
+    ticker: { type: 'string' },
+    target_weight_pct: { type: 'number' },
+    approx_dkk: { type: 'number' },
+    thesis: { type: 'string' },
+    quality_criteria_met: { type: 'array', items: { type: 'string' } },
+    valuation_note: { type: 'string' },
+    is_speculative: { type: 'boolean' },
+    what_would_make_this_wrong: { type: 'string' },
+    tax_note: { type: 'string' },
+  },
+  required: [
+    'action', 'instrument', 'ticker', 'target_weight_pct', 'approx_dkk', 'thesis',
+    'quality_criteria_met', 'valuation_note', 'is_speculative', 'what_would_make_this_wrong', 'tax_note',
+  ],
+  additionalProperties: false,
+};
+
+const OUTPUT_SCHEMA = {
+  type: 'object',
+  properties: {
+    cycle_note: { type: 'string' },
+    proposals: { type: 'array', items: PROPOSAL_SCHEMA },
+    do_nothing_is_correct_if: { type: 'string' },
+  },
+  required: ['cycle_note', 'proposals', 'do_nothing_is_correct_if'],
+  additionalProperties: false,
+};
+
+const FORMAT_SYSTEM = `You convert an equity analyst's written decision into the exact structured object requested.
+
+Transcribe faithfully — you are a formatter, not a second opinion. Never invent, add or drop a proposal, and never change a ticker, size or thesis. If the analyst decided to hold, or named no specific trade, return an empty proposals array and put their reasoning in cycle_note. If the text breaks off mid-thought, use only what it actually established.`;
+
 function buildUserMessage(portfolio, report, candidateIdeas) {
   const taxWrapper = config.taxWrapper === 'ask' ? 'Aktiesparekonto (ASK)' : 'regular depot';
   const taxNote =
@@ -101,6 +142,54 @@ function buildUserMessage(portfolio, report, candidateIdeas) {
 }
 
 /**
+ * Pull the decision object out of a research turn's text blocks, newest first.
+ * Returns null when the analyst wrote prose instead — the normal case for a
+ * discursive answer, and the cue to run the formatting pass.
+ */
+export function pickDecisionFromTexts(texts) {
+  for (let i = texts.length - 1; i >= 0; i--) {
+    let parsed;
+    try {
+      parsed = parseAnalystJson(texts[i]);
+    } catch {
+      continue;
+    }
+    // A bare number or stray array isn't a decision; require the shape.
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      if (Array.isArray(parsed.proposals) || typeof parsed.cycle_note === 'string') {
+        parsed.proposals ??= [];
+        return parsed;
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Second pass: hand the analyst's own words to a tool-free call whose output
+ * the schema constrains. Formatting can't fail the way free text can, so a
+ * cycle is never lost to a stray preamble or a sentence that ran out of room.
+ */
+async function formatDecision(client, researchText) {
+  const response = await client.messages.create({
+    model: config.analystModel,
+    max_tokens: 4000,
+    system: FORMAT_SYSTEM,
+    output_config: { format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },
+    messages: [
+      {
+        role: 'user',
+        content: `The analyst's written decision for this cycle:\n\n${researchText}\n\nReturn it as the structured object.`,
+      },
+    ],
+  });
+  const text = response.content.find((b) => b.type === 'text')?.text ?? '{}';
+  const parsed = parseAnalystJson(text);
+  parsed.proposals ??= [];
+  return parsed;
+}
+
+/**
  * Run one analyst cycle.
  * @returns {Promise<{ cycle_note: string, proposals: object[], do_nothing_is_correct_if: string }>}
  */
@@ -111,7 +200,7 @@ export async function runAnalyst({ portfolio, report, candidateIdeas = [] }) {
 
   const base = {
     model: config.analystModel,
-    max_tokens: 8000,
+    max_tokens: 16000, // room for thinking + eight searches + the decision
     thinking: { type: 'adaptive' },
     system: SYSTEM_PROMPT,
     tools: [WEB_SEARCH_TOOL],
@@ -126,20 +215,18 @@ export async function runAnalyst({ portfolio, report, candidateIdeas = [] }) {
     response = await client.messages.create({ ...base, messages });
   }
 
-  // With search in play the response interleaves text and tool blocks; the
-  // decision JSON is the final text. Try text blocks last-first.
   const texts = response.content.filter((b) => b.type === 'text').map((b) => b.text);
-  let lastErr;
-  for (let i = texts.length - 1; i >= 0; i--) {
-    try {
-      const parsed = parseAnalystJson(texts[i]);
-      parsed.proposals ??= [];
-      return parsed;
-    } catch (err) {
-      lastErr = err;
-    }
-  }
-  throw lastErr ?? new Error('Analyst returned no text output');
+
+  // Fast path: the research turn usually ends with the decision object itself.
+  const direct = pickDecisionFromTexts(texts);
+  if (direct) return direct;
+
+  const researchText = texts.join('\n\n').trim();
+  if (!researchText) throw new Error('Analyst returned no text output');
+  console.warn(
+    `analyst: research turn ended in prose (stop_reason=${response.stop_reason}) — running the formatting pass.`,
+  );
+  return formatDecision(client, researchText);
 }
 
 /**

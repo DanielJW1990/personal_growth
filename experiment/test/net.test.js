@@ -75,3 +75,14 @@ test('withRetry gives up after the attempt budget and rethrows', async () => {
   );
   assert.equal(calls, 3);
 });
+
+test('API overload / rate limit (status 429, 5xx, 529) is transient', () => {
+  assert.equal(isTransientNetworkError(Object.assign(new Error('Overloaded'), { status: 529 })), true);
+  assert.equal(isTransientNetworkError(Object.assign(new Error('rate limited'), { status: 429 })), true);
+  assert.equal(isTransientNetworkError(Object.assign(new Error('server error'), { status: 500 })), true);
+});
+
+test('a bad request (400/401) is NOT transient — a real defect must alert', () => {
+  assert.equal(isTransientNetworkError(Object.assign(new Error('invalid request'), { status: 400 })), false);
+  assert.equal(isTransientNetworkError(Object.assign(new Error('bad api key'), { status: 401 })), false);
+});

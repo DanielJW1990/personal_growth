@@ -10,12 +10,16 @@
 export function isTransientNetworkError(err) {
   if (!err) return false;
   if (err.transient) return true; // explicitly tagged by a caller (e.g. HTTP 5xx)
+  // SDK errors carry an HTTP status: rate limits and server-side faults
+  // (including 529 "overloaded") are a bad minute, not a bad request. A 4xx
+  // other than 429 is our fault and must surface.
+  if (err.status === 429 || (typeof err.status === 'number' && err.status >= 500)) return true;
   const name = err.name ?? '';
-  if (name === 'TimeoutError' || name === 'AbortError') return true;
+  if (name === 'TimeoutError' || name === 'AbortError' || name === 'APIConnectionError') return true;
   // undici reports DNS/connection failures as `TypeError: fetch failed`, with
   // the real reason on `cause`.
   const text = `${err.message ?? ''} ${err.cause?.message ?? ''} ${err.cause?.code ?? ''}`;
-  return /fetch failed|network|socket|timeout|ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|UND_ERR/i.test(text);
+  return /fetch failed|network|socket|timeout|overloaded|ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|UND_ERR/i.test(text);
 }
 
 /**
