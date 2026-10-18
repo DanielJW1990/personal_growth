@@ -1,0 +1,17 @@
+{
+  "name": "whoop-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zero-dependency MCP server for WHOOP sleep, recovery, and strain data (WHOOP API v2).",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "whoop-mcp": "src/server.js"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "auth": "node src/auth.js"
+  }
+}

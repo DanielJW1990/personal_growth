@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "whoop": {
+      "command": "node",
+      "args": ["whoop-mcp/src/server.js"],
+      "env": {
+        "WHOOP_CLIENT_ID": "${WHOOP_CLIENT_ID}",
+        "WHOOP_CLIENT_SECRET": "${WHOOP_CLIENT_SECRET}",
+        "WHOOP_REFRESH_TOKEN": "${WHOOP_REFRESH_TOKEN:-}"
+      }
+    }
+  }
+}
