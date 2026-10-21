@@ -12,6 +12,7 @@ import {
   turnover,
   hitRate,
   buildReport,
+  timeWeightedReturn,
 } from '../src/bookkeeper.js';
 
 function approx(a, b, eps = 1e-6) {
@@ -165,4 +166,85 @@ test('buildReport exposes dividendsDkk', () => {
   const report = buildReport({ led, prices: { A: 100 }, benchLevels: { msci_world: 101, sp500: 101 }, now: '2026-04-01' });
   approx(report.dividendsDkk, 25);
   approx(report.cashDkk, 20000 - 1000 + 25);
+});
+
+test('TWR: a deposit raises the balance but is not a gain', () => {
+  // 20,000 grows to 22,000 (+10%), then 20,000 is added, then 42,000 -> 44,100.
+  const r = timeWeightedReturn({
+    startBase: 20000,
+    endValue: 44100,
+    flows: [{ date: '2026-10-21', amount_dkk: 20000, value_before_dkk: 22000 }],
+  });
+  approx(r, 1.1 * 1.05 - 1, 1e-9); // +15.5%, NOT the +120.5% the balance implies
+});
+
+test('TWR: with no cash flows it equals the plain ratio', () => {
+  approx(timeWeightedReturn({ startBase: 20000, endValue: 22000 }), 0.1, 1e-9);
+  approx(sinceInceptionReturn(22000, 20000), 0.1, 1e-9);
+  approx(sinceInceptionReturn(22000, 20000, []), 0.1, 1e-9);
+});
+
+test('TWR: a deposit on a flat portfolio still returns 0%', () => {
+  const r = timeWeightedReturn({
+    startBase: 20000,
+    endValue: 40000,
+    flows: [{ amount_dkk: 20000, value_before_dkk: 20000 }],
+  });
+  approx(r, 0, 1e-9);
+});
+
+test('TWR: chains several deposits and a withdrawal', () => {
+  const r = timeWeightedReturn({
+    startBase: 10000,
+    endValue: 26400,
+    flows: [
+      { amount_dkk: 10000, value_before_dkk: 11000 }, // +10%, base -> 21000
+      { amount_dkk: -5000, value_before_dkk: 22050 }, // +5%,  base -> 17050
+    ],
+  });
+  approx(r, 1.1 * 1.05 * (26400 / 17050) - 1, 1e-9);
+});
+
+test('TWR: guards missing data instead of inventing a return', () => {
+  assert.equal(timeWeightedReturn({ startBase: 0, endValue: 100 }), null);
+  assert.equal(timeWeightedReturn({ startBase: 100, endValue: NaN }), null);
+  assert.equal(
+    timeWeightedReturn({ startBase: 100, endValue: 200, flows: [{ amount_dkk: 50 }] }),
+    null, // value_before missing
+  );
+});
+
+test('computeCash includes later deposits', () => {
+  const fills = [{ action: 'buy', shares: 10, price_dkk: 100, fee_dkk: 0 }];
+  approx(computeCash(20000, fills, [{ amount_dkk: 20000, value_before_dkk: 19000 }]), 39000);
+  approx(computeCash(20000, fills), 19000); // unchanged without flows
+});
+
+test('periodReturn chains out a deposit made during the week', () => {
+  const snaps = [{ date: '2026-10-18', total_value_dkk: 22000, kind: 'pulse' }];
+  const flows = [{ date: '2026-10-21', amount_dkk: 20000, value_before_dkk: 22000 }];
+  // Deposit, then flat: the week is 0%, not +91%.
+  approx(periodReturn(42000, snaps, 'pulse', flows), 0, 1e-9);
+  // A flow before the snapshot is already reflected in it and must be ignored.
+  const older = [{ date: '2026-10-01', amount_dkk: 20000, value_before_dkk: 10000 }];
+  approx(periodReturn(23100, snaps, 'pulse', older), 23100 / 22000 - 1, 1e-9);
+});
+
+test('buildReport: deposits never inflate the reported return', () => {
+  const led = {
+    inception: { date: '2026-01-01', deposit_dkk: 20000, benchmark_levels: { msci_world: 100, sp500: 100 } },
+    // 10,000 into A, 10,000 left in cash; A then rises 100 -> 120, so the book
+    // was worth 22,000 the moment the 20,000 top-up landed.
+    fills: [{ action: 'buy', instrument: 'A', ticker: 'A', shares: 100, price_dkk: 100, fee_dkk: 0 }],
+    cash_flows: [{ date: '2026-06-01', amount_dkk: 20000, value_before_dkk: 22000 }],
+    snapshots: [],
+  };
+  const report = buildReport({ led, prices: { A: 120 }, benchLevels: { msci_world: 100, sp500: 100 }, now: '2026-07-01' });
+  approx(report.cashDkk, 30000); // 20,000 − 10,000 + 20,000
+  approx(report.totalValueDkk, 42000); // 30,000 cash + 12,000 position
+  approx(report.contributedDkk, 40000);
+  approx(report.sinceReturnDkk, 2000); // real gain, measured against money in
+  approx(report.sinceReturn, 0.1, 1e-9); // +10%, not the +110% the balance implies
+  // And the benchmark comparison stays honest.
+  approx(report.benchmarks.msci_world.deltaVsPortfolio, 0.1, 1e-9);
 });

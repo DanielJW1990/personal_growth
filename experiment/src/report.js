@@ -117,6 +117,14 @@ export function formatMonthlyReport(report) {
   L.push('');
   L.push(`Total value: ${fmtDkk(report.totalValueDkk)}`);
   L.push(`Since inception: ${fmtPct(report.sinceReturn)} (${fmtDkk(report.sinceReturnDkk)})`);
+  // Once money has been added, say so plainly: the percentage is time-weighted
+  // and excludes deposits, so it should never be read off the balance.
+  if (report.contributedDkk != null && Math.abs(report.contributedDkk - report.depositDkk) > 0.5) {
+    L.push(
+      `Money in: ${fmtDkk(report.contributedDkk)} (${fmtDkk(report.depositDkk)} at start + later deposits) — ` +
+        'the % above is time-weighted and excludes them.',
+    );
+  }
   L.push(`This month: ${report.monthReturn == null ? '— (first monthly)' : fmtPct(report.monthReturn)}`);
   L.push('');
   L.push('Benchmark deltas (the scoreboard):');

@@ -1,0 +1,54 @@
+name: Experiment — book a deposit
+
+# Manual only. Run this when money actually lands in the broker account, so the
+# time-weighted return gets an exact cut point. Negative amounts book a
+# withdrawal.
+on:
+  workflow_dispatch:
+    inputs:
+      amount_dkk:
+        description: 'Amount in DKK (negative for a withdrawal)'
+        required: true
+        type: string
+      note:
+        description: 'Optional note (e.g. "top-up from savings")'
+        required: false
+        type: string
+
+concurrency:
+  group: experiment-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deposit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: experiment
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - run: npm install
+      - name: Book the cash flow
+        run: node src/deposit.js
+        env:
+          DEPOSIT_DKK: ${{ inputs.amount_dkk }}
+          DEPOSIT_NOTE: ${{ inputs.note }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Commit ledger if changed
+        working-directory: .
+        run: |
+          if ! git diff --quiet -- experiment/data/ledger.json; then
+            git config user.name "experiment-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add experiment/data/ledger.json
+            git commit -m "chore(experiment): book cash flow [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

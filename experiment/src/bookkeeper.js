@@ -87,12 +87,14 @@ export function derivePositions(fills) {
 }
 
 /**
- * Cash = deposit − (buys notional + fees) + (sells notional − fees).
- * @param {number} depositDkk
+ * Cash = deposits − (buys notional + fees) + (sells notional − fees) + dividends.
+ * @param {number} depositDkk  the inception deposit
  * @param {import('./ledger.js').Fill[]} fills
+ * @param {{amount_dkk: number}[]} [cashFlows]  later deposits/withdrawals
  */
-export function computeCash(depositDkk, fills) {
+export function computeCash(depositDkk, fills, cashFlows = []) {
   let cash = depositDkk;
+  for (const cf of cashFlows ?? []) cash += Number(cf.amount_dkk ?? 0);
   for (const f of fills) {
     const notional = Number(f.shares) * Number(f.price_dkk);
     const fee = Number(f.fee_dkk ?? 0);
@@ -110,9 +112,11 @@ export function computeCash(depositDkk, fills) {
  */
 export function computePortfolio(led, prices) {
   const depositDkk = led.inception?.deposit_dkk ?? 0;
+  const cashFlows = led.cash_flows ?? [];
+  const contributedDkk = depositDkk + cashFlows.reduce((s, cf) => s + Number(cf.amount_dkk ?? 0), 0);
   const fills = led.fills ?? [];
   const { open, closed, realizedPlDkk, dividendsDkk } = derivePositions(fills);
-  const cashDkk = computeCash(depositDkk, fills);
+  const cashDkk = computeCash(depositDkk, fills, cashFlows);
 
   let unrealizedPlDkk = 0;
   const positions = open.map((p) => {
@@ -144,6 +148,8 @@ export function computePortfolio(led, prices) {
 
   return {
     depositDkk,
+    contributedDkk,
+    cashFlows,
     cashDkk,
     cashPct: totalValueDkk > 0 ? (cashDkk / totalValueDkk) * 100 : 0,
     positions,
@@ -157,10 +163,42 @@ export function computePortfolio(led, prices) {
   };
 }
 
-/** Simple since-inception return (correct for a single lump-sum deposit). */
-export function sinceInceptionReturn(totalValueDkk, depositDkk) {
-  if (!depositDkk) return null;
-  return totalValueDkk / depositDkk - 1;
+/**
+ * TIME-WEIGHTED RETURN — the only honest way to score a portfolio that takes
+ * deposits. Adding money raises the balance without being a gain, so the series
+ * is cut at every cash flow and the sub-period returns are chained. The result
+ * is what a single krone left alone would have done, which is exactly what a
+ * benchmark's level ratio measures — so the two stay comparable.
+ *
+ * Each flow needs the portfolio value captured immediately BEFORE it landed;
+ * that is why deposits are booked by a job that prices the book first.
+ *
+ * @param {object} a
+ * @param {number} a.startBase        value at the start of the window
+ * @param {number} a.endValue         value now
+ * @param {{amount_dkk:number, value_before_dkk:number}[]} [a.flows]  in date order
+ */
+export function timeWeightedReturn({ startBase, endValue, flows = [] }) {
+  if (!startBase || !Number.isFinite(endValue)) return null;
+  let factor = 1;
+  let base = startBase;
+  for (const f of flows ?? []) {
+    const before = Number(f.value_before_dkk);
+    const amount = Number(f.amount_dkk ?? 0);
+    if (!Number.isFinite(before) || !base) return null;
+    factor *= before / base;
+    base = before + amount;
+  }
+  if (!base) return null;
+  return factor * (endValue / base) - 1;
+}
+
+/**
+ * Since-inception return. With no later cash flows this is the plain
+ * value/deposit ratio; with deposits it chains across them.
+ */
+export function sinceInceptionReturn(totalValueDkk, depositDkk, cashFlows = []) {
+  return timeWeightedReturn({ startBase: depositDkk, endValue: totalValueDkk, flows: cashFlows });
 }
 
 /** Benchmark return is currency-neutral as a ratio of index levels. */
@@ -169,11 +207,16 @@ export function benchmarkReturn(currentLevel, inceptionLevel) {
   return currentLevel / inceptionLevel - 1;
 }
 
-/** Period return vs the most recent snapshot of a given kind (null if none). */
-export function periodReturn(totalValueDkk, snapshots, kind) {
+/**
+ * Period return vs the most recent snapshot of a given kind (null if none).
+ * Cash flows since that snapshot are chained out the same way, so a deposit
+ * never shows up as a spectacular week.
+ */
+export function periodReturn(totalValueDkk, snapshots, kind, cashFlows = []) {
   const prior = lastSnapshot(snapshots, kind);
   if (!prior || !prior.total_value_dkk) return null;
-  return totalValueDkk / prior.total_value_dkk - 1;
+  const since = (cashFlows ?? []).filter((cf) => !prior.date || String(cf.date) > String(prior.date));
+  return timeWeightedReturn({ startBase: prior.total_value_dkk, endValue: totalValueDkk, flows: since });
 }
 
 export function lastSnapshot(snapshots, kind) {
@@ -251,7 +294,7 @@ export function buildReport({ led, prices, benchLevels, now }) {
   const today = now ?? new Date().toISOString().slice(0, 10);
   const pf = computePortfolio(led, prices);
   const inception = led.inception ?? {};
-  const sinceReturn = sinceInceptionReturn(pf.totalValueDkk, pf.depositDkk);
+  const sinceReturn = sinceInceptionReturn(pf.totalValueDkk, pf.depositDkk, pf.cashFlows);
 
   const benchInception = inception.benchmark_levels ?? {};
   const benchmarks = {};
@@ -268,15 +311,17 @@ export function buildReport({ led, prices, benchLevels, now }) {
     date: today,
     inceptionDate: inception.date ?? null,
     depositDkk: pf.depositDkk,
+    contributedDkk: pf.contributedDkk,
     totalValueDkk: pf.totalValueDkk,
     cashDkk: pf.cashDkk,
     cashPct: pf.cashPct,
     positions: pf.positions,
     positionsValueDkk: pf.positionsValueDkk,
     sinceReturn,
-    sinceReturnDkk: pf.totalValueDkk - pf.depositDkk,
-    weekReturn: periodReturn(pf.totalValueDkk, led.snapshots, 'pulse'),
-    monthReturn: periodReturn(pf.totalValueDkk, led.snapshots, 'monthly'),
+    // Absolute gain is measured against every krone put in, not just the first.
+    sinceReturnDkk: pf.totalValueDkk - pf.contributedDkk,
+    weekReturn: periodReturn(pf.totalValueDkk, led.snapshots, 'pulse', pf.cashFlows),
+    monthReturn: periodReturn(pf.totalValueDkk, led.snapshots, 'monthly', pf.cashFlows),
     benchmarks,
     realizedPlDkk: pf.realizedPlDkk,
     unrealizedPlDkk: pf.unrealizedPlDkk,

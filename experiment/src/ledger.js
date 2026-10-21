@@ -30,6 +30,7 @@ export async function loadLedger() {
   // Defensive defaults so a hand-edited file never crashes the bookkeeper.
   led.fills ??= [];
   led.snapshots ??= [];
+  led.cash_flows ??= [];
   led.telegram_state ??= { last_update_id: 0, pending: {} };
   led.telegram_state.pending ??= {};
   return led;
@@ -63,6 +64,25 @@ export function setInception(led, { date, levels }) {
     sp500: BENCHMARKS.sp500.symbol,
   };
   return led;
+}
+
+/**
+ * Append a deposit (or withdrawal, as a negative amount). `value_before_dkk` is
+ * the portfolio's value the instant before the money moved — the cut point the
+ * time-weighted return chains across, and the reason deposits are booked by a
+ * job that prices the book first rather than by hand.
+ */
+export function appendCashFlow(led, { date, amount_dkk, value_before_dkk, note }) {
+  led.cash_flows ??= [];
+  const entry = {
+    date: date ?? new Date().toISOString().slice(0, 10),
+    amount_dkk: Number(amount_dkk),
+    value_before_dkk: Number(value_before_dkk),
+  };
+  if (note) entry.note = note;
+  led.cash_flows.push(entry);
+  led.cash_flows.sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  return entry;
 }
 
 /**
