@@ -387,6 +387,15 @@
         "sp500": 734.62
       },
       "kind": "pulse"
+    },
+    {
+      "date": "2026-11-01",
+      "total_value_dkk": 22531.769362161718,
+      "benchmark_levels": {
+        "msci_world": 129.7,
+        "sp500": 734.62
+      },
+      "kind": "monthly"
     }
   ],
   "telegram_state": {
